@@ -204,45 +204,45 @@ const expLogos = [
 
 const testimonials = [
   {
-    name: "Esther Howard",
-    mentions: "@estherhoward",
+    name: "Liboyy Store",
+    mentions: "@liboyystore_26",
     review:
-      "I can’t say enough good things about Adrian. He was able to take our complex project requirements and turn them into a seamless, functional website. His problem-solving abilities are outstanding.",
-    imgPath: "/images/client1.png",
+      "Saya sangat puas bekerja sama dengan Azriel WebDev, seorang fullstack developer yang memiliki kemampuan teknis luar biasa. Ia berhasil membangun website top up games yang responsif, cepat, dan user-friendly, sekaligus mengintegrasikan layanan sosial media dengan sangat baik. Mulai dari perencanaan, pengembangan, hingga deployment, semuanya dikerjakan dengan detail dan profesional. Komunikasinya juga lancar, membuat proses kerja jadi efisien dan menyenangkan. Hasil akhirnya benar-benar melebihi ekspektasi!",
+    imgPath: "/images/fixlogoliboy.png",
   },
   {
-    name: "Wade Warren",
-    mentions: "@wadewarren",
+    name: "DUMYDUMY",
+    mentions: "@dumydumy",
     review:
-      "Working with Adrian was a fantastic experience. He transformed our outdated website into a modern, user-friendly platform. His attention to detail and commitment to quality are unmatched. Highly recommend him for any web dev projects.",
+      "Dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy.",
     imgPath: "/images/client3.png",
   },
   {
-    name: "Guy Hawkins",
-    mentions: "@guyhawkins",
+    name: "Mbuutt Company",
+    mentions: "@mbuuttcorp",
     review:
-      "Collaborating with Adrian was an absolute pleasure. His professionalism, promptness, and dedication to delivering exceptional results were evident throughout our project. Adrian's enthusiasm for every facet of development truly stands out. If you're seeking to elevate your website and elevate your brand, Adrian is the ideal partner.",
-    imgPath: "/images/client2.png",
+      "Bekerja sama dalam pengembangan website sistem laundry ini merupakan pengalaman yang sangat profesional. Komitmen terhadap ketepatan waktu, kualitas hasil, serta perhatian terhadap setiap detail proyek sangat terlihat jelas. Dedikasi dan semangat tinggi dalam proses pengembangan memberikan nilai tambah yang signifikan. Kami merekomendasikan layanan ini bagi pihak yang ingin meningkatkan kualitas dan performa website mereka secara optimal.",
+    imgPath: "/images/logombuuttT.png",
   },
   {
-    name: "Marvin McKinney",
-    mentions: "@marvinmckinney",
+    name: "DUMYDUMY",
+    mentions: "@dumydumy",
     review:
-      "Adrian was a pleasure to work with. He turned our outdated website into a fresh, intuitive platform that’s both modern and easy to navigate. Fantastic work overall.",
+      "Dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy.",
     imgPath: "/images/client5.png",
   },
   {
-    name: "Floyd Miles",
-    mentions: "@floydmiles",
+    name: "PT. Spektrum Kreasi Pratama",
+    mentions: "@spektrumkp",
     review:
-      "Adrian’s expertise in web development is truly impressive. He delivered a robust and scalable solution for our e-commerce site, and our online sales have significantly increased since the launch. He’s a true professional!",
-    imgPath: "/images/client4.png",
+      "Azriel membawa kreativitas dan keahlian ke dalam tim, sehingga meningkatkan kinerja frontend dan entry data kami secara signifikan. Dedikasinya terhadap detail dan kolaborasi yang efektif membuat proyek berjalan lancar dan hasilnya sangat memuaskan.",
+    imgPath: "/images/logospektrumM.png",
   },
   {
-    name: "Albert Flores",
-    mentions: "@albertflores",
+    name: "DUMYDUMY",
+    mentions: "@dumydumy",
     review:
-      "Adrian was a pleasure to work with. He understood our requirements perfectly and delivered a website that exceeded our expectations. His skills in both frontend and backend dev are top-notch.",
+      "Dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy.",
     imgPath: "/images/client6.png",
   },
 ];
@@ -250,18 +250,22 @@ const testimonials = [
 const socialImgs = [
   {
     name: "insta",
+    url: "https://www.instagram.com/azrlrsdi_/",
     imgPath: "/images/insta.png",
   },
   {
-    name: "fb",
-    imgPath: "/images/fb.png",
+    name: "github",
+    url: "https://github.com/AzrielRosadi",
+    imgPath: "/images/github_resized.png",
   },
   {
-    name: "x",
-    imgPath: "/images/x.png",
+    name: "email",
+    url: "mailto:azrlwebdev@gmail.com",
+    imgPath: "/images/email_icon.png",
   },
   {
     name: "linkedin",
+    url: "https://www.linkedin.com/in/azriel-rosadi-aa2859343/",
     imgPath: "/images/linkedin.png",
   },
 ];
