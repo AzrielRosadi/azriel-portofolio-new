@@ -1,5 +1,4 @@
 import LogoSection from "./sections/LogoSection"
-import Navbar from "./components/Navbar"
 import Hero from "./sections/Hero"
 import ShowcaseSection from "./sections/ShowcaseSection"
 import FeatureCard from "./sections/FeatureCard"
@@ -8,11 +7,12 @@ import TechStack from "./sections/TechStack"
 import Testimonials from "./sections/Testimonials"
 import Contact from "./sections/Contact"
 import Footer from "./sections/Footer"
+import NavBar from "./components/Navbar"
 
 const App = () => {
   return (
     <>
-        <Navbar />
+        <NavBar />
         <Hero />
         <ShowcaseSection />
         <LogoSection />
