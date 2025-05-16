@@ -94,10 +94,10 @@ const Contact = () => {
                 </div>
 
                 <button type="submit" disabled={loading}>
-                  <div className="cta-button group">
+                  <div className="cta-button group relative flex items-center justify-center gap-2">
                     <div className="bg-circle" />
                     <p className="text">
-                      {loading ? "Sending..." : "Send Message"}
+                      {loading ? "Sending..." : "Submit"}
                     </p>
                     <div className="arrow-wrapper">
                       <img src="/images/arrow-down.svg" alt="arrow" />
