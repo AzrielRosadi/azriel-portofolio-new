@@ -4,6 +4,8 @@ import HeroExperience from "../components/HeroModels/HeroExperience";
 import { words } from "../constants/index";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import ScrollVelocity from "../components/ScrollVelocity/ScrollVelocity";
+import { color } from "framer-motion";
 
 const Hero = () => {
   useGSAP(() => {
@@ -32,7 +34,7 @@ const Hero = () => {
       <div className="hero-layout">
         {/*LEFT: HERO CONTENT */}
         <header className="flex flex-col justify-center md:w-full w-screen md:px-20 px-5">
-          <div className="flex flex-col gap-7">
+          <div className="flex flex-col gap-7 overflow-x-clip">
             <div className="hero-text">
               <h1>
                 Membentuk
@@ -66,16 +68,49 @@ const Hero = () => {
               text="See my Work"
             />
           </div>
+          {/* SPACING */}
+          <div className="my-10 md:my-16" />
+
+          {/* SCROLL VELOCITY */}
+          <div className="relative w-screen -mx-[50vw] left-1/2 overflow-x-visible overflow-y-visible py-4 -mt-30">
+            <ScrollVelocity
+              texts={["FULLSTACK JAVASCRIPT ENGINEER"]}
+              velocity={30}
+              parallaxClassName="relative w-auto overflow-visible"
+              scrollerClassName="inline-block whitespace-nowrap text-center"
+              scrollerStyle={{
+                fontFamily: '"Inter", Arial, Helvetica, sans-serif',
+                fontWeight: 700,
+                fontSize: "8rem",
+                lineHeight: "1.2",
+                color: "rgba(245, 245, 245, 0.3)",
+              }}
+              // Momentum & Acceleration (lebih natural)
+              enableMomentum={true}
+              momentumDecay={0.96} // Sedikit lebih lambat decay
+              accelerationFactor={1.8} // Lebih responsive
+              maxMomentumVelocity={400} // Batas yang lebih natural
+              // Natural Smoothing (BARU!)
+              smoothingFactor={0.25} // Transisi lebih halus
+              easeInOutPower={4.0} // Easing yang lebih natural
+              naturalDelay={0.1} // Slight delay untuk realisme
+              // Skew effect (lebih smooth)
+              skewDirection="auto"
+              maxSkew={20} // Sedikit dikurangi untuk lebih natural
+              skewSensitivity={0.015} // Sedikit dikurangi
+            />
+          </div>
         </header>
 
         {/*         
         <figure>
-          <div className="hero-3d-layout">
-            <HeroExperience />
-          </div>
+        <div className="hero-3d-layout">
+        <HeroExperience />
+        </div>
         </figure> */}
       </div>
-      {/* <AnimatedCounter /> */}
+
+      <AnimatedCounter />
     </section>
   );
 };

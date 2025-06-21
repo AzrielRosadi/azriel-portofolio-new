@@ -27,11 +27,16 @@ import * as THREE from "three";
 extend({ MeshLineGeometry, MeshLineMaterial });
 
 export default function Lanyard({
-  position = [0, 0, 30],
+  position = [0, 0, 13], // 🔥 SESUAIKAN DEFAULT POSITION
   gravity = [0, -40, 0],
+  ty = [0, -80, 0], // 🔥 DEFAULT TY UNTUK GRAVITY
   fov = 20,
   transparent = true,
+  startPhysics = false,
 }) {
+  // 🔥 Gunakan ty sebagai gravity utama, dengan smoothing yang lebih natural
+  const finalGravity = [ty[0], Math.max(ty[1], -40), ty[2]]; // 🔥 LESS CAPPING untuk kecepatan normal
+
   return (
     <div className="relative z-0 w-full h-screen flex justify-center items-center transform scale-100 origin-center">
       <Canvas
@@ -42,8 +47,8 @@ export default function Lanyard({
         }
       >
         <ambientLight intensity={Math.PI} />
-        <Physics gravity={gravity} timeStep={1 / 60}>
-          <Band />
+        <Physics gravity={finalGravity} timeStep={1 / 60}>
+          <Band startPhysics={startPhysics} /> {/* 🔥 PASS PROP */}
         </Physics>
         <Environment blur={0.75}>
           <Lightformer
@@ -79,7 +84,8 @@ export default function Lanyard({
     </div>
   );
 }
-function Band({ maxSpeed = 50, minSpeed = 0 }) {
+
+function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
   const band = useRef(),
     fixed = useRef(),
     j1 = useRef(),
@@ -90,13 +96,20 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
     ang = new THREE.Vector3(),
     rot = new THREE.Vector3(),
     dir = new THREE.Vector3();
+
+  // 🔥 PHYSICS STATE MANAGEMENT
+  const [isPhysicsStarted, setIsPhysicsStarted] = useState(false);
+  const [initialPositions, setInitialPositions] = useState(null);
+  const [animationPhase, setAnimationPhase] = useState("idle"); // 'idle', 'dropping', 'settled'
+
   const segmentProps = {
     type: "dynamic",
     canSleep: true,
     colliders: false,
-    angularDamping: 4,
-    linearDamping: 4,
+    angularDamping: 6, // 🔥 REDUCED untuk gerakan yang lebih natural
+    linearDamping: 4, // 🔥 NORMAL DAMPING untuk responsivitas drag
   };
+
   const { nodes, materials } = useGLTF(cardGLB);
   const texture = useTexture(lanyard);
   const [curve] = useState(
@@ -122,6 +135,81 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
     [0, 1.5, 0],
   ]);
 
+  // 🔥 SMOOTH PHYSICS ANIMATION CONTROLLER
+  useEffect(() => {
+    if (startPhysics && !isPhysicsStarted) {
+      setIsPhysicsStarted(true);
+      setAnimationPhase("dropping");
+
+      // Delay untuk memastikan physics bodies sudah siap
+      setTimeout(() => {
+        if (card.current && j1.current && j2.current && j3.current) {
+          // Reset ke posisi awal dengan posisi yang disesuaikan dengan position prop
+          const startHeight = 15; // Increased for stronger gravity
+          const baseX = position[0] || 0; // Use position prop for X offset
+
+          j1.current.setTranslation(
+            { x: baseX + 0.5, y: startHeight, z: 0 },
+            true
+          );
+          j2.current.setTranslation(
+            { x: baseX + 1, y: startHeight, z: 0 },
+            true
+          );
+          j3.current.setTranslation(
+            { x: baseX + 1.5, y: startHeight, z: 0 },
+            true
+          );
+          card.current.setTranslation(
+            { x: baseX + 2, y: startHeight, z: 0 },
+            true
+          );
+
+          // Reset velocity
+          j1.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+          j2.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+          j3.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+          card.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+
+          // Wake up physics bodies
+          [card, j1, j2, j3].forEach((ref) => ref.current?.wakeUp());
+
+          // Beri impulse normal untuk natural drop
+          setTimeout(() => {
+            card.current?.applyImpulse({ x: 0, y: -1, z: 0 }, true); // 🔥 IMPULSE NORMAL
+          }, 150); // 🔥 DELAY NORMAL
+
+          // Set animation phase to settled after normal timing
+          setTimeout(() => {
+            setAnimationPhase("settled");
+          }, 2000); // 🔥 REDUCED dari 3000 ke 2000ms
+        }
+      }, 100);
+    } else if (!startPhysics && isPhysicsStarted) {
+      // Reset ketika keluar dari viewport
+      setIsPhysicsStarted(false);
+      setAnimationPhase("idle");
+
+      if (card.current && j1.current && j2.current && j3.current) {
+        // Kembali ke posisi awal dengan animasi halus
+        const resetHeight = 8;
+        j1.current.setTranslation({ x: 0.5, y: resetHeight, z: 0 }, true);
+        j2.current.setTranslation({ x: 1, y: resetHeight, z: 0 }, true);
+        j3.current.setTranslation({ x: 1.5, y: resetHeight, z: 0 }, true);
+        card.current.setTranslation({ x: 2, y: resetHeight, z: 0 }, true);
+
+        // Stop velocity
+        j1.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+        j2.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+        j3.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+        card.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+
+        // Sleep physics bodies
+        [card, j1, j2, j3].forEach((ref) => ref.current?.sleep());
+      }
+    }
+  }, [startPhysics, isPhysicsStarted]);
+
   useEffect(() => {
     if (hovered) {
       document.body.style.cursor = dragged ? "grabbing" : "grab";
@@ -135,7 +223,6 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
     };
 
     window.addEventListener("resize", handleResize);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
@@ -151,7 +238,14 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
         z: vec.z - dragged.z,
       });
     }
+
     if (fixed.current) {
+      // 🔥 LERPING dengan kecepatan normal
+      const adjustedMaxSpeed =
+        animationPhase === "dropping" ? maxSpeed * 0.7 : maxSpeed; // 🔥 SPEED NORMAL
+      const adjustedMinSpeed =
+        animationPhase === "dropping" ? minSpeed * 0.9 : minSpeed;
+
       [j1, j2].forEach((ref) => {
         if (!ref.current.lerped)
           ref.current.lerped = new THREE.Vector3().copy(
@@ -163,17 +257,36 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
         );
         ref.current.lerped.lerp(
           ref.current.translation(),
-          delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed))
+          delta *
+            (adjustedMinSpeed +
+              clampedDistance * (adjustedMaxSpeed - adjustedMinSpeed))
         );
       });
+
       curve.points[0].copy(j3.current.translation());
       curve.points[1].copy(j2.current.lerped);
       curve.points[2].copy(j1.current.lerped);
       curve.points[3].copy(fixed.current.translation());
       band.current.geometry.setPoints(curve.getPoints(32));
+
+      // 🔥 ANGULAR VELOCITY yang memungkinkan kartu flip saat drag
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
-      card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
+
+      // 🔥 JIKA SEDANG DRAG, berikan lebih banyak kebebasan rotasi
+      if (dragged) {
+        card.current.setAngvel({
+          x: ang.x * 0.9, // 🔥 LEBIH BEBAS saat drag
+          y: ang.y * 0.9, // 🔥 MEMUNGKINKAN FLIP
+          z: ang.z * 0.9,
+        });
+      } else {
+        card.current.setAngvel({
+          x: ang.x * 0.7,
+          y: ang.y - rot.y * 0.2, // 🔥 SEDIKIT STABILISASI
+          z: ang.z * 0.7,
+        });
+      }
     }
   });
 
@@ -184,17 +297,29 @@ function Band({ maxSpeed = 50, minSpeed = 0 }) {
     <>
       <group position={[0, 4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
-        <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}>
-          <BallCollider args={[0.1]} />
-        </RigidBody>
-        <RigidBody position={[1, 0, 0]} ref={j2} {...segmentProps}>
-          <BallCollider args={[0.1]} />
-        </RigidBody>
-        <RigidBody position={[1.5, 0, 0]} ref={j3} {...segmentProps}>
+        <RigidBody
+          position={[0.5, animationPhase === "dropping" ? 15 : 0, 0]} // 🔥 POSISI LEBIH TINGGI
+          ref={j1}
+          {...segmentProps}
+        >
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[2, 0, 0]}
+          position={[1, animationPhase === "dropping" ? 15 : 0, 0]}
+          ref={j2}
+          {...segmentProps}
+        >
+          <BallCollider args={[0.1]} />
+        </RigidBody>
+        <RigidBody
+          position={[1.5, animationPhase === "dropping" ? 15 : 0, 0]}
+          ref={j3}
+          {...segmentProps}
+        >
+          <BallCollider args={[0.1]} />
+        </RigidBody>
+        <RigidBody
+          position={[2, animationPhase === "dropping" ? 15 : 0, 0]}
           ref={card}
           {...segmentProps}
           type={dragged ? "kinematicPosition" : "dynamic"}

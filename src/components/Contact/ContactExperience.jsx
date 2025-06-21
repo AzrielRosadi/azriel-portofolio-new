@@ -35,7 +35,7 @@ const ContactExperience = () => {
       </group>
 
       <group scale={0.03} position={[0, -1.49, -2]} castShadow>
-        <Computer />
+        {/* <Computer /> */}
       </group>
     </Canvas>
   );

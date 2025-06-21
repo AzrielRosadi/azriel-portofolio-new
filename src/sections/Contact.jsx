@@ -6,20 +6,32 @@ import Lanyard from "../components/Contact/Lanyard/Lanyard";
 
 const Contact = () => {
   const formRef = useRef(null);
-  const sectionRef = useRef(null); // ref untuk section contact
+  const sectionRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
-  // Pisahkan state untuk form dan lanyard
+  // State untuk animasi
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isLanyardVisible, setIsLanyardVisible] = useState(false);
+  const [shouldStartPhysics, setShouldStartPhysics] = useState(false); // 🔥 TAMBAHAN
 
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsFormVisible(entry.isIntersecting);
-        setIsLanyardVisible(entry.isIntersecting);
+        if (entry.isIntersecting) {
+          setIsFormVisible(true);
+          setIsLanyardVisible(true);
+
+          // 🔥 DELAY untuk memulai physics setelah container muncul
+          setTimeout(() => {
+            setShouldStartPhysics(true);
+          }, 300); // Delay 300ms setelah container muncul
+        } else {
+          setIsFormVisible(false);
+          setIsLanyardVisible(false);
+          setShouldStartPhysics(false); // Reset physics
+        }
       },
       { threshold: 0.3 }
     );
@@ -59,12 +71,12 @@ const Contact = () => {
     >
       <div className="w-full h-full md:px-10 px-5">
         <TitleHeader
-          title="Get in Touch – Let’s Connect"
-          sub="💬 Have questions or ideas? Let’s talk! 🚀"
+          title="Get in Touch – Let's Connect"
+          sub="💬 Have questions or ideas? Let's talk! 🚀"
         />
 
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 mt-16 items-start">
-          {/* KIRI: Formulir Kontak (muncul dari kiri) */}
+          {/* KIRI: Formulir Kontak */}
           <div
             className={`xl:col-span-5 card-border rounded-xl p-10 bg-[#000000] mt-35 transition-all duration-700 ${
               isFormVisible
@@ -85,7 +97,7 @@ const Contact = () => {
                   name="name"
                   value={form.name}
                   onChange={handleChange}
-                  placeholder="What’s your good name?"
+                  placeholder="What's your good name?"
                   required
                 />
               </div>
@@ -98,7 +110,7 @@ const Contact = () => {
                   name="email"
                   value={form.email}
                   onChange={handleChange}
-                  placeholder="What’s your email address?"
+                  placeholder="What's your email address?"
                   required
                 />
               </div>
@@ -128,16 +140,21 @@ const Contact = () => {
             </form>
           </div>
 
-          {/* KANAN: Lanyard (muncul dari atas) */}
+          {/* KANAN: Lanyard dengan Physics Animation */}
           <div
-            className={`xl:col-span-7 bg-[#000000] rounded-xl overflow-hidden h-full flex items-start justify-center transition-all duration-700 ${
-              isLanyardVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 -translate-y-10"
+            className={`xl:col-span-7 bg-[#000000] rounded-xl overflow-hidden h-full flex items-start justify-center transition-all duration-500 ${
+              isLanyardVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
             }`}
           >
             <div className="w-full h-full hover:cursor-grab rounded-xl">
-              <Lanyard position={[0, 0, 13]} gravity={[0, -40, 0]} />
+              {/* 🔥 PASS shouldStartPhysics sebagai prop */}
+              <Lanyard
+                position={[0, 0, 13]}
+                ty={[0, -80, 0]} // ✅ Akan digunakan sebagai gravity dengan smoothing
+                startPhysics={shouldStartPhysics}
+                fov={20}
+                transparent={true}
+              />
             </div>
           </div>
         </div>
