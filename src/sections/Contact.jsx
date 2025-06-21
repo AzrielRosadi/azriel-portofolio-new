@@ -6,38 +6,31 @@ import Lanyard from "../components/Contact/Lanyard/Lanyard";
 
 const Contact = () => {
   const formRef = useRef(null);
-  const formVisibleRef = useRef(null);
-  const lanyardVisibleRef = useRef(null);
-
+  const sectionRef = useRef(null); // ref untuk section contact
   const [loading, setLoading] = useState(false);
+
+  // Pisahkan state untuk form dan lanyard
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isLanyardVisible, setIsLanyardVisible] = useState(false);
+
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
-  // Observer untuk form
   useEffect(() => {
-    const formObserver = new IntersectionObserver(
-      ([entry]) => setIsFormVisible(entry.isIntersecting),
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsFormVisible(entry.isIntersecting);
+        setIsLanyardVisible(entry.isIntersecting);
+      },
       { threshold: 0.3 }
     );
 
-    if (formVisibleRef.current) formObserver.observe(formVisibleRef.current);
-    return () => formObserver.disconnect();
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
   }, []);
-
-  useEffect(() => {
-    if (isFormVisible) {
-      // Jika form sudah terlihat, tunggu 500ms sebelum lanyard muncul
-      const timer = setTimeout(() => setIsLanyardVisible(true), 500);
-      return () => clearTimeout(timer); // bersihkan timeout saat component unmount
-    } else {
-      setIsLanyardVisible(false); // reset saat form keluar layar
-    }
-  }, [isFormVisible]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm({ ...form, [name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -59,7 +52,11 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="flex-center section-padding">
+    <section
+      id="contact"
+      ref={sectionRef}
+      className="flex-center section-padding"
+    >
       <div className="w-full h-full md:px-10 px-5">
         <TitleHeader
           title="Get in Touch – Let’s Connect"
@@ -67,10 +64,9 @@ const Contact = () => {
         />
 
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 mt-16 items-start">
-          {/* Formulir Kontak */}
+          {/* KIRI: Formulir Kontak (muncul dari kiri) */}
           <div
-            ref={formVisibleRef}
-            className={`xl:col-span-5 card-border rounded-xl p-10 bg-[#000000] mt-60 transition-all duration-700 ${
+            className={`xl:col-span-5 card-border rounded-xl p-10 bg-[#000000] mt-35 transition-all duration-700 ${
               isFormVisible
                 ? "opacity-100 translate-x-0"
                 : "opacity-0 -translate-x-10"
@@ -132,9 +128,8 @@ const Contact = () => {
             </form>
           </div>
 
-          {/* Lanyard */}
+          {/* KANAN: Lanyard (muncul dari atas) */}
           <div
-            ref={lanyardVisibleRef}
             className={`xl:col-span-7 bg-[#000000] rounded-xl overflow-hidden h-full flex items-start justify-center transition-all duration-700 ${
               isLanyardVisible
                 ? "opacity-100 translate-y-0"

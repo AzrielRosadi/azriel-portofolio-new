@@ -68,14 +68,14 @@ const Hero = () => {
           </div>
         </header>
 
-        {/*RIGHT: 3D MODEL CONTENT */}
+        {/*         
         <figure>
           <div className="hero-3d-layout">
             <HeroExperience />
           </div>
-        </figure>
+        </figure> */}
       </div>
-      <AnimatedCounter />
+      {/* <AnimatedCounter /> */}
     </section>
   );
 };
