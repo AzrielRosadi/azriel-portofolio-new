@@ -1,16 +1,23 @@
 "use client";
 
-import { forwardRef, useRef } from "react";
+import { forwardRef, useRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { AnimatedBeam } from "@/components/magicui/animated-beam";
 import TitleHeader from "../components/TitleHeader";
 
-const Circle = forwardRef(({ className, children }, ref) => {
+const Circle = forwardRef(({ className, children, size = "default" }, ref) => {
+  const sizeClasses = {
+    default: "size-16 p-3",
+    small: "size-12 p-2",
+    large: "size-20 p-4",
+  };
+
   return (
     <div
       ref={ref}
       className={cn(
-        "z-10 flex size-16 items-center justify-center rounded-full border-2 bg-white p-3 shadow-lg hover:shadow-xl transition-shadow duration-300",
+        "z-10 flex items-center justify-center rounded-full border-2 bg-white shadow-lg hover:shadow-xl transition-shadow duration-300",
+        sizeClasses[size],
         className
       )}
     >
@@ -35,6 +42,18 @@ const TechStack = () => {
   const postgresRef = useRef(null);
   const figmaRef = useRef(null);
 
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   return (
     <section id="skills" className="flex-center section-padding">
       <div className="w-full h-full md:px-10 px-5">
@@ -44,140 +63,341 @@ const TechStack = () => {
         />
 
         <div
-          className="relative flex h-[500px] w-full items-center justify-center overflow-hidden rounded-lg p-10 mt-12"
+          className={cn(
+            "relative flex w-full items-center justify-center overflow-hidden rounded-lg mt-12",
+            isMobile ? "h-[650px] p-8" : "h-[700px] p-16"
+          )}
           ref={containerRef}
         >
-          <div className="flex size-full max-h-[400px] max-w-5xl flex-col items-stretch justify-between gap-8">
+          <div
+            className={cn(
+              "flex size-full flex-col items-stretch justify-between",
+              isMobile
+                ? "max-h-[600px] max-w-lg gap-16"
+                : "max-h-[600px] max-w-7xl gap-20"
+            )}
+          >
             {/* Top Row */}
-            <div className="flex flex-row items-center justify-between">
-              <Circle ref={reactRef} className="bg-blue-50 border-blue-200">
+            <div
+              className={cn(
+                "flex flex-row items-center",
+                isMobile ? "justify-between px-4" : "justify-between px-2"
+              )}
+            >
+              <Circle
+                ref={reactRef}
+                className="bg-blue-50 border-blue-200"
+                size={isMobile ? "small" : "default"}
+              >
                 <TechIcons.react />
               </Circle>
-              <Circle ref={nextjsRef} className="bg-gray-50 border-gray-200">
+              <Circle
+                ref={nextjsRef}
+                className="bg-gray-50 border-gray-200"
+                size={isMobile ? "small" : "default"}
+              >
                 <TechIcons.nextjs />
               </Circle>
-              <Circle ref={tailwindRef} className="bg-cyan-50 border-cyan-200">
+              <Circle
+                ref={tailwindRef}
+                className="bg-cyan-50 border-cyan-200"
+                size={isMobile ? "small" : "default"}
+              >
                 <TechIcons.tailwind />
               </Circle>
-              <Circle
-                ref={bootstrapRef}
-                className="bg-purple-50 border-purple-200"
-              >
-                <TechIcons.bootstrap />
-              </Circle>
-              <Circle ref={html5Ref} className="bg-orange-50 border-orange-200">
-                <TechIcons.html5 />
-              </Circle>
+              {!isMobile && (
+                <>
+                  <Circle
+                    ref={bootstrapRef}
+                    className="bg-purple-50 border-purple-200"
+                  >
+                    <TechIcons.bootstrap />
+                  </Circle>
+                  <Circle
+                    ref={html5Ref}
+                    className="bg-orange-50 border-orange-200"
+                  >
+                    <TechIcons.html5 />
+                  </Circle>
+                </>
+              )}
             </div>
 
-            {/* Center */}
-            <div className="flex flex-row items-center justify-center">
+            {/* Mobile: Additional Top Row with better spacing */}
+            {isMobile && (
+              <div className="flex flex-row items-center justify-between px-8">
+                <Circle
+                  ref={bootstrapRef}
+                  className="bg-purple-50 border-purple-200"
+                  size="small"
+                >
+                  <TechIcons.bootstrap />
+                </Circle>
+                <Circle
+                  ref={html5Ref}
+                  className="bg-orange-50 border-orange-200"
+                  size="small"
+                >
+                  <TechIcons.html5 />
+                </Circle>
+              </div>
+            )}
+
+            {/* Center with more vertical space */}
+            <div
+              className={cn(
+                "flex flex-row items-center justify-center",
+                isMobile ? "py-8" : "py-12"
+              )}
+            >
               <Circle
                 ref={centerRef}
-                className="size-20 bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200"
+                className={cn(
+                  "bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200",
+                  isMobile ? "size-20" : "size-28"
+                )}
               >
-                <div className="text-2xl font-bold text-purple-600">DEV</div>
+                <div
+                  className={cn(
+                    "font-bold text-purple-600",
+                    isMobile ? "text-2xl" : "text-4xl"
+                  )}
+                >
+                  DEV
+                </div>
               </Circle>
             </div>
 
             {/* Bottom Row */}
-            <div className="flex flex-row items-center justify-between">
-              <Circle ref={css3Ref} className="bg-blue-50 border-blue-200">
+            <div
+              className={cn(
+                "flex flex-row items-center",
+                isMobile ? "justify-between px-4" : "justify-between px-2"
+              )}
+            >
+              <Circle
+                ref={css3Ref}
+                className="bg-blue-50 border-blue-200"
+                size={isMobile ? "small" : "default"}
+              >
                 <TechIcons.css3 />
               </Circle>
-              <Circle ref={nodejsRef} className="bg-green-50 border-green-200">
+              <Circle
+                ref={nodejsRef}
+                className="bg-green-50 border-green-200"
+                size={isMobile ? "small" : "default"}
+              >
                 <TechIcons.nodejs />
               </Circle>
-              <Circle ref={laravelRef} className="bg-red-50 border-red-200">
+              <Circle
+                ref={laravelRef}
+                className="bg-red-50 border-red-200"
+                size={isMobile ? "small" : "default"}
+              >
                 <TechIcons.laravel />
               </Circle>
-              <Circle ref={postgresRef} className="bg-blue-50 border-blue-200">
-                <TechIcons.postgresql />
-              </Circle>
-              <Circle ref={figmaRef} className="bg-purple-50 border-purple-200">
-                <TechIcons.figma />
-              </Circle>
+              {!isMobile && (
+                <>
+                  <Circle
+                    ref={postgresRef}
+                    className="bg-blue-50 border-blue-200"
+                  >
+                    <TechIcons.postgresql />
+                  </Circle>
+                  <Circle
+                    ref={figmaRef}
+                    className="bg-purple-50 border-purple-200"
+                  >
+                    <TechIcons.figma />
+                  </Circle>
+                </>
+              )}
             </div>
+
+            {/* Mobile: Additional Bottom Row with better spacing */}
+            {isMobile && (
+              <div className="flex flex-row items-center justify-between px-8">
+                <Circle
+                  ref={postgresRef}
+                  className="bg-blue-50 border-blue-200"
+                  size="small"
+                >
+                  <TechIcons.postgresql />
+                </Circle>
+                <Circle
+                  ref={figmaRef}
+                  className="bg-purple-50 border-purple-200"
+                  size="small"
+                >
+                  <TechIcons.figma />
+                </Circle>
+              </div>
+            )}
           </div>
 
-          {/* Animated Beams - Top Row */}
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={reactRef}
-            toRef={centerRef}
-            curvature={-75}
-            endYOffset={-10}
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={nextjsRef}
-            toRef={centerRef}
-            curvature={-35}
-            endYOffset={-10}
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={tailwindRef}
-            toRef={centerRef}
-            curvature={0}
-            endYOffset={-10}
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={bootstrapRef}
-            toRef={centerRef}
-            curvature={35}
-            endYOffset={-10}
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={html5Ref}
-            toRef={centerRef}
-            curvature={75}
-            endYOffset={-10}
-          />
+          {/* Animated Beams - Adjusted for better spacing */}
+          {!isMobile ? (
+            <>
+              {/* Desktop Beams - Top Row */}
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={reactRef}
+                toRef={centerRef}
+                curvature={-75}
+                endYOffset={-15}
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={nextjsRef}
+                toRef={centerRef}
+                curvature={-35}
+                endYOffset={-15}
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={tailwindRef}
+                toRef={centerRef}
+                curvature={0}
+                endYOffset={-15}
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={bootstrapRef}
+                toRef={centerRef}
+                curvature={35}
+                endYOffset={-15}
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={html5Ref}
+                toRef={centerRef}
+                curvature={75}
+                endYOffset={-15}
+              />
 
-          {/* Animated Beams - Bottom Row */}
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={css3Ref}
-            toRef={centerRef}
-            curvature={-75}
-            endYOffset={10}
-            reverse
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={nodejsRef}
-            toRef={centerRef}
-            curvature={-35}
-            endYOffset={10}
-            reverse
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={laravelRef}
-            toRef={centerRef}
-            curvature={0}
-            endYOffset={10}
-            reverse
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={postgresRef}
-            toRef={centerRef}
-            curvature={35}
-            endYOffset={10}
-            reverse
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={figmaRef}
-            toRef={centerRef}
-            curvature={75}
-            endYOffset={10}
-            reverse
-          />
+              {/* Desktop Beams - Bottom Row */}
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={css3Ref}
+                toRef={centerRef}
+                curvature={-75}
+                endYOffset={15}
+                reverse
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={nodejsRef}
+                toRef={centerRef}
+                curvature={-35}
+                endYOffset={15}
+                reverse
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={laravelRef}
+                toRef={centerRef}
+                curvature={0}
+                endYOffset={15}
+                reverse
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={postgresRef}
+                toRef={centerRef}
+                curvature={35}
+                endYOffset={15}
+                reverse
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={figmaRef}
+                toRef={centerRef}
+                curvature={75}
+                endYOffset={15}
+                reverse
+              />
+            </>
+          ) : (
+            <>
+              {/* Mobile Beams - Adjusted for better spacing */}
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={reactRef}
+                toRef={centerRef}
+                curvature={-35}
+                endYOffset={-8}
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={nextjsRef}
+                toRef={centerRef}
+                curvature={0}
+                endYOffset={-8}
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={tailwindRef}
+                toRef={centerRef}
+                curvature={35}
+                endYOffset={-8}
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={bootstrapRef}
+                toRef={centerRef}
+                curvature={-20}
+                endYOffset={-5}
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={html5Ref}
+                toRef={centerRef}
+                curvature={20}
+                endYOffset={-5}
+              />
+
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={css3Ref}
+                toRef={centerRef}
+                curvature={-35}
+                endYOffset={8}
+                reverse
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={nodejsRef}
+                toRef={centerRef}
+                curvature={0}
+                endYOffset={8}
+                reverse
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={laravelRef}
+                toRef={centerRef}
+                curvature={35}
+                endYOffset={8}
+                reverse
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={postgresRef}
+                toRef={centerRef}
+                curvature={-20}
+                endYOffset={5}
+                reverse
+              />
+              <AnimatedBeam
+                containerRef={containerRef}
+                fromRef={figmaRef}
+                toRef={centerRef}
+                curvature={20}
+                endYOffset={5}
+                reverse
+              />
+            </>
+          )}
         </div>
       </div>
     </section>

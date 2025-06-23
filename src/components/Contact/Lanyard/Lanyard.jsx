@@ -28,14 +28,14 @@ extend({ MeshLineGeometry, MeshLineMaterial });
 
 export default function Lanyard({
   position = [0, 0, 13],
-  gravity = [0, -10, 0],
-  ty = [0, -18, 0], // 🔥 NATURAL GRAVITY
+  gravity = [0, -60, 0], // 🔥 INCREASED from -40 to -60 for faster falling
+  ty = [0, -100, 0], // 🔥 INCREASED from -80 to -100 for faster gravity
   fov = 20,
   transparent = true,
   startPhysics = false,
 }) {
-  // 🔥 Natural gravity for smooth but not too slow drop
-  const finalGravity = [ty[0], Math.max(ty[1], -20), ty[2]]; // 🔥 NATURAL GRAVITY
+  // 🔥 Increased gravity for faster falling
+  const finalGravity = [ty[0], Math.max(ty[1], -60), ty[2]]; // 🔥 INCREASED minimum gravity
 
   return (
     <div className="relative z-0 w-full h-screen flex justify-center items-center transform scale-100 origin-center">
@@ -48,9 +48,7 @@ export default function Lanyard({
       >
         <ambientLight intensity={Math.PI} />
         <Physics gravity={finalGravity} timeStep={1 / 60}>
-          {" "}
-          {/* 🔥 Standard precision for natural feel */}
-          <Band startPhysics={startPhysics} position={position} />
+          <Band startPhysics={startPhysics} />
         </Physics>
         <Environment blur={0.75}>
           <Lightformer
@@ -87,12 +85,7 @@ export default function Lanyard({
   );
 }
 
-function Band({
-  maxSpeed = 45, // 🔥 Natural speed
-  minSpeed = 0.2, // 🔥 Natural min speed
-  startPhysics = false,
-  position = [0, 0, 13],
-}) {
+function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
   const band = useRef(),
     fixed = useRef(),
     j1 = useRef(),
@@ -104,19 +97,22 @@ function Band({
     rot = new THREE.Vector3(),
     dir = new THREE.Vector3();
 
-  // 🔥 ENHANCED PHYSICS STATE MANAGEMENT
+  // 🔥 PHYSICS STATE MANAGEMENT
   const [isPhysicsStarted, setIsPhysicsStarted] = useState(false);
+  const [initialPositions, setInitialPositions] = useState(null);
   const [animationPhase, setAnimationPhase] = useState("idle");
-  const [dropStartTime, setDropStartTime] = useState(0);
+
+  // 🔥 TOUCH SUPPORT STATE
+  const [isDragging, setIsDragging] = useState(false);
+  const [touchStart, setTouchStart] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const segmentProps = {
     type: "dynamic",
     canSleep: true,
     colliders: false,
-    angularDamping: 8, // 🔥 Natural damping
-    linearDamping: 5, // 🔥 Natural damping
-    restitution: 0.1, // 🔥 Less bouncy
-    friction: 0.8, // 🔥 More friction for natural settling
+    angularDamping: 5, // 🔥 REDUCED for more natural movement
+    linearDamping: 3, // 🔥 REDUCED for better responsiveness
   };
 
   const { nodes, materials } = useGLTF(cardGLB);
@@ -144,123 +140,97 @@ function Band({
     [0, 1.5, 0],
   ]);
 
-  // 🔥 NATURAL PHYSICS ANIMATION with GENTLE EASING
+  // 🔥 DETECT MOBILE DEVICE
+  useEffect(() => {
+    const checkIsMobile = () => {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      const isMobileDevice =
+        /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
+          userAgent.toLowerCase()
+        );
+      const isTouchScreen =
+        "ontouchstart" in window || navigator.maxTouchPoints > 0;
+      setIsMobile(isMobileDevice || isTouchScreen);
+    };
+
+    checkIsMobile();
+  }, []);
+
+  // 🔥 FASTER PHYSICS ANIMATION CONTROLLER
   useEffect(() => {
     if (startPhysics && !isPhysicsStarted) {
       setIsPhysicsStarted(true);
-      setAnimationPhase("preparing");
-      setDropStartTime(Date.now());
+      setAnimationPhase("dropping");
 
-      // 🔥 Gradual animation start with delay
       setTimeout(() => {
-        setAnimationPhase("dropping");
-
         if (card.current && j1.current && j2.current && j3.current) {
-          const startHeight = 6; // 🔥 Lower starting height for less dramatic drop
-          const baseX = position[0] || 0;
+          const startHeight = 18; // 🔥 INCREASED height for more dramatic drop
+          const baseX = 0;
 
-          // 🔥 Set positions with gentle offset
           j1.current.setTranslation(
-            { x: baseX + 0.3, y: startHeight - 0.5, z: 0 },
+            { x: baseX + 0.5, y: startHeight, z: 0 },
             true
           );
           j2.current.setTranslation(
-            { x: baseX + 0.6, y: startHeight - 1, z: 0 },
+            { x: baseX + 1, y: startHeight, z: 0 },
             true
           );
           j3.current.setTranslation(
-            { x: baseX + 0.9, y: startHeight - 1.5, z: 0 },
+            { x: baseX + 1.5, y: startHeight, z: 0 },
             true
           );
           card.current.setTranslation(
-            { x: baseX + 1.2, y: startHeight - 2, z: 0 },
+            { x: baseX + 2, y: startHeight, z: 0 },
             true
           );
 
-          // 🔥 Natural initial velocity
-          const gentleVel = { x: 0, y: -0.15, z: 0 }; // Natural drop speed
-          j1.current.setLinvel(gentleVel, true);
-          j2.current.setLinvel(gentleVel, true);
-          j3.current.setLinvel(gentleVel, true);
-          card.current.setLinvel(gentleVel, true);
+          // Reset velocity
+          j1.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+          j2.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+          j3.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+          card.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
 
-          // Wake up physics bodies gradually
-          [j1, j2, j3, card].forEach((ref, index) => {
-            setTimeout(() => {
-              if (ref.current) ref.current.wakeUp();
-            }, index * 100); // Staggered wake up
-          });
+          // Wake up physics bodies
+          [card, j1, j2, j3].forEach((ref) => ref.current?.wakeUp());
 
-          // 🔥 Natural impulse after delay
+          // 🔥 STRONGER IMPULSE for faster initial drop
           setTimeout(() => {
-            if (card.current && animationPhase === "dropping") {
-              card.current.applyImpulse({ x: 0, y: -0.1, z: 0 }, true); // Natural impulse
-            }
-          }, 400); // Natural delay
+            card.current?.applyImpulse({ x: 0, y: -2, z: 0 }, true); // 🔥 DOUBLED impulse
+          }, 100); // 🔥 REDUCED delay
 
-          // 🔥 Natural settling phases
-          setTimeout(() => {
-            setAnimationPhase("settling");
-          }, 1500);
-
+          // 🔥 FASTER settling time
           setTimeout(() => {
             setAnimationPhase("settled");
-          }, 3000); // Natural settling time
+          }, 1500); // 🔥 REDUCED from 2000 to 1500ms
         }
-      }, 200); // Natural delay for start
+      }, 50); // 🔥 REDUCED delay
     } else if (!startPhysics && isPhysicsStarted) {
-      // 🔥 Smooth reset animation
       setIsPhysicsStarted(false);
-      setAnimationPhase("resetting");
+      setAnimationPhase("idle");
 
       if (card.current && j1.current && j2.current && j3.current) {
-        const resetHeight = 6;
-        const baseX = position[0] || 0;
+        const resetHeight = 8;
+        j1.current.setTranslation({ x: 0.5, y: resetHeight, z: 0 }, true);
+        j2.current.setTranslation({ x: 1, y: resetHeight, z: 0 }, true);
+        j3.current.setTranslation({ x: 1.5, y: resetHeight, z: 0 }, true);
+        card.current.setTranslation({ x: 2, y: resetHeight, z: 0 }, true);
 
-        // 🔥 Gentle reset positions
-        j1.current.setTranslation(
-          { x: baseX + 0.3, y: resetHeight, z: 0 },
-          true
-        );
-        j2.current.setTranslation(
-          { x: baseX + 0.6, y: resetHeight, z: 0 },
-          true
-        );
-        j3.current.setTranslation(
-          { x: baseX + 0.9, y: resetHeight, z: 0 },
-          true
-        );
-        card.current.setTranslation(
-          { x: baseX + 1.2, y: resetHeight, z: 0 },
-          true
-        );
-
-        // Stop all velocities smoothly
-        const stopVel = { x: 0, y: 0, z: 0 };
+        // Stop velocity
         [j1, j2, j3, card].forEach((ref) => {
-          if (ref.current) {
-            ref.current.setLinvel(stopVel, true);
-            ref.current.setAngvel(stopVel, true);
-          }
+          ref.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+          ref.current?.sleep();
         });
-
-        // Gradual sleep
-        setTimeout(() => {
-          [j1, j2, j3, card].forEach((ref) => {
-            if (ref.current) ref.current.sleep();
-          });
-          setAnimationPhase("idle");
-        }, 500);
       }
     }
-  }, [startPhysics, isPhysicsStarted, position, animationPhase]);
+  }, [startPhysics, isPhysicsStarted]);
 
+  // 🔥 ENHANCED CURSOR MANAGEMENT WITH TOUCH SUPPORT
   useEffect(() => {
-    if (hovered) {
+    if (hovered && !isMobile) {
       document.body.style.cursor = dragged ? "grabbing" : "grab";
       return () => void (document.body.style.cursor = "auto");
     }
-  }, [hovered, dragged]);
+  }, [hovered, dragged, isMobile]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -271,114 +241,129 @@ function Band({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // 🔥 TOUCH EVENT HANDLERS
+  const handleTouchStart = (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    const rect = e.target.getBoundingClientRect();
+    const x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
+    const y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
+
+    setTouchStart({ x, y });
+    setIsDragging(true);
+
+    // Convert touch coordinates to 3D space
+    vec.set(x, y, 0.5);
+    const dragOffset = new THREE.Vector3()
+      .copy(vec)
+      .sub(vec.copy(card.current.translation()));
+    drag(dragOffset);
+  };
+
+  const handleTouchMove = (e) => {
+    e.preventDefault();
+    if (!isDragging || !touchStart) return;
+
+    const touch = e.touches[0];
+    const rect = e.target.getBoundingClientRect();
+    const x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
+    const y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
+
+    // Update drag position
+    vec.set(x, y, 0.5);
+  };
+
+  const handleTouchEnd = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    setTouchStart(null);
+    drag(false);
+  };
+
+  // 🔥 MOUSE EVENT HANDLERS (ENHANCED)
+  const handlePointerDown = (e) => {
+    e.stopPropagation();
+    if (e.pointerType === "touch") {
+      handleTouchStart(e);
+    } else {
+      e.target.setPointerCapture(e.pointerId);
+      drag(
+        new THREE.Vector3()
+          .copy(e.point)
+          .sub(vec.copy(card.current.translation()))
+      );
+    }
+  };
+
+  const handlePointerUp = (e) => {
+    e.stopPropagation();
+    if (e.pointerType === "touch") {
+      handleTouchEnd(e);
+    } else {
+      e.target.releasePointerCapture(e.pointerId);
+      drag(false);
+    }
+  };
+
   useFrame((state, delta) => {
     if (dragged) {
       vec.set(state.pointer.x, state.pointer.y, 0.5).unproject(state.camera);
       dir.copy(vec).sub(state.camera.position).normalize();
       vec.add(dir.multiplyScalar(state.camera.position.length()));
-
-      [card, j1, j2, j3, fixed].forEach((ref) => {
-        if (ref.current) ref.current.wakeUp();
+      [card, j1, j2, j3, fixed].forEach((ref) => ref.current?.wakeUp());
+      card.current?.setNextKinematicTranslation({
+        x: vec.x - dragged.x,
+        y: vec.y - dragged.y,
+        z: vec.z - dragged.z,
       });
-
-      if (card.current) {
-        card.current.setNextKinematicTranslation({
-          x: vec.x - dragged.x,
-          y: vec.y - dragged.y,
-          z: vec.z - dragged.z,
-        });
-      }
     }
 
     if (fixed.current) {
-      // 🔥 PHASE-BASED SPEED CONTROL for natural animation
-      let adjustedMaxSpeed, adjustedMinSpeed;
-
-      switch (animationPhase) {
-        case "preparing":
-          adjustedMaxSpeed = maxSpeed * 0.1;
-          adjustedMinSpeed = minSpeed * 0.1;
-          break;
-        case "dropping":
-          // 🔥 Natural speed progression
-          const timeSinceDrop = Date.now() - dropStartTime;
-          const progressFactor = Math.min(timeSinceDrop / 1500, 1); // 1.5 second ramp up
-          adjustedMaxSpeed = maxSpeed * (0.4 + progressFactor * 0.4); // Max 80% of original speed
-          adjustedMinSpeed = minSpeed * (0.5 + progressFactor * 0.4);
-          break;
-        case "settling":
-          adjustedMaxSpeed = maxSpeed * 0.6;
-          adjustedMinSpeed = minSpeed * 0.7;
-          break;
-        case "settled":
-          adjustedMaxSpeed = maxSpeed * 0.8;
-          adjustedMinSpeed = minSpeed * 0.9;
-          break;
-        default:
-          adjustedMaxSpeed = maxSpeed;
-          adjustedMinSpeed = minSpeed;
-      }
+      // 🔥 FASTER LERPING for quicker response
+      const adjustedMaxSpeed =
+        animationPhase === "dropping" ? maxSpeed * 0.8 : maxSpeed; // 🔥 INCREASED speed
+      const adjustedMinSpeed =
+        animationPhase === "dropping" ? minSpeed * 1.2 : minSpeed; // 🔥 INCREASED minimum speed
 
       [j1, j2].forEach((ref) => {
-        if (ref.current) {
-          if (!ref.current.lerped) {
-            ref.current.lerped = new THREE.Vector3().copy(
-              ref.current.translation()
-            );
-          }
-          const clampedDistance = Math.max(
-            0.05, // 🔥 Smaller minimum for smoother interpolation
-            Math.min(
-              1,
-              ref.current.lerped.distanceTo(ref.current.translation())
-            )
+        if (!ref.current.lerped)
+          ref.current.lerped = new THREE.Vector3().copy(
+            ref.current.translation()
           );
-
-          // 🔥 Natural lerping
-          const lerpFactor =
-            delta *
+        const clampedDistance = Math.max(
+          0.1,
+          Math.min(1, ref.current.lerped.distanceTo(ref.current.translation()))
+        );
+        ref.current.lerped.lerp(
+          ref.current.translation(),
+          delta *
             (adjustedMinSpeed +
-              clampedDistance * (adjustedMaxSpeed - adjustedMinSpeed));
-          ref.current.lerped.lerp(ref.current.translation(), lerpFactor * 0.9); // Natural speed
-        }
+              clampedDistance * (adjustedMaxSpeed - adjustedMinSpeed))
+        );
       });
 
-      // Update curve with smoother interpolation
-      if (
-        j3.current &&
-        j2.current &&
-        j1.current &&
-        fixed.current &&
-        band.current
-      ) {
-        curve.points[0].copy(j3.current.translation());
-        curve.points[1].copy(j2.current.lerped || j2.current.translation());
-        curve.points[2].copy(j1.current.lerped || j1.current.translation());
-        curve.points[3].copy(fixed.current.translation());
-        band.current.geometry.setPoints(curve.getPoints(36)); // 🔥 Natural curve smoothness
-      }
+      curve.points[0].copy(j3.current.translation());
+      curve.points[1].copy(j2.current.lerped);
+      curve.points[2].copy(j1.current.lerped);
+      curve.points[3].copy(fixed.current.translation());
+      band.current.geometry.setPoints(curve.getPoints(32));
 
-      // 🔥 ENHANCED ANGULAR VELOCITY CONTROL with phase awareness
-      if (card.current) {
-        ang.copy(card.current.angvel());
-        rot.copy(card.current.rotation());
+      // 🔥 ENHANCED ANGULAR VELOCITY for better touch response
+      ang.copy(card.current.angvel());
+      rot.copy(card.current.rotation());
 
-        const dampingFactor = animationPhase === "dropping" ? 0.95 : 0.85;
-        const stabilizationFactor = animationPhase === "settling" ? 0.2 : 0.1;
-
-        if (dragged) {
-          card.current.setAngvel({
-            x: ang.x * 0.92,
-            y: ang.y * 0.92,
-            z: ang.z * 0.92,
-          });
-        } else {
-          card.current.setAngvel({
-            x: ang.x * dampingFactor,
-            y: ang.y - rot.y * stabilizationFactor,
-            z: ang.z * dampingFactor,
-          });
-        }
+      if (dragged || isDragging) {
+        card.current.setAngvel({
+          x: ang.x * 0.85, // 🔥 MORE FREEDOM during drag
+          y: ang.y * 0.85,
+          z: ang.z * 0.85,
+        });
+      } else {
+        card.current.setAngvel({
+          x: ang.x * 0.65,
+          y: ang.y - rot.y * 0.25, // 🔥 SLIGHTLY more stabilization
+          z: ang.z * 0.65,
+        });
       }
     }
   });
@@ -386,49 +371,36 @@ function Band({
   curve.curveType = "chordal";
   texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
-  // 🔥 Dynamic initial positions based on animation phase
-  const getInitialY = () => {
-    switch (animationPhase) {
-      case "preparing":
-      case "dropping":
-        return 6;
-      case "settling":
-        return 4;
-      default:
-        return 0;
-    }
-  };
-
   return (
     <>
       <group position={[0, 4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
         <RigidBody
-          position={[0.3, getInitialY(), 0]}
+          position={[0.5, animationPhase === "dropping" ? 18 : 0, 0]} // 🔥 INCREASED height
           ref={j1}
           {...segmentProps}
         >
-          <BallCollider args={[0.08]} /> {/* 🔥 Slightly smaller colliders */}
+          <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[0.6, getInitialY(), 0]}
+          position={[1, animationPhase === "dropping" ? 18 : 0, 0]}
           ref={j2}
           {...segmentProps}
         >
-          <BallCollider args={[0.08]} />
+          <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[0.9, getInitialY(), 0]}
+          position={[1.5, animationPhase === "dropping" ? 18 : 0, 0]}
           ref={j3}
           {...segmentProps}
         >
-          <BallCollider args={[0.08]} />
+          <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[1.2, getInitialY(), 0]}
+          position={[2, animationPhase === "dropping" ? 18 : 0, 0]}
           ref={card}
           {...segmentProps}
-          type={dragged ? "kinematicPosition" : "dynamic"}
+          type={dragged || isDragging ? "kinematicPosition" : "dynamic"}
         >
           <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group
@@ -436,23 +408,15 @@ function Band({
             position={[0, -1.2, -0.05]}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
-            onPointerUp={(e) => {
-              if (e.target.releasePointerCapture) {
-                e.target.releasePointerCapture(e.pointerId);
-              }
-              drag(false);
-            }}
-            onPointerDown={(e) => {
-              if (e.target.setPointerCapture) {
-                e.target.setPointerCapture(e.pointerId);
-              }
-              if (card.current) {
-                drag(
-                  new THREE.Vector3()
-                    .copy(e.point)
-                    .sub(vec.copy(card.current.translation()))
-                );
-              }
+            onPointerUp={handlePointerUp}
+            onPointerDown={handlePointerDown}
+            // 🔥 TOUCH EVENT SUPPORT
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            style={{
+              touchAction: "none", // 🔥 PREVENT DEFAULT TOUCH BEHAVIOR
+              userSelect: "none",
             }}
           >
             <mesh geometry={nodes.card.geometry}>
@@ -479,7 +443,7 @@ function Band({
         <meshLineMaterial
           color="white"
           depthTest={false}
-          resolution={isSmall ? [1200, 2400] : [1200, 1200]}
+          resolution={isSmall ? [1000, 2000] : [1000, 1000]}
           useMap
           map={texture}
           repeat={[-4, 1]}

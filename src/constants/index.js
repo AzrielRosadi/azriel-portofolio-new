@@ -214,7 +214,7 @@ const testimonials = [
     name: "DUMYDUMY",
     mentions: "@dumydumy",
     review:
-      "Dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy.",
+      "Dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy.",
     imgPath: "/images/client3.png",
   },
   {
@@ -228,7 +228,7 @@ const testimonials = [
     name: "DUMYDUMY",
     mentions: "@dumydumy",
     review:
-      "Dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy.",
+      "Dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy.",
     imgPath: "/images/client5.png",
   },
   {
@@ -242,7 +242,7 @@ const testimonials = [
     name: "DUMYDUMY",
     mentions: "@dumydumy",
     review:
-      "Dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy.",
+      "Dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy dummy.",
     imgPath: "/images/client6.png",
   },
 ];
