@@ -12,7 +12,7 @@ const Contact = () => {
   // State untuk animasi
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isLanyardVisible, setIsLanyardVisible] = useState(false);
-  const [shouldStartPhysics, setShouldStartPhysics] = useState(false); // 🔥 TAMBAHAN
+  const [shouldStartPhysics, setShouldStartPhysics] = useState(false);
 
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
@@ -23,14 +23,13 @@ const Contact = () => {
           setIsFormVisible(true);
           setIsLanyardVisible(true);
 
-          // 🔥 DELAY untuk memulai physics setelah container muncul
           setTimeout(() => {
             setShouldStartPhysics(true);
-          }, 300); // Delay 300ms setelah container muncul
+          }, 300);
         } else {
           setIsFormVisible(false);
           setIsLanyardVisible(false);
-          setShouldStartPhysics(false); // Reset physics
+          setShouldStartPhysics(false);
         }
       },
       { threshold: 0.3 }
@@ -76,13 +75,17 @@ const Contact = () => {
         />
 
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 mt-16 items-start">
-          {/* KIRI: Formulir Kontak */}
+          {/* KIRI: Formulir Kontak - SEPENUHNYA TRANSPARAN */}
           <div
-            className={`xl:col-span-5 card-border rounded-xl p-10 bg-[#000000] mt-35 transition-all duration-700 ${
+            className={`xl:col-span-5 p-10 mt-35 transition-all duration-700 ${
               isFormVisible
                 ? "opacity-100 translate-x-0"
                 : "opacity-0 -translate-x-10"
             }`}
+            style={{
+              background: "transparent", // Sepenuhnya transparan
+              border: "none", // Tanpa border
+            }}
           >
             <form
               ref={formRef}
@@ -90,7 +93,12 @@ const Contact = () => {
               className="w-full flex flex-col gap-7"
             >
               <div>
-                <label htmlFor="name">Your name</label>
+                <label
+                  htmlFor="name"
+                  className="text-white/90 font-medium mb-2 block"
+                >
+                  Your name
+                </label>
                 <input
                   type="text"
                   id="name"
@@ -99,11 +107,17 @@ const Contact = () => {
                   onChange={handleChange}
                   placeholder="What's your good name?"
                   required
+                  className="w-full p-3 rounded-lg bg-transparent border-b-2 border-white/30 text-white placeholder-white/70 focus:outline-none focus:border-purple-400/80 transition-all"
                 />
               </div>
 
               <div>
-                <label htmlFor="email">Your Email</label>
+                <label
+                  htmlFor="email"
+                  className="text-white/90 font-medium mb-2 block"
+                >
+                  Your Email
+                </label>
                 <input
                   type="email"
                   id="email"
@@ -112,11 +126,17 @@ const Contact = () => {
                   onChange={handleChange}
                   placeholder="What's your email address?"
                   required
+                  className="w-full p-3 rounded-lg bg-transparent border-b-2 border-white/30 text-white placeholder-white/70 focus:outline-none focus:border-purple-400/80 transition-all"
                 />
               </div>
 
               <div>
-                <label htmlFor="message">Your Message</label>
+                <label
+                  htmlFor="message"
+                  className="text-white/90 font-medium mb-2 block"
+                >
+                  Your Message
+                </label>
                 <textarea
                   id="message"
                   name="message"
@@ -125,32 +145,37 @@ const Contact = () => {
                   placeholder="How can I help you?"
                   rows="5"
                   required
+                  className="w-full p-3 rounded-lg bg-transparent border-b-2 border-white/30 text-white placeholder-white/70 focus:outline-none focus:border-purple-400/80 transition-all resize-none"
                 />
               </div>
 
-              <button type="submit" disabled={loading}>
-                <div className="cta-button group relative flex items-center justify-center gap-2">
-                  <div className="bg-circle" />
-                  <p className="text">{loading ? "Sending..." : "Submit"}</p>
-                  <div className="arrow-wrapper">
-                    <img src="/images/arrow-down.svg" alt="arrow" />
-                  </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="group relative overflow-hidden rounded-lg bg-transparent border-2 border-white/30 p-4 text-white font-medium hover:border-white hover:bg-white/30 transition-all duration-300"
+              >
+                <div className="relative z-10 flex items-center justify-center gap-2">
+                  <p>{loading ? "Sending..." : "Submit"}</p>
+                  <div className="transform group-hover:translate-x-1 transition-transform"></div>
                 </div>
               </button>
             </form>
           </div>
 
-          {/* KANAN: Lanyard dengan Physics Animation */}
+          {/* KANAN: Lanyard - SEPENUHNYA MENYATU */}
           <div
-            className={`xl:col-span-7 bg-[#000000] rounded-xl overflow-hidden h-full flex items-start justify-center transition-all duration-500 ${
+            className={`xl:col-span-7 overflow-hidden h-full flex items-start justify-center transition-all duration-500 ${
               isLanyardVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
             }`}
+            style={{
+              background: "transparent", // Sepenuhnya transparan
+              border: "none", // Tanpa border
+            }}
           >
             <div className="w-full h-full hover:cursor-grab rounded-xl">
-              {/* 🔥 PASS shouldStartPhysics sebagai prop */}
               <Lanyard
                 position={[0, 0, 13]}
-                ty={[0, -80, 0]} // ✅ Akan digunakan sebagai gravity dengan smoothing
+                ty={[0, -80, 0]}
                 startPhysics={shouldStartPhysics}
                 fov={20}
                 transparent={true}

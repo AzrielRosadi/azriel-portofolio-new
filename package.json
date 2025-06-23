@@ -18,18 +18,25 @@
     "@react-three/postprocessing": "^3.0.4",
     "@react-three/rapier": "^2.1.0",
     "@tailwindcss/vite": "^4.1.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "framer-motion": "^12.18.1",
     "gsap": "^3.12.7",
+    "lucide-react": "^0.522.0",
+    "maath": "^0.10.8",
     "meshline": "^3.3.1",
+    "motion": "^12.18.1",
     "react": "^19.0.0",
     "react-countup": "^6.5.3",
     "react-dom": "^19.0.0",
     "react-responsive": "^10.0.1",
+    "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.4",
     "three": "^0.167.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",
+    "@types/node": "^24.0.3",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
@@ -37,6 +44,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
+    "tw-animate-css": "^1.3.4",
     "vite": "^6.3.1"
   }
 }

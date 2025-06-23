@@ -1,6 +1,5 @@
 import AnimatedCounter from "../components/AnimatedCounter";
 import Button from "../components/Button";
-import HeroExperience from "../components/HeroModels/HeroExperience";
 import { words } from "../constants/index";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -72,16 +71,19 @@ const Hero = () => {
           <div className="my-10 md:my-16" />
 
           {/* SCROLL VELOCITY */}
-          <div className="relative w-screen -mx-[50vw] left-1/2 overflow-x-visible overflow-y-visible py-4 -mt-30">
+          <div className="relative w-screen -mx-[50vw] left-1/2 overflow-x-visible overflow-y-visible py-4 -mt-20">
             <ScrollVelocity
-              texts={["FULLSTACK JAVASCRIPT ENGINEER"]}
+              texts={[
+                "FULLSTACK JAVASCRIPT ENGINEER",
+                "JUNIOR WEB DEVELOPMENT",
+              ]}
               velocity={30}
               parallaxClassName="relative w-auto overflow-visible"
               scrollerClassName="inline-block whitespace-nowrap text-center"
               scrollerStyle={{
                 fontFamily: '"Inter", Arial, Helvetica, sans-serif',
                 fontWeight: 700,
-                fontSize: "8rem",
+                fontSize: "4rem",
                 lineHeight: "1.2",
                 color: "rgba(245, 245, 245, 0.3)",
               }}
