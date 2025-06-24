@@ -586,3 +586,36 @@ section {
     @apply bg-background text-foreground;
   }
 }
+
+/* Tambahkan ke file index.css atau global CSS */
+
+/* Sembunyikan cursor default di seluruh website */
+* {
+  cursor: none !important;
+}
+
+/* Khusus untuk elemen interaktif */
+a,
+button,
+input,
+textarea,
+select {
+  cursor: none !important;
+}
+
+/* Pastikan cursor custom tidak terganggu */
+body {
+  cursor: none !important;
+}
+
+/* Untuk elemen yang bisa di-hover */
+*:hover,
+*:focus,
+*:active {
+  cursor: none !important;
+}
+
+.no-cursor,
+.no-cursor * {
+  cursor: none !important;
+}

@@ -28,14 +28,14 @@ extend({ MeshLineGeometry, MeshLineMaterial });
 
 export default function Lanyard({
   position = [0, 0, 13],
-  gravity = [0, -60, 0], // 🔥 INCREASED from -40 to -60 for faster falling
-  ty = [0, -100, 0], // 🔥 INCREASED from -80 to -100 for faster gravity
+  gravity = [0, -40, 0], // Kembali ke nilai normal untuk gravitasi yang natural
+  ty = [0, -80, 0], // Kembali ke nilai normal
   fov = 20,
   transparent = true,
   startPhysics = false,
 }) {
-  // 🔥 Increased gravity for faster falling
-  const finalGravity = [ty[0], Math.max(ty[1], -60), ty[2]]; // 🔥 INCREASED minimum gravity
+  // Gravitasi yang lebih natural dan stabil
+  const finalGravity = [ty[0], Math.max(ty[1], -50), ty[2]]; // Maksimal -50 untuk mencegah gravitasi terlalu kencang
 
   return (
     <div className="relative z-0 w-full h-screen flex justify-center items-center transform scale-100 origin-center">
@@ -85,7 +85,7 @@ export default function Lanyard({
   );
 }
 
-function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
+function Band({ maxSpeed = 40, minSpeed = 0, startPhysics = false }) {
   const band = useRef(),
     fixed = useRef(),
     j1 = useRef(),
@@ -97,22 +97,20 @@ function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
     rot = new THREE.Vector3(),
     dir = new THREE.Vector3();
 
-  // 🔥 PHYSICS STATE MANAGEMENT
+  // State management yang lebih stabil
   const [isPhysicsStarted, setIsPhysicsStarted] = useState(false);
-  const [initialPositions, setInitialPositions] = useState(null);
   const [animationPhase, setAnimationPhase] = useState("idle");
-
-  // 🔥 TOUCH SUPPORT STATE
   const [isDragging, setIsDragging] = useState(false);
   const [touchStart, setTouchStart] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
 
+  // Segment properties yang lebih stabil
   const segmentProps = {
     type: "dynamic",
     canSleep: true,
     colliders: false,
-    angularDamping: 5, // 🔥 REDUCED for more natural movement
-    linearDamping: 3, // 🔥 REDUCED for better responsiveness
+    angularDamping: 8, // Ditingkatkan untuk stabilitas
+    linearDamping: 4, // Ditingkatkan untuk mengurangi oscillation
   };
 
   const { nodes, materials } = useGLTF(cardGLB);
@@ -132,6 +130,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
     () => typeof window !== "undefined" && window.innerWidth < 1024
   );
 
+  // Rope joints dengan konfigurasi yang lebih stabil
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
@@ -140,7 +139,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
     [0, 1.5, 0],
   ]);
 
-  // 🔥 DETECT MOBILE DEVICE
+  // Deteksi mobile device
   useEffect(() => {
     const checkIsMobile = () => {
       const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -156,7 +155,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
     checkIsMobile();
   }, []);
 
-  // 🔥 FASTER PHYSICS ANIMATION CONTROLLER
+  // Physics animation controller yang lebih natural
   useEffect(() => {
     if (startPhysics && !isPhysicsStarted) {
       setIsPhysicsStarted(true);
@@ -164,9 +163,10 @@ function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
 
       setTimeout(() => {
         if (card.current && j1.current && j2.current && j3.current) {
-          const startHeight = 18; // 🔥 INCREASED height for more dramatic drop
+          const startHeight = 12; // Tinggi yang lebih moderat
           const baseX = 0;
 
+          // Set posisi awal dengan lebih natural
           j1.current.setTranslation(
             { x: baseX + 0.5, y: startHeight, z: 0 },
             true
@@ -184,47 +184,50 @@ function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
             true
           );
 
-          // Reset velocity
-          j1.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
-          j2.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
-          j3.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
-          card.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+          // Reset velocity untuk start yang bersih
+          [j1, j2, j3, card].forEach((ref) => {
+            ref.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+            ref.current.setAngvel({ x: 0, y: 0, z: 0 }, true);
+            ref.current?.wakeUp();
+          });
 
-          // Wake up physics bodies
-          [card, j1, j2, j3].forEach((ref) => ref.current?.wakeUp());
-
-          // 🔥 STRONGER IMPULSE for faster initial drop
+          // Impulse yang lebih gentle untuk gerakan natural
           setTimeout(() => {
-            card.current?.applyImpulse({ x: 0, y: -2, z: 0 }, true); // 🔥 DOUBLED impulse
-          }, 100); // 🔥 REDUCED delay
+            card.current?.applyImpulse({ x: 0, y: -0.8, z: 0 }, true);
+          }, 150);
 
-          // 🔥 FASTER settling time
+          // Waktu settling yang lebih realistis
           setTimeout(() => {
             setAnimationPhase("settled");
-          }, 1500); // 🔥 REDUCED from 2000 to 1500ms
+          }, 2500);
         }
-      }, 50); // 🔥 REDUCED delay
+      }, 100);
     } else if (!startPhysics && isPhysicsStarted) {
       setIsPhysicsStarted(false);
       setAnimationPhase("idle");
 
       if (card.current && j1.current && j2.current && j3.current) {
         const resetHeight = 8;
-        j1.current.setTranslation({ x: 0.5, y: resetHeight, z: 0 }, true);
-        j2.current.setTranslation({ x: 1, y: resetHeight, z: 0 }, true);
-        j3.current.setTranslation({ x: 1.5, y: resetHeight, z: 0 }, true);
-        card.current.setTranslation({ x: 2, y: resetHeight, z: 0 }, true);
 
-        // Stop velocity
-        [j1, j2, j3, card].forEach((ref) => {
+        // Reset posisi dengan smooth
+        [j1, j2, j3, card].forEach((ref, index) => {
+          const positions = [
+            { x: 0.5, y: resetHeight, z: 0 },
+            { x: 1, y: resetHeight, z: 0 },
+            { x: 1.5, y: resetHeight, z: 0 },
+            { x: 2, y: resetHeight, z: 0 },
+          ];
+
+          ref.current.setTranslation(positions[index], true);
           ref.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
+          ref.current.setAngvel({ x: 0, y: 0, z: 0 }, true);
           ref.current?.sleep();
         });
       }
     }
   }, [startPhysics, isPhysicsStarted]);
 
-  // 🔥 ENHANCED CURSOR MANAGEMENT WITH TOUCH SUPPORT
+  // Enhanced cursor management
   useEffect(() => {
     if (hovered && !isMobile) {
       document.body.style.cursor = dragged ? "grabbing" : "grab";
@@ -241,7 +244,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 🔥 TOUCH EVENT HANDLERS
+  // Touch event handlers yang lebih responsif
   const handleTouchStart = (e) => {
     e.preventDefault();
     const touch = e.touches[0];
@@ -252,7 +255,6 @@ function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
     setTouchStart({ x, y });
     setIsDragging(true);
 
-    // Convert touch coordinates to 3D space
     vec.set(x, y, 0.5);
     const dragOffset = new THREE.Vector3()
       .copy(vec)
@@ -269,7 +271,6 @@ function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
     const x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
     const y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
 
-    // Update drag position
     vec.set(x, y, 0.5);
   };
 
@@ -280,7 +281,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
     drag(false);
   };
 
-  // 🔥 MOUSE EVENT HANDLERS (ENHANCED)
+  // Mouse event handlers
   const handlePointerDown = (e) => {
     e.stopPropagation();
     if (e.pointerType === "touch") {
@@ -319,11 +320,10 @@ function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
     }
 
     if (fixed.current) {
-      // 🔥 FASTER LERPING for quicker response
-      const adjustedMaxSpeed =
-        animationPhase === "dropping" ? maxSpeed * 0.8 : maxSpeed; // 🔥 INCREASED speed
-      const adjustedMinSpeed =
-        animationPhase === "dropping" ? minSpeed * 1.2 : minSpeed; // 🔥 INCREASED minimum speed
+      // Lerping yang lebih smooth dan stabil
+      const speedMultiplier = animationPhase === "dropping" ? 0.6 : 1;
+      const adjustedMaxSpeed = maxSpeed * speedMultiplier;
+      const adjustedMinSpeed = minSpeed * speedMultiplier;
 
       [j1, j2].forEach((ref) => {
         if (!ref.current.lerped)
@@ -342,27 +342,30 @@ function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
         );
       });
 
-      curve.points[0].copy(j3.current.translation());
-      curve.points[1].copy(j2.current.lerped);
-      curve.points[2].copy(j1.current.lerped);
-      curve.points[3].copy(fixed.current.translation());
-      band.current.geometry.setPoints(curve.getPoints(32));
+      // Update curve untuk lanyard (hanya jika tidak mobile)
+      if (!isMobile) {
+        curve.points[0].copy(j3.current.translation());
+        curve.points[1].copy(j2.current.lerped);
+        curve.points[2].copy(j1.current.lerped);
+        curve.points[3].copy(fixed.current.translation());
+        band.current.geometry.setPoints(curve.getPoints(32));
+      }
 
-      // 🔥 ENHANCED ANGULAR VELOCITY for better touch response
+      // Angular velocity yang lebih stabil
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
 
       if (dragged || isDragging) {
         card.current.setAngvel({
-          x: ang.x * 0.85, // 🔥 MORE FREEDOM during drag
-          y: ang.y * 0.85,
-          z: ang.z * 0.85,
+          x: ang.x * 0.9,
+          y: ang.y * 0.9,
+          z: ang.z * 0.9,
         });
       } else {
         card.current.setAngvel({
-          x: ang.x * 0.65,
-          y: ang.y - rot.y * 0.25, // 🔥 SLIGHTLY more stabilization
-          z: ang.z * 0.65,
+          x: ang.x * 0.7,
+          y: ang.y - rot.y * 0.15,
+          z: ang.z * 0.7,
         });
       }
     }
@@ -376,28 +379,28 @@ function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
       <group position={[0, 4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
         <RigidBody
-          position={[0.5, animationPhase === "dropping" ? 18 : 0, 0]} // 🔥 INCREASED height
+          position={[0.5, animationPhase === "dropping" ? 12 : 0, 0]}
           ref={j1}
           {...segmentProps}
         >
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[1, animationPhase === "dropping" ? 18 : 0, 0]}
+          position={[1, animationPhase === "dropping" ? 12 : 0, 0]}
           ref={j2}
           {...segmentProps}
         >
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[1.5, animationPhase === "dropping" ? 18 : 0, 0]}
+          position={[1.5, animationPhase === "dropping" ? 12 : 0, 0]}
           ref={j3}
           {...segmentProps}
         >
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[2, animationPhase === "dropping" ? 18 : 0, 0]}
+          position={[2, animationPhase === "dropping" ? 12 : 0, 0]}
           ref={card}
           {...segmentProps}
           type={dragged || isDragging ? "kinematicPosition" : "dynamic"}
@@ -410,12 +413,11 @@ function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
             onPointerOut={() => hover(false)}
             onPointerUp={handlePointerUp}
             onPointerDown={handlePointerDown}
-            // 🔥 TOUCH EVENT SUPPORT
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
             style={{
-              touchAction: "none", // 🔥 PREVENT DEFAULT TOUCH BEHAVIOR
+              touchAction: "none",
               userSelect: "none",
             }}
           >
@@ -438,18 +440,21 @@ function Band({ maxSpeed = 50, minSpeed = 0, startPhysics = false }) {
           </group>
         </RigidBody>
       </group>
-      <mesh ref={band}>
-        <meshLineGeometry />
-        <meshLineMaterial
-          color="white"
-          depthTest={false}
-          resolution={isSmall ? [1000, 2000] : [1000, 1000]}
-          useMap
-          map={texture}
-          repeat={[-4, 1]}
-          lineWidth={1}
-        />
-      </mesh>
+      {/* Lanyard hanya ditampilkan jika bukan mobile */}
+      {!isMobile && (
+        <mesh ref={band}>
+          <meshLineGeometry />
+          <meshLineMaterial
+            color="white"
+            depthTest={false}
+            resolution={[1000, 1000]}
+            useMap
+            map={texture}
+            repeat={[-4, 1]}
+            lineWidth={1}
+          />
+        </mesh>
+      )}
     </>
   );
 }
