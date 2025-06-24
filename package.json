@@ -14,13 +14,13 @@
     "@gsap/react": "^2.1.2",
     "@react-spring/three": "^10.0.1",
     "@react-three/drei": "^10.3.0",
-    "@react-three/fiber": "^9.1.2",
+    "@react-three/fiber": "^9.0.0-alpha.8",
     "@react-three/postprocessing": "^3.0.4",
     "@react-three/rapier": "^2.1.0",
     "@tailwindcss/vite": "^4.1.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "framer-motion": "^12.18.1",
+    "framer-motion": "^12.19.1",
     "gsap": "^3.12.7",
     "lucide-react": "^0.522.0",
     "maath": "^0.10.8",
@@ -34,7 +34,8 @@
     "react-router-dom": "^7.6.2",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.4",
-    "three": "^0.167.1"
+    "three": "^0.167.1",
+    "three-globe": "^2.42.11"
   },
   "devDependencies": {
     "@eslint/js": "^9.22.0",

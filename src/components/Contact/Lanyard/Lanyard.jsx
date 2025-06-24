@@ -102,7 +102,7 @@ function Band({ maxSpeed = 40, minSpeed = 0, startPhysics = false }) {
   const [animationPhase, setAnimationPhase] = useState("idle");
   const [isDragging, setIsDragging] = useState(false);
   const [touchStart, setTouchStart] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
 
   // Segment properties yang lebih stabil
   const segmentProps = {
@@ -144,7 +144,7 @@ function Band({ maxSpeed = 40, minSpeed = 0, startPhysics = false }) {
     const checkIsMobile = () => {
       const userAgent = navigator.userAgent || navigator.vendor || window.opera;
       const isMobileDevice =
-        /android|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(
+        /android|iphone|ipad|ipod|blackberry|ismobile|opera mini/i.test(
           userAgent.toLowerCase()
         );
       const isTouchScreen =

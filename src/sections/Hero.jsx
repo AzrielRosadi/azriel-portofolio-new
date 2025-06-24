@@ -104,11 +104,10 @@ const Hero = () => {
           </div>
         </header>
 
-        {/*         
-        <figure>
-        <div className="hero-3d-layout">
-        <HeroExperience />
-        </div>
+        {/* <figure>
+          <div className="hero-3d-layout">
+            <Globe />
+          </div>
         </figure> */}
       </div>
 
