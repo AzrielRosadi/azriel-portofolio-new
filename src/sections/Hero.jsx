@@ -1,5 +1,6 @@
 import AnimatedCounter from "../components/AnimatedCounter";
 import Button from "../components/Button";
+import AbstractSymbol from "../components/AbstractSymbol"; // Import komponen baru
 import { words } from "../constants/index";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -25,7 +26,7 @@ const Hero = () => {
   });
 
   return (
-    <section id="hero" className="relative overflow-hidden">
+    <section id="hero" className="relative overflow-hidden min-h-screen pt-20">
       <div className="absolute top-0 left-0 z-10">
         <img src="/images/bg.png" alt="background" />
       </div>
@@ -70,47 +71,52 @@ const Hero = () => {
           {/* SPACING */}
           <div className="my-10 md:my-16" />
 
-          {/* SCROLL VELOCITY */}
-          <div className="relative w-screen -mx-[50vw] left-1/2 overflow-x-visible overflow-y-visible py-4 -mt-20">
+          {/* SCROLL VELOCITY - BALANCED SMOOTH & FAST SETTINGS */}
+          <div className="relative w-screen -mx-[50vw] left-1/2 overflow-x-visible overflow-y-visible py-4 mt-10">
+            {/* Mobile Symbol - positioned in the center of scroll text */}
+            <div className="md:hidden absolute inset-0 flex items-center justify-center z-20">
+              <AbstractSymbol isMobile={true} />
+            </div>
+
             <ScrollVelocity
-              texts={[
-                "FULLSTACK JAVASCRIPT ENGINEER",
-                "JUNIOR WEB DEVELOPMENT",
-              ]}
-              velocity={30}
+              texts={["FULLSTACK JAVASCRIPT ENGINEER | JUNIOR WEB DEVELOPMENT"]}
+              velocity={50}
+              damping={40}
+              stiffness={500}
+              velocityMapping={{ input: [0, 1000], output: [0, 6] }}
               parallaxClassName="relative w-auto overflow-visible"
               scrollerClassName="inline-block whitespace-nowrap text-center"
               scrollerStyle={{
                 fontFamily: '"Inter", Arial, Helvetica, sans-serif',
                 fontWeight: 700,
-                fontSize: "4rem",
+                fontSize: "8rem",
                 lineHeight: "1.2",
                 color: "rgba(245, 245, 245, 0.3)",
               }}
-              // Momentum & Acceleration (lebih natural)
               enableMomentum={true}
-              momentumDecay={0.96} // Sedikit lebih lambat decay
-              accelerationFactor={1.8} // Lebih responsive
-              maxMomentumVelocity={400} // Batas yang lebih natural
-              // Natural Smoothing (BARU!)
-              smoothingFactor={0.25} // Transisi lebih halus
-              easeInOutPower={4.0} // Easing yang lebih natural
-              naturalDelay={0.1} // Slight delay untuk realisme
-              // Skew effect (lebih smooth)
+              momentumDecay={0.92}
+              accelerationFactor={4.0}
+              maxMomentumVelocity={300}
+              smoothingFactor={0.2}
+              easeInOutPower={2}
+              naturalDelay={0.01}
               skewDirection="auto"
-              maxSkew={20} // Sedikit dikurangi untuk lebih natural
-              skewSensitivity={0.015} // Sedikit dikurangi
+              maxSkew={25}
+              skewSensitivity={0.015}
+              maxShift={6}
+              shiftSensitivity={0.01}
+              skewOrigin="center"
             />
           </div>
         </header>
 
-        {/* <figure>
+        {/* RIGHT: ABSTRACT SYMBOL - Desktop only with proper height constraint */}
+        <figure className="hidden md:flex items-center justify-center h-[calc(100vh-120px)] max-h-[600px]">
           <div className="hero-3d-layout">
-            <Globe />
+            <AbstractSymbol />
           </div>
-        </figure> */}
+        </figure>
       </div>
-
       <AnimatedCounter />
     </section>
   );

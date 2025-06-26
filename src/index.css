@@ -619,3 +619,700 @@ body {
 .no-cursor * {
   cursor: none !important;
 }
+
+/* Enhanced SplashScreen Styles */
+
+/* Base Container */
+.splash-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(20, 20, 40, 0.95) 0%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  z-index: 9999;
+  overflow: hidden;
+}
+
+/* Stars Canvas */
+.splash-stars-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Enhanced Background */
+.splash-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.splash-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.splash-gradient-primary {
+  background: radial-gradient(
+    circle at 30% 40%,
+    rgba(139, 92, 246, 0.1) 0%,
+    transparent 50%
+  );
+  animation: gradientShift 8s ease-in-out infinite;
+}
+
+.splash-gradient-secondary {
+  background: radial-gradient(
+    circle at 70% 60%,
+    rgba(168, 85, 247, 0.08) 0%,
+    transparent 50%
+  );
+  animation: gradientShift 12s ease-in-out infinite reverse;
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(5deg);
+  }
+}
+
+/* Animated Background Shapes */
+.splash-bg-circle {
+  position: absolute;
+  top: 20%;
+  right: 15%;
+  width: 150px;
+  height: 150px;
+  border: 2px solid rgba(139, 92, 246, 0.2);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0) rotate(0deg);
+  transition: all 1.5s ease-out;
+}
+
+.splash-bg-circle-active {
+  opacity: 1;
+  transform: scale(1) rotate(360deg);
+  animation: pulseRotate 6s ease-in-out infinite;
+}
+
+.splash-bg-square {
+  position: absolute;
+  bottom: 25%;
+  left: 10%;
+  width: 80px;
+  height: 80px;
+  border: 2px solid rgba(139, 92, 246, 0.15);
+  opacity: 0;
+  transform: scale(0) rotate(0deg);
+  transition: all 2s ease-out;
+}
+
+.splash-bg-square-active {
+  opacity: 1;
+  transform: scale(1) rotate(45deg);
+  animation: squareFloat 8s ease-in-out infinite;
+}
+
+.splash-bg-diamond {
+  position: absolute;
+  top: 60%;
+  right: 25%;
+  width: 60px;
+  height: 60px;
+  border: 2px solid rgba(139, 92, 246, 0.25);
+  transform: rotate(45deg) scale(0);
+  opacity: 0;
+  transition: all 2.5s ease-out;
+}
+
+.splash-bg-diamond-active {
+  opacity: 1;
+  transform: rotate(45deg) scale(1);
+  animation: diamondSpin 10s linear infinite;
+}
+
+@keyframes pulseRotate {
+  0%,
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(540deg);
+  }
+}
+
+@keyframes squareFloat {
+  0%,
+  100% {
+    transform: scale(1) rotate(45deg) translateY(0px);
+  }
+  50% {
+    transform: scale(1.05) rotate(225deg) translateY(-10px);
+  }
+}
+
+@keyframes diamondSpin {
+  0% {
+    transform: rotate(45deg) scale(1);
+  }
+  100% {
+    transform: rotate(405deg) scale(1);
+  }
+}
+
+/* Main Content */
+.splash-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash-content-center {
+  text-align: center;
+  max-width: 600px;
+  padding: 0 20px;
+}
+
+/* Enhanced Logo Container */
+.splash-logo-container {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+/* Multi-layer Glow Effects */
+.splash-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 1s ease-out;
+}
+
+.splash-glow-inner {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.4) 0%,
+    transparent 70%
+  );
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+.splash-glow-outer {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(
+    circle,
+    rgba(139, 92, 246, 0.2) 0%,
+    transparent 70%
+  );
+  animation: glowPulse 4s ease-in-out infinite reverse;
+}
+
+.splash-glow-active {
+  opacity: 1;
+}
+
+@keyframes glowPulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+/* Enhanced Logo */
+.splash-logo {
+  position: relative;
+  z-index: 5;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.splash-logo-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.splash-letter-container {
+  position: relative;
+  display: inline-block;
+}
+
+.splash-letter-a {
+  font-size: 120px;
+  font-weight: 900;
+  color: #8b5cf6;
+  font-family: "Arial", sans-serif;
+  display: inline-block;
+  transition: all 0.5s ease;
+  transform-style: preserve-3d;
+}
+
+.splash-letter-animated {
+  animation: letterGlow 2s ease-in-out infinite;
+}
+
+@keyframes letterGlow {
+  0%,
+  100% {
+    color: #8b5cf6;
+    text-shadow: 0 0 20px #8b5cf6;
+  }
+  50% {
+    color: #a855f7;
+    text-shadow: 0 0 40px #8b5cf6, 0 0 80px #8b5cf6;
+  }
+}
+
+/* Enhanced Orbiting Elements */
+.splash-orbit-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 180px;
+  height: 180px;
+}
+
+.splash-orbit-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  margin-top: -4px;
+  margin-left: -4px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.splash-orbit-active {
+  opacity: 1;
+}
+
+/* Individual orbit animations */
+@keyframes orbit-0 {
+  0% {
+    transform: rotate(0deg) translateX(90px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(90px) rotate(-360deg);
+  }
+}
+
+@keyframes orbit-1 {
+  0% {
+    transform: rotate(72deg) translateX(90px) rotate(-72deg);
+  }
+  100% {
+    transform: rotate(432deg) translateX(90px) rotate(-432deg);
+  }
+}
+
+@keyframes orbit-2 {
+  0% {
+    transform: rotate(144deg) translateX(90px) rotate(-144deg);
+  }
+  100% {
+    transform: rotate(504deg) translateX(90px) rotate(-504deg);
+  }
+}
+
+@keyframes orbit-3 {
+  0% {
+    transform: rotate(216deg) translateX(90px) rotate(-216deg);
+  }
+  100% {
+    transform: rotate(576deg) translateX(90px) rotate(-576deg);
+  }
+}
+
+@keyframes orbit-4 {
+  0% {
+    transform: rotate(288deg) translateX(90px) rotate(-288deg);
+  }
+  100% {
+    transform: rotate(648deg) translateX(90px) rotate(-648deg);
+  }
+}
+
+/* Ring Animation */
+.splash-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  border: 2px solid rgba(139, 92, 246, 0.3);
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 1s ease-out;
+}
+
+.splash-ring-active {
+  opacity: 1;
+  animation: ringPulse 3s ease-in-out infinite;
+}
+
+@keyframes ringPulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    border-color: rgba(139, 92, 246, 0.3);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    border-color: rgba(139, 92, 246, 0.6);
+  }
+}
+
+/* Enhanced Text Animation */
+.splash-text {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s ease-out;
+  margin-bottom: 40px;
+}
+
+.splash-text-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.splash-title {
+  font-size: 48px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.splash-title-letter {
+  animation: letterBounce 0.6s ease-out forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+@keyframes letterBounce {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.splash-title-azrl {
+  color: #8b5cf6;
+  margin-right: 10px;
+}
+
+.splash-title-separator {
+  color: #666;
+  margin: 0 10px;
+  opacity: 0.7;
+}
+
+.splash-title-webdev {
+  color: #a855f7;
+  margin-left: 10px;
+}
+
+.splash-subtitle {
+  font-size: 18px;
+  color: #ccc;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-out 0.5s;
+}
+
+.splash-subtitle-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Enhanced Loading Animation */
+.splash-loading {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s ease-out;
+  margin-bottom: 30px;
+}
+
+.splash-loading-active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.splash-loading-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.splash-loading-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  animation: dotBounce 1.4s ease-in-out infinite both;
+}
+
+@keyframes dotBounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+.splash-loading-text {
+  font-size: 14px;
+  color: #999;
+  letter-spacing: 1px;
+}
+
+/* Enhanced Progress Bar */
+.splash-progress-container {
+  position: relative;
+  width: 300px;
+  height: 4px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: scaleX(0);
+  transition: all 1s ease-out;
+}
+
+.splash-progress-visible {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.splash-progress-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(139, 92, 246, 0.2);
+  border-radius: 2px;
+}
+
+.splash-progress-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, #8b5cf6, #a855f7, #c084fc);
+  border-radius: 2px;
+  transition: width 1s ease-out;
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+}
+
+.splash-progress-glow {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(139, 92, 246, 0.3),
+    transparent
+  );
+  border-radius: 4px;
+  animation: progressGlow 2s ease-in-out infinite;
+}
+
+@keyframes progressGlow {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Fade Out Animation */
+.splash-fade-out {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(20, 20, 40, 0.95) 0%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  z-index: 9999;
+  animation: fadeOut 0.8s ease-out forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .splash-letter-a {
+    font-size: 80px;
+  }
+
+  .splash-title {
+    font-size: 32px;
+  }
+
+  .splash-subtitle {
+    font-size: 16px;
+  }
+
+  .splash-orbit-container {
+    width: 140px;
+    height: 140px;
+  }
+
+  .splash-bg-circle {
+    width: 100px;
+    height: 100px;
+  }
+
+  .splash-bg-square {
+    width: 60px;
+    height: 60px;
+  }
+
+  .splash-bg-diamond {
+    width: 45px;
+    height: 45px;
+  }
+
+  .splash-progress-container {
+    width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .splash-letter-a {
+    font-size: 60px;
+  }
+
+  .splash-title {
+    font-size: 24px;
+  }
+
+  .splash-subtitle {
+    font-size: 14px;
+  }
+
+  .splash-orbit-container {
+    width: 100px;
+    height: 100px;
+  }
+
+  .splash-progress-container {
+    width: 200px;
+  }
+
+  .splash-content-center {
+    padding: 0 15px;
+  }
+}
+
+/* Performance Optimizations */
+.splash-container * {
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+/* GPU Acceleration */
+.splash-letter-a,
+.splash-orbit-dot,
+.splash-glow,
+.splash-progress-bar {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* Social Icons Styling */
+.social-icon {
+  width: 24px;
+  height: 24px;
+  transition: all 0.3s ease;
+}
+
+.insta-icon {
+  filter: brightness(0) saturate(100%) invert(14%) sepia(99%) saturate(2175%)
+    hue-rotate(315deg) brightness(97%) contrast(97%);
+}
+
+.github-icon {
+  filter: brightness(0) saturate(100%) invert(100%); /* White for dark theme, adjust as needed */
+}
+
+.email-icon {
+  filter: brightness(0) saturate(100%) invert(27%) sepia(96%) saturate(4456%)
+    hue-rotate(3deg) brightness(99%) contrast(107%);
+}
+
+.linkedin-icon {
+  filter: brightness(0) saturate(100%) invert(47%) sepia(96%) saturate(1821%)
+    hue-rotate(200deg) brightness(93%) contrast(101%);
+}
+
+/* Hover effects */
+.icon:hover .social-icon {
+  transform: scale(1.1);
+  opacity: 0.8;
+}

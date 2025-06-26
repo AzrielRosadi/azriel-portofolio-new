@@ -38,7 +38,7 @@ export default function ScrollVelocity({
   parallaxStyle = {},
   scrollerStyle = {},
   // Parameter baru untuk kontrol animasi skew dan shift
-  maxSkew = 15, // maksimal derajat kemiringan
+  maxSkew = 50, // maksimal derajat kemiringan
   maxShift = 10, // maksimal pergeseran vertikal dalam px
   skewSensitivity = 0.01, // sensitivitas skew terhadap velocity
   shiftSensitivity = 0.005, // sensitivitas shift terhadap velocity
@@ -48,7 +48,7 @@ export default function ScrollVelocity({
   customSkewAngle = null, // sudut kustom dalam derajat (override maxSkew jika diset)
   // Parameter kontrol momentum dan acceleration
   enableMomentum = true, // aktifkan efek momentum
-  momentumDecay = 0.95, // perlambatan momentum (0.9-0.99)
+  momentumDecay = 0.1, // perlambatan momentum (0.9-0.99)
   accelerationFactor = 1.5, // faktor percepatan (1.0-3.0)
   maxMomentumVelocity = 500, // batas maksimal momentum velocity
   // Parameter untuk natural smoothness

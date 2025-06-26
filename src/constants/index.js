@@ -30,9 +30,15 @@ const words = [
 
 const counterItems = [
   { value: 0, suffix: "+", label: "FreshGraduate" },
-  { value: 1, suffix: "+", label: "Client" },
-  { value: 21, suffix: "+", label: "Completed Projects" },
+  { value: 3, suffix: "+", label: "Client" },
+  { value: 22, suffix: "+", label: "Completed Projects" },
   { value: 90, suffix: "%", label: "Client Retention Rate" },
+];
+
+const testimonialStats = [
+  { value: 3, suffix: "+", label: "Clients" },
+  { value: 5, suffix: "", label: "Rating" },
+  { value: 100, suffix: "%", label: "Success" },
 ];
 
 const logoIconsList = [
@@ -207,7 +213,7 @@ const testimonials = [
     name: "Liboyy Store",
     mentions: "@liboyystore_26",
     review:
-      "Saya sangat puas bekerja sama dengan Azriel WebDev, seorang fullstack developer yang memiliki kemampuan teknis luar biasa. Ia berhasil membangun website top up games yang responsif, cepat, dan user-friendly, sekaligus mengintegrasikan layanan sosial media dengan sangat baik. Mulai dari perencanaan, pengembangan, hingga deployment, semuanya dikerjakan dengan detail dan profesional. Komunikasinya juga lancar, membuat proses kerja jadi efisien dan menyenangkan. Hasil akhirnya benar-benar melebihi ekspektasi!",
+      "Saya sangat puas bekerja sama dengan Azriel WebDev, seorang fullstack developer yang memiliki kemampuan teknis luar biasa. Ia berhasil membangun website top up games yang responsif, cepat, dan user-friendly, sekaligus mengintegrasikan layanan sosial media dengan sangat baik!",
     imgPath: "/images/fixlogoliboy.png",
   },
   {
@@ -221,7 +227,7 @@ const testimonials = [
     name: "Mbuutt Company",
     mentions: "@mbuuttcorp",
     review:
-      "Bekerja sama dalam pengembangan website sistem laundry ini merupakan pengalaman yang sangat profesional. Komitmen terhadap ketepatan waktu, kualitas hasil, serta perhatian terhadap setiap detail proyek sangat terlihat jelas. Dedikasi dan semangat tinggi dalam proses pengembangan memberikan nilai tambah yang signifikan. Kami merekomendasikan layanan ini bagi pihak yang ingin meningkatkan kualitas dan performa website mereka secara optimal.",
+      "Bekerja sama dalam pengembangan website sistem laundry ini merupakan pengalaman yang sangat profesional. Komitmen terhadap ketepatan waktu, kualitas hasil, serta perhatian terhadap setiap detail proyek sangat terlihat jelas.",
     imgPath: "/images/logombuuttT.png",
   },
   {
@@ -251,22 +257,26 @@ const socialImgs = [
   {
     name: "insta",
     url: "https://www.instagram.com/azrlrsdi_/",
-    imgPath: "/images/insta.png",
+    imgPath:
+      "https://cdnjs.cloudflare.com/ajax/libs/simple-icons/9.21.0/instagram.svg",
   },
   {
     name: "github",
     url: "https://github.com/AzrielRosadi",
-    imgPath: "/images/github_resized.png",
+    imgPath:
+      "https://cdnjs.cloudflare.com/ajax/libs/simple-icons/9.21.0/github.svg",
   },
   {
     name: "email",
     url: "mailto:azrlwebdev@gmail.com",
-    imgPath: "/images/email_icon.png",
+    imgPath:
+      "https://cdnjs.cloudflare.com/ajax/libs/simple-icons/9.21.0/gmail.svg",
   },
   {
     name: "linkedin",
     url: "https://www.linkedin.com/in/azriel-rosadi-aa2859343/",
-    imgPath: "/images/linkedin.png",
+    imgPath:
+      "https://cdnjs.cloudflare.com/ajax/libs/simple-icons/9.21.0/linkedin.svg",
   },
 ];
 
@@ -278,6 +288,7 @@ export {
   expCards,
   expLogos,
   testimonials,
+  testimonialStats,
   socialImgs,
   techStackIcons,
   techStackImgs,

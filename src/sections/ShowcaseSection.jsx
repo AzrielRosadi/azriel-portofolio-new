@@ -1,10 +1,11 @@
-// src/section/ShowcaseSection.jsx
 import { useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { useNavigate } from "react-router-dom";
 import { PinContainer } from "@/components/ui/3d-pin";
+import ProjectDetailPopup from "@/components/ProjectDetailPopup";
+import useProjectPopup from "@/hooks/useProjectPopup";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -15,13 +16,29 @@ const ShowcaseSection = () => {
   const project2 = useRef(null);
   const project3 = useRef(null);
 
+  // Menggunakan custom hook untuk popup functionality
+  const {
+    isPopupOpen,
+    selectedProject,
+    openPopup,
+    closePopup,
+    handleGithubClick,
+    handleLiveLinkClick,
+  } = useProjectPopup();
+
   // Data projects (hanya menampilkan 3 project terbaru)
   const projects = [
     {
       id: 1,
-      title: "Game top-up platform and social media services",
-      des: "Complete solution for top up your favorite games and boost social media with fast, safe, and reliable process. Get diamonds, coins, followers, and likes at the best price!",
+      title: "Platform top-up game dan layanan sosial media",
+      des: "Proyek ini menggunakan tech stack berupa React, TypeScript, TailwindCSS, dan React Query di frontend, Node.js, Express, dan Passport.js di backend, PostgreSQL dengan Drizzle ORM untuk database, serta Vite, Shadcn/UI, dan Framer Motion sebagai tools pendukung.",
       img: "/images/liboyneww.png",
+      popupImages: [
+        "/images/liboyneww.png",
+        "/images/trackingliboy.png",
+        "/images/detailliboyy.png",
+        "/images/adminliboyy.png",
+      ],
       iconLists: [
         "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
         "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
@@ -31,12 +48,21 @@ const ShowcaseSection = () => {
       ],
       githubLink: "https://github.com/AzrielRosadi/LiboyyStore.ID",
       liveLink: "https://github.com/AzrielRosadi/LiboyyStore.ID",
+      category: "web",
+      year: 2025,
     },
     {
       id: 2,
-      title: "Website Based Laundry System",
-      des: "Laundry Made Easy, Life Made Practical - Online booking, pick-up and delivery, real-time tracking",
+      title: "System Laundry berbasis Website",
+      des: "Proyek ini merupakan sistem laundry berbasis website yang menggunakan tech stack berupa Blade Template Engine dan TailwindCSS untuk frontend, Laravel 11 (PHP) dengan Laravel Breeze dan Laravel Sanctum untuk backend.",
       img: "/images/MbuuttProject.png",
+      popupImages: [
+        "/images/MbuuttProject.png",
+        "/images/strukmbuutt .png",
+        "/images/adminmbuutt.png",
+        "/images/editmbuutt.png",
+        "/images/ownermbuutt.png",
+      ],
       iconLists: [
         "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg",
         "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
@@ -46,12 +72,15 @@ const ShowcaseSection = () => {
       ],
       githubLink: "https://github.com/AzrielRosadi/Mbuutts-Laundry",
       liveLink: "https://mbuutt-laundry.infinityfreeapp.com/",
+      category: "web",
+      year: 2025,
     },
     {
       id: 3,
-      title: "AI SaaS Platform",
+      title: "Imaginify | AI SaaS Platform",
       des: "REAL Software-as-a-Service app with AI features and payments & credits system that you might even turn into a side income or business idea.",
       img: "/images/imaginifynew.png",
+      popupImages: ["/images/imaginifynew.png"],
       iconLists: [
         "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
         "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
@@ -105,27 +134,14 @@ const ShowcaseSection = () => {
     navigate("/projects");
   };
 
-  // Function to handle project click
-  const handleProjectClick = (projectId) => {
-    // Navigate to project detail page (optional)
-    navigate(`/project/${projectId}`);
-  };
-
-  // Function to handle GitHub link click
-  const handleGithubClick = (githubLink, e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (githubLink && githubLink !== "#") {
-      window.open(githubLink, "_blank", "noopener,noreferrer");
-    }
-  };
-
-  // Function to handle live site link click
-  const handleLiveLinkClick = (liveLink, e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (liveLink && liveLink !== "#") {
-      window.open(liveLink, "_blank", "noopener,noreferrer");
+  // Function to handle card click (redirect to GitHub or live link)
+  const handleCardClick = (project, e) => {
+    e.stopPropagation(); // Prevent PinContainer onClick
+    // Priority: live link first, then GitHub
+    const targetLink =
+      project.liveLink !== "#" ? project.liveLink : project.githubLink;
+    if (targetLink && targetLink !== "#") {
+      window.open(targetLink, "_blank", "noopener,noreferrer");
     }
   };
 
@@ -139,9 +155,9 @@ const ShowcaseSection = () => {
             ref={index === 0 ? project1 : index === 1 ? project2 : project3}
           >
             <PinContainer
-              title="View Project"
-              href={item.liveLink}
-              className="w-full"
+              title="Detail Project"
+              onClick={(e) => openPopup(item, e)}
+              className="w-full cursor-pointer"
               containerClassName="w-full h-full"
             >
               <div className="relative w-full">
@@ -187,7 +203,7 @@ const ShowcaseSection = () => {
                 {/* Original Card Content */}
                 <div
                   className="cursor-pointer"
-                  onClick={() => handleProjectClick(item.id)}
+                  onClick={(e) => handleCardClick(item, e)}
                 >
                   <div className="relative flex items-center justify-center w-full overflow-hidden h-[20vh] lg:h-[30vh] mb-6">
                     <div
@@ -297,6 +313,15 @@ const ShowcaseSection = () => {
           <span className="relative invisible">Load More</span>
         </button>
       </div>
+
+      {/* Project Detail Popup menggunakan komponen terpisah */}
+      <ProjectDetailPopup
+        isOpen={isPopupOpen}
+        project={selectedProject}
+        onClose={closePopup}
+        onGithubClick={handleGithubClick}
+        onLiveLinkClick={handleLiveLinkClick}
+      />
     </div>
   );
 };

@@ -27,15 +27,31 @@ import * as THREE from "three";
 extend({ MeshLineGeometry, MeshLineMaterial });
 
 export default function Lanyard({
-  position = [0, 0, 13],
-  gravity = [0, -40, 0], // Kembali ke nilai normal untuk gravitasi yang natural
-  ty = [0, -80, 0], // Kembali ke nilai normal
+  position = [0, 0, 30],
+  gravity = [0, -40, 0],
   fov = 20,
   transparent = true,
   startPhysics = false,
+  shouldDrop = false, // New prop
+  onDropComplete = null, // New prop
 }) {
-  // Gravitasi yang lebih natural dan stabil
-  const finalGravity = [ty[0], Math.max(ty[1], -50), ty[2]]; // Maksimal -50 untuk mencegah gravitasi terlalu kencang
+  const [hasDropped, setHasDropped] = useState(false);
+  const [isDropping, setIsDropping] = useState(false);
+
+  // Trigger drop animation when shouldDrop changes to true
+  useEffect(() => {
+    if (shouldDrop && !hasDropped && !isDropping) {
+      setIsDropping(true);
+      // Mark as dropped after a delay to allow the physics animation to complete
+      const timer = setTimeout(() => {
+        setHasDropped(true);
+        setIsDropping(false);
+        if (onDropComplete) onDropComplete();
+      }, 2000); // Adjust timing as needed
+
+      return () => clearTimeout(timer);
+    }
+  }, [shouldDrop, hasDropped, isDropping, onDropComplete]);
 
   return (
     <div className="relative z-0 w-full h-screen flex justify-center items-center transform scale-100 origin-center">
@@ -47,8 +63,13 @@ export default function Lanyard({
         }
       >
         <ambientLight intensity={Math.PI} />
-        <Physics gravity={finalGravity} timeStep={1 / 60}>
-          <Band startPhysics={startPhysics} />
+        <Physics gravity={gravity} timeStep={1 / 60}>
+          <Band
+            startPhysics={startPhysics}
+            shouldDrop={shouldDrop}
+            hasDropped={hasDropped}
+            isDropping={isDropping}
+          />
         </Physics>
         <Environment blur={0.75}>
           <Lightformer
@@ -85,7 +106,14 @@ export default function Lanyard({
   );
 }
 
-function Band({ maxSpeed = 40, minSpeed = 0, startPhysics = false }) {
+function Band({
+  maxSpeed = 30,
+  minSpeed = 0,
+  startPhysics = false,
+  shouldDrop = false,
+  hasDropped = false,
+  isDropping = false,
+}) {
   const band = useRef(),
     fixed = useRef(),
     j1 = useRef(),
@@ -97,20 +125,12 @@ function Band({ maxSpeed = 40, minSpeed = 0, startPhysics = false }) {
     rot = new THREE.Vector3(),
     dir = new THREE.Vector3();
 
-  // State management yang lebih stabil
-  const [isPhysicsStarted, setIsPhysicsStarted] = useState(false);
-  const [animationPhase, setAnimationPhase] = useState("idle");
-  const [isDragging, setIsDragging] = useState(false);
-  const [touchStart, setTouchStart] = useState(null);
-  const [isMobile, setIsMobile] = useState(true);
-
-  // Segment properties yang lebih stabil
   const segmentProps = {
     type: "dynamic",
     canSleep: true,
     colliders: false,
-    angularDamping: 8, // Ditingkatkan untuk stabilitas
-    linearDamping: 4, // Ditingkatkan untuk mengurangi oscillation
+    angularDamping: 4,
+    linearDamping: 4,
   };
 
   const { nodes, materials } = useGLTF(cardGLB);
@@ -130,7 +150,21 @@ function Band({ maxSpeed = 40, minSpeed = 0, startPhysics = false }) {
     () => typeof window !== "undefined" && window.innerWidth < 1024
   );
 
-  // Rope joints dengan konfigurasi yang lebih stabil
+  // Dynamic initial positions based on drop state
+  const getInitialPosition = (basePosition, shouldStartHigh) => {
+    if (shouldStartHigh && !hasDropped) {
+      return [basePosition[0], basePosition[1] + 15, basePosition[2]]; // Start 15 units higher
+    }
+    return basePosition;
+  };
+
+  const [initialPositions] = useState({
+    j1: getInitialPosition([0.5, 0, 0], shouldDrop),
+    j2: getInitialPosition([1, 0, 0], shouldDrop),
+    j3: getInitialPosition([1.5, 0, 0], shouldDrop),
+    card: getInitialPosition([2, 0, 0], shouldDrop),
+  });
+
   useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 1]);
   useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 1]);
@@ -139,101 +173,33 @@ function Band({ maxSpeed = 40, minSpeed = 0, startPhysics = false }) {
     [0, 1.5, 0],
   ]);
 
-  // Deteksi mobile device
+  // Handle drop animation trigger
   useEffect(() => {
-    const checkIsMobile = () => {
-      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-      const isMobileDevice =
-        /android|iphone|ipad|ipod|blackberry|ismobile|opera mini/i.test(
-          userAgent.toLowerCase()
-        );
-      const isTouchScreen =
-        "ontouchstart" in window || navigator.maxTouchPoints > 0;
-      setIsMobile(isMobileDevice || isTouchScreen);
-    };
-
-    checkIsMobile();
-  }, []);
-
-  // Physics animation controller yang lebih natural
-  useEffect(() => {
-    if (startPhysics && !isPhysicsStarted) {
-      setIsPhysicsStarted(true);
-      setAnimationPhase("dropping");
-
+    if (shouldDrop && !hasDropped && startPhysics) {
+      // Wake up all rigid bodies and give them initial velocity for natural drop
       setTimeout(() => {
-        if (card.current && j1.current && j2.current && j3.current) {
-          const startHeight = 12; // Tinggi yang lebih moderat
-          const baseX = 0;
-
-          // Set posisi awal dengan lebih natural
-          j1.current.setTranslation(
-            { x: baseX + 0.5, y: startHeight, z: 0 },
-            true
-          );
-          j2.current.setTranslation(
-            { x: baseX + 1, y: startHeight, z: 0 },
-            true
-          );
-          j3.current.setTranslation(
-            { x: baseX + 1.5, y: startHeight, z: 0 },
-            true
-          );
-          card.current.setTranslation(
-            { x: baseX + 2, y: startHeight, z: 0 },
-            true
-          );
-
-          // Reset velocity untuk start yang bersih
-          [j1, j2, j3, card].forEach((ref) => {
-            ref.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
-            ref.current.setAngvel({ x: 0, y: 0, z: 0 }, true);
-            ref.current?.wakeUp();
-          });
-
-          // Impulse yang lebih gentle untuk gerakan natural
-          setTimeout(() => {
-            card.current?.applyImpulse({ x: 0, y: -0.8, z: 0 }, true);
-          }, 150);
-
-          // Waktu settling yang lebih realistis
-          setTimeout(() => {
-            setAnimationPhase("settled");
-          }, 2500);
-        }
-      }, 100);
-    } else if (!startPhysics && isPhysicsStarted) {
-      setIsPhysicsStarted(false);
-      setAnimationPhase("idle");
-
-      if (card.current && j1.current && j2.current && j3.current) {
-        const resetHeight = 8;
-
-        // Reset posisi dengan smooth
-        [j1, j2, j3, card].forEach((ref, index) => {
-          const positions = [
-            { x: 0.5, y: resetHeight, z: 0 },
-            { x: 1, y: resetHeight, z: 0 },
-            { x: 1.5, y: resetHeight, z: 0 },
-            { x: 2, y: resetHeight, z: 0 },
-          ];
-
-          ref.current.setTranslation(positions[index], true);
-          ref.current.setLinvel({ x: 0, y: 0, z: 0 }, true);
-          ref.current.setAngvel({ x: 0, y: 0, z: 0 }, true);
-          ref.current?.sleep();
+        [j1, j2, j3, card].forEach((ref) => {
+          if (ref.current) {
+            ref.current.wakeUp();
+            // Add slight downward velocity and small random horizontal movement
+            const randomX = (Math.random() - 0.5) * 0.5;
+            ref.current.setLinvel({
+              x: randomX,
+              y: -1, // Initial downward velocity
+              z: 0,
+            });
+          }
         });
-      }
+      }, 100);
     }
-  }, [startPhysics, isPhysicsStarted]);
+  }, [shouldDrop, hasDropped, startPhysics]);
 
-  // Enhanced cursor management
   useEffect(() => {
-    if (hovered && !isMobile) {
+    if (hovered) {
       document.body.style.cursor = dragged ? "grabbing" : "grab";
       return () => void (document.body.style.cursor = "auto");
     }
-  }, [hovered, dragged, isMobile]);
+  }, [hovered, dragged]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -241,70 +207,9 @@ function Band({ maxSpeed = 40, minSpeed = 0, startPhysics = false }) {
     };
 
     window.addEventListener("resize", handleResize);
+
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-
-  // Touch event handlers yang lebih responsif
-  const handleTouchStart = (e) => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const rect = e.target.getBoundingClientRect();
-    const x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
-    const y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
-
-    setTouchStart({ x, y });
-    setIsDragging(true);
-
-    vec.set(x, y, 0.5);
-    const dragOffset = new THREE.Vector3()
-      .copy(vec)
-      .sub(vec.copy(card.current.translation()));
-    drag(dragOffset);
-  };
-
-  const handleTouchMove = (e) => {
-    e.preventDefault();
-    if (!isDragging || !touchStart) return;
-
-    const touch = e.touches[0];
-    const rect = e.target.getBoundingClientRect();
-    const x = ((touch.clientX - rect.left) / rect.width) * 2 - 1;
-    const y = -((touch.clientY - rect.top) / rect.height) * 2 + 1;
-
-    vec.set(x, y, 0.5);
-  };
-
-  const handleTouchEnd = (e) => {
-    e.preventDefault();
-    setIsDragging(false);
-    setTouchStart(null);
-    drag(false);
-  };
-
-  // Mouse event handlers
-  const handlePointerDown = (e) => {
-    e.stopPropagation();
-    if (e.pointerType === "touch") {
-      handleTouchStart(e);
-    } else {
-      e.target.setPointerCapture(e.pointerId);
-      drag(
-        new THREE.Vector3()
-          .copy(e.point)
-          .sub(vec.copy(card.current.translation()))
-      );
-    }
-  };
-
-  const handlePointerUp = (e) => {
-    e.stopPropagation();
-    if (e.pointerType === "touch") {
-      handleTouchEnd(e);
-    } else {
-      e.target.releasePointerCapture(e.pointerId);
-      drag(false);
-    }
-  };
 
   useFrame((state, delta) => {
     if (dragged) {
@@ -320,11 +225,6 @@ function Band({ maxSpeed = 40, minSpeed = 0, startPhysics = false }) {
     }
 
     if (fixed.current) {
-      // Lerping yang lebih smooth dan stabil
-      const speedMultiplier = animationPhase === "dropping" ? 0.6 : 1;
-      const adjustedMaxSpeed = maxSpeed * speedMultiplier;
-      const adjustedMinSpeed = minSpeed * speedMultiplier;
-
       [j1, j2].forEach((ref) => {
         if (!ref.current.lerped)
           ref.current.lerped = new THREE.Vector3().copy(
@@ -336,38 +236,18 @@ function Band({ maxSpeed = 40, minSpeed = 0, startPhysics = false }) {
         );
         ref.current.lerped.lerp(
           ref.current.translation(),
-          delta *
-            (adjustedMinSpeed +
-              clampedDistance * (adjustedMaxSpeed - adjustedMinSpeed))
+          delta * (minSpeed + clampedDistance * (maxSpeed - minSpeed))
         );
       });
 
-      // Update curve untuk lanyard (hanya jika tidak mobile)
-      if (!isMobile) {
-        curve.points[0].copy(j3.current.translation());
-        curve.points[1].copy(j2.current.lerped);
-        curve.points[2].copy(j1.current.lerped);
-        curve.points[3].copy(fixed.current.translation());
-        band.current.geometry.setPoints(curve.getPoints(32));
-      }
-
-      // Angular velocity yang lebih stabil
+      curve.points[0].copy(j3.current.translation());
+      curve.points[1].copy(j2.current.lerped);
+      curve.points[2].copy(j1.current.lerped);
+      curve.points[3].copy(fixed.current.translation());
+      band.current.geometry.setPoints(curve.getPoints(32));
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
-
-      if (dragged || isDragging) {
-        card.current.setAngvel({
-          x: ang.x * 0.9,
-          y: ang.y * 0.9,
-          z: ang.z * 0.9,
-        });
-      } else {
-        card.current.setAngvel({
-          x: ang.x * 0.7,
-          y: ang.y - rot.y * 0.15,
-          z: ang.z * 0.7,
-        });
-      }
+      card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
     }
   });
 
@@ -379,31 +259,39 @@ function Band({ maxSpeed = 40, minSpeed = 0, startPhysics = false }) {
       <group position={[0, 4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
         <RigidBody
-          position={[0.5, animationPhase === "dropping" ? 12 : 0, 0]}
+          position={
+            shouldDrop && !hasDropped ? [0.5, 15, 0] : initialPositions.j1
+          }
           ref={j1}
           {...segmentProps}
         >
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[1, animationPhase === "dropping" ? 12 : 0, 0]}
+          position={
+            shouldDrop && !hasDropped ? [1, 15, 0] : initialPositions.j2
+          }
           ref={j2}
           {...segmentProps}
         >
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[1.5, animationPhase === "dropping" ? 12 : 0, 0]}
+          position={
+            shouldDrop && !hasDropped ? [1.5, 15, 0] : initialPositions.j3
+          }
           ref={j3}
           {...segmentProps}
         >
           <BallCollider args={[0.1]} />
         </RigidBody>
         <RigidBody
-          position={[2, animationPhase === "dropping" ? 12 : 0, 0]}
+          position={
+            shouldDrop && !hasDropped ? [2, 15, 0] : initialPositions.card
+          }
           ref={card}
           {...segmentProps}
-          type={dragged || isDragging ? "kinematicPosition" : "dynamic"}
+          type={dragged ? "kinematicPosition" : "dynamic"}
         >
           <CuboidCollider args={[0.8, 1.125, 0.01]} />
           <group
@@ -411,15 +299,17 @@ function Band({ maxSpeed = 40, minSpeed = 0, startPhysics = false }) {
             position={[0, -1.2, -0.05]}
             onPointerOver={() => hover(true)}
             onPointerOut={() => hover(false)}
-            onPointerUp={handlePointerUp}
-            onPointerDown={handlePointerDown}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            style={{
-              touchAction: "none",
-              userSelect: "none",
-            }}
+            onPointerUp={(e) => (
+              e.target.releasePointerCapture(e.pointerId), drag(false)
+            )}
+            onPointerDown={(e) => (
+              e.target.setPointerCapture(e.pointerId),
+              drag(
+                new THREE.Vector3()
+                  .copy(e.point)
+                  .sub(vec.copy(card.current.translation()))
+              )
+            )}
           >
             <mesh geometry={nodes.card.geometry}>
               <meshPhysicalMaterial
@@ -440,21 +330,18 @@ function Band({ maxSpeed = 40, minSpeed = 0, startPhysics = false }) {
           </group>
         </RigidBody>
       </group>
-      {/* Lanyard hanya ditampilkan jika bukan mobile */}
-      {!isMobile && (
-        <mesh ref={band}>
-          <meshLineGeometry />
-          <meshLineMaterial
-            color="white"
-            depthTest={false}
-            resolution={[1000, 1000]}
-            useMap
-            map={texture}
-            repeat={[-4, 1]}
-            lineWidth={1}
-          />
-        </mesh>
-      )}
+      <mesh ref={band}>
+        <meshLineGeometry />
+        <meshLineMaterial
+          color="white"
+          depthTest={false}
+          resolution={isSmall ? [1000, 2000] : [1000, 1000]}
+          useMap
+          map={texture}
+          repeat={[-4, 1]}
+          lineWidth={1}
+        />
+      </mesh>
     </>
   );
 }

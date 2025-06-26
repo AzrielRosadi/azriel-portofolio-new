@@ -5,7 +5,7 @@ import { Points, PointMaterial } from "@react-three/drei";
 const StarBackground = (props) => {
   const ref = useRef();
 
-  // Generate bintang secara manual
+  // Generate bintang secara manual dengan lebih banyak variasi
   const [sphere] = useState(() => {
     const positions = new Float32Array(10000 * 3);
     for (let i = 0; i < 5000 * 3; i += 3) {
@@ -32,11 +32,11 @@ const StarBackground = (props) => {
       <Points ref={ref} positions={sphere} stride={3} frustumCulled {...props}>
         <PointMaterial
           transparent
-          color="#8b5cf6" // Warna ungu
-          size={0.003} // Ukuran lebih kecil
+          color="#8b5cf6" // Warna ungu konsisten dengan SplashScreen
+          size={0.003}
           sizeAttenuation={true}
           depthWrite={false}
-          opacity={0.6} // Transparansi untuk efek subtle
+          opacity={0.6}
         />
       </Points>
     </group>
@@ -48,15 +48,26 @@ const StarsCanvas = () => {
 
   return (
     <div
-      className="w-full h-full fixed inset-0 pointer-events-none"
+      className="stars-canvas"
       style={{
-        zIndex: 1, // Z-index lebih rendah
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        zIndex: 1,
         background: "transparent",
+        pointerEvents: "none",
+        opacity: 1,
+        transition: "opacity 1s ease-in-out",
       }}
     >
       <Canvas
         camera={{ position: [0, 0, 1] }}
-        style={{ background: "transparent" }}
+        style={{
+          background: "transparent",
+          filter: "brightness(1.2) saturate(1.3)", // Efek filter konsisten dengan SplashScreen
+        }}
       >
         <Suspense fallback={null}>
           <StarBackground />

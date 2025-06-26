@@ -5,6 +5,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { useNavigate } from "react-router-dom";
 import { PinContainer } from "@/components/ui/3d-pin";
+import ProjectDetailPopup from "@/components/ProjectDetailPopup";
+import useProjectPopup from "@/hooks/useProjectPopup";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,6 +15,16 @@ const AllProjects = () => {
   const sectionRef = useRef(null);
   const [filter, setFilter] = useState("all");
 
+  // Use the popup hook
+  const {
+    isPopupOpen,
+    selectedProject,
+    openPopup,
+    closePopup,
+    handleGithubClick,
+    handleLiveLinkClick,
+  } = useProjectPopup();
+
   // Data lengkap semua projects
   const allProjects = [
     {
@@ -20,6 +32,12 @@ const AllProjects = () => {
       title: "Platform top-up game dan layanan sosial media",
       des: "Proyek ini menggunakan tech stack berupa React, TypeScript, TailwindCSS, dan React Query di frontend, Node.js, Express, dan Passport.js di backend, PostgreSQL dengan Drizzle ORM untuk database, serta Vite, Shadcn/UI, dan Framer Motion sebagai tools pendukung.",
       img: "/images/liboyneww.png",
+      popupImages: [
+        "/images/liboyneww.png",
+        "/images/trackingliboy.png",
+        "/images/detailliboyy.png",
+        "/images/adminliboyy.png",
+      ],
       iconLists: [
         "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
         "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg",
@@ -37,6 +55,13 @@ const AllProjects = () => {
       title: "System Laundry berbasis Website",
       des: "Proyek ini merupakan sistem laundry berbasis website yang menggunakan tech stack berupa Blade Template Engine dan TailwindCSS untuk frontend, Laravel 11 (PHP) dengan Laravel Breeze dan Laravel Sanctum untuk backend.",
       img: "/images/MbuuttProject.png",
+      popupImages: [
+        "/images/MbuuttProject.png",
+        "/images/strukmbuutt .png",
+        "/images/adminmbuutt.png",
+        "/images/editmbuutt.png",
+        "/images/ownermbuutt.png",
+      ],
       iconLists: [
         "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg",
         "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
@@ -51,7 +76,7 @@ const AllProjects = () => {
     },
     {
       id: 3,
-      title: "AI SaaS Platform",
+      title: "Imaginify | AI SaaS Platform",
       des: "REAL Software-as-a-Service app with AI features and payments & credits system that you might even turn into a side income or business idea.",
       img: "/images/imaginifynew.png",
       iconLists: [
@@ -88,6 +113,14 @@ const AllProjects = () => {
       title: "Mechstrom: War Zone",
       des: "Proyek ini merupakan pembuatan game 3D sederhana menggunakan Unity Engine dan bahasa C#, dengan memanfaatkan asset gratis untuk pembelajaran dan pengembangan gameplay dasar.",
       img: "/images/gamesslandscape.png",
+      popupImages: [
+        "/images/Game.png",
+        "/images/Game1.png",
+        "/images/Game2.png",
+        "/images/Game3.png",
+        "/images/Game4.png",
+        "/images/Game5.png",
+      ],
       iconLists: [
         "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/unity/unity-original.svg",
         "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg",
@@ -95,7 +128,7 @@ const AllProjects = () => {
         "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/stripe.svg",
         "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/stripe.svg",
       ],
-      githubLink: "https://github.com/username/mechstrom",
+      githubLink: "#",
       liveLink: "#", // Untuk game yang tidak ada live demo
       category: "game",
       year: 2024,
@@ -119,7 +152,7 @@ const AllProjects = () => {
     },
     {
       id: 7,
-      title: "Games Pacman",
+      title: "Games Pacman - Classic Arcade",
       des: "Pac-Man is a classic arcade game created by Toru Iwatani of Namco and first released in 1980 in Japan.",
       img: "/images/pacman.png",
       iconLists: [
@@ -136,7 +169,7 @@ const AllProjects = () => {
     },
     {
       id: 8,
-      title: "Games Tetris",
+      title: "Games Tetris - Classic Puzzle",
       des: "Tetris is a puzzle game created by Alexey Pajitnov, a Russian programmer, in 1984 at the Soviet Academy of Sciences.",
       img: "/images/tetris.png",
       iconLists: [
@@ -234,25 +267,41 @@ const AllProjects = () => {
     }, 100);
   };
 
-  const handleProjectClick = (projectId) => {
-    navigate(`/project/${projectId}`);
-  };
+  // PERBAIKAN: Function untuk handle project click - redirect ke live link instead of popup
+  const handleProjectClick = (project, e) => {
+    // Pastikan event tidak bubbling ke parent elements
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
 
-  // Function to handle GitHub link click
-  const handleGithubClick = (githubLink, e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (githubLink && githubLink !== "#") {
-      window.open(githubLink, "_blank", "noopener,noreferrer");
+    console.log("Project clicked:", project.title); // Debug log
+
+    // Redirect ke live link jika tersedia
+    if (project.liveLink && project.liveLink !== "#") {
+      window.open(project.liveLink, "_blank", "noopener,noreferrer");
+    } else {
+      // Jika live link tidak tersedia, buka popup sebagai fallback
+      openPopup(project);
     }
   };
 
-  // Function to handle live site link click
-  const handleLiveLinkClick = (liveLink, e) => {
-    e.stopPropagation();
-    e.preventDefault();
-    if (liveLink && liveLink !== "#") {
-      window.open(liveLink, "_blank", "noopener,noreferrer");
+  // ALTERNATIF 1: Jika Anda ingin selalu redirect ke GitHub jika live link tidak tersedia
+  const handleProjectClickAlternative1 = (project, e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    console.log("Project clicked:", project.title);
+
+    // Prioritas: Live Link -> GitHub -> Popup
+    if (project.liveLink && project.liveLink !== "#") {
+      window.open(project.liveLink, "_blank", "noopener,noreferrer");
+    } else if (project.githubLink && project.githubLink !== "#") {
+      window.open(project.githubLink, "_blank", "noopener,noreferrer");
+    } else {
+      openPopup(project);
     }
   };
 
@@ -299,17 +348,19 @@ const AllProjects = () => {
                 key={item.id}
               >
                 <PinContainer
-                  title="View Project"
-                  href={item.liveLink} // ✅ Fixed: Changed from project.liveLink to item.liveLink
+                  title="Detail Project"
+                  onClick={(e) => openPopup(item, e)}
                   className="w-full"
                   containerClassName="w-full h-full"
                 >
                   <div className="relative w-full">
-                    {/* GitHub and Live Link Icons - Same as ShowcaseSection */}
+                    {/* GitHub and Live Link Icons - PERBAIKAN: Gunakan handler yang sudah diperbaiki */}
                     <div className="absolute top-2 right-2 z-20 flex gap-2">
                       {/* GitHub Icon */}
                       <button
-                        onClick={(e) => handleGithubClick(item.githubLink, e)}
+                        onClick={(e) =>
+                          handleCardGithubClick(item.githubLink, e)
+                        }
                         className="p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-purple-500/50 hover:bg-purple-500/20 transition-all duration-200 group"
                         title="View on GitHub"
                       >
@@ -324,7 +375,9 @@ const AllProjects = () => {
 
                       {/* Live Link Icon */}
                       <button
-                        onClick={(e) => handleLiveLinkClick(item.liveLink, e)}
+                        onClick={(e) =>
+                          handleCardLiveLinkClick(item.liveLink, e)
+                        }
                         className="p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-purple-500/50 hover:bg-purple-500/20 transition-all duration-200 group"
                         title="View Live Site"
                         disabled={item.liveLink === "#"}
@@ -346,10 +399,17 @@ const AllProjects = () => {
                       </button>
                     </div>
 
-                    {/* Original Card Content - Same structure as ShowcaseSection */}
+                    {/* PERBAIKAN: Project Content - Tambahkan proper event handling */}
                     <div
-                      className="cursor-pointer"
-                      onClick={() => handleProjectClick(item.id)}
+                      className="cursor-pointer select-none"
+                      onClick={(e) => handleProjectClick(item, e)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          handleProjectClick(item, e);
+                        }
+                      }}
                     >
                       {/* Project Image dengan style yang sama seperti ShowcaseSection */}
                       <div className="relative flex items-center justify-center w-full overflow-hidden h-[20vh] lg:h-[30vh] mb-6">
@@ -477,6 +537,15 @@ const AllProjects = () => {
           </button>
         </div>
       </div>
+
+      {/* PERBAIKAN: Project Detail Popup - Pastikan prop yang benar dikirim */}
+      <ProjectDetailPopup
+        isOpen={isPopupOpen}
+        project={selectedProject}
+        onClose={closePopup}
+        onGithubClick={handleGithubClick}
+        onLiveLinkClick={handleLiveLinkClick}
+      />
     </div>
   );
 };

@@ -14,29 +14,79 @@ const Contact = () => {
   const [isLanyardVisible, setIsLanyardVisible] = useState(false);
   const [shouldStartPhysics, setShouldStartPhysics] = useState(false);
 
+  // New states untuk drop animation
+  const [shouldDropLanyard, setShouldDropLanyard] = useState(false);
+  const [hasLanyardDropped, setHasLanyardDropped] = useState(false);
+
   const [form, setForm] = useState({ name: "", email: "", message: "" });
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
+          // Form animation
           setIsFormVisible(true);
           setIsLanyardVisible(true);
 
-          setTimeout(() => {
+          // Lanyard drop sequence
+          if (!hasLanyardDropped) {
+            // Small delay before starting the drop animation
+            setTimeout(() => {
+              setShouldDropLanyard(true);
+              setShouldStartPhysics(true);
+            }, 200);
+
+            // Mark as dropped after animation completes
+            setTimeout(() => {
+              setHasLanyardDropped(true);
+            }, 2500);
+          } else {
+            // Jika sudah pernah drop, langsung show tanpa animasi drop lagi
             setShouldStartPhysics(true);
-          }, 300);
+          }
         } else {
+          // Reset visibility when out of view
           setIsFormVisible(false);
           setIsLanyardVisible(false);
           setShouldStartPhysics(false);
+          // Note: Tidak reset shouldDropLanyard dan hasLanyardDropped
+          // agar tidak drop lagi ketika kembali ke section
         }
       },
-      { threshold: 0.3 }
+      {
+        threshold: 0.2, // Trigger lebih awal untuk animasi yang lebih smooth
+        rootMargin: "-50px 0px", // Offset untuk timing yang lebih baik
+      }
     );
 
     if (sectionRef.current) observer.observe(sectionRef.current);
     return () => observer.disconnect();
+  }, [hasLanyardDropped]);
+
+  // Global trigger function untuk navbar
+  useEffect(() => {
+    window.triggerLanyardDrop = () => {
+      setIsLanyardVisible(true);
+      setShouldDropLanyard(true);
+      setShouldStartPhysics(true);
+
+      // Scroll ke section jika belum terlihat
+      if (sectionRef.current) {
+        sectionRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+
+      // Mark as dropped
+      setTimeout(() => {
+        setHasLanyardDropped(true);
+      }, 2500);
+    };
+
+    return () => {
+      delete window.triggerLanyardDrop;
+    };
   }, []);
 
   const handleChange = (e) => {
@@ -60,6 +110,11 @@ const Contact = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleLanyardDropComplete = () => {
+    console.log("Lanyard drop animation completed!");
+    setHasLanyardDropped(true);
   };
 
   return (
@@ -175,10 +230,12 @@ const Contact = () => {
             <div className="w-full h-full hover:cursor-grab rounded-xl">
               <Lanyard
                 position={[0, 0, 13]}
-                ty={[0, -80, 0]}
+                gravity={[0, -40, 0]} // Menggunakan gravity dari props
                 startPhysics={shouldStartPhysics}
                 fov={20}
                 transparent={true}
+                shouldDrop={shouldDropLanyard} // New prop
+                onDropComplete={handleLanyardDropComplete} // New prop
               />
             </div>
           </div>
