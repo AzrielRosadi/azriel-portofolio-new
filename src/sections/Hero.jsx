@@ -1,6 +1,5 @@
 import AnimatedCounter from "../components/AnimatedCounter";
 import Button from "../components/Button";
-import AbstractSymbol from "../components/AbstractSymbol"; // Import komponen baru
 import { words } from "../constants/index";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -26,7 +25,7 @@ const Hero = () => {
   });
 
   return (
-    <section id="hero" className="relative overflow-hidden min-h-screen pt-20">
+    <section id="hero" className="relative overflow-hidden">
       <div className="absolute top-0 left-0 z-10">
         <img src="/images/bg.png" alt="background" />
       </div>
@@ -73,16 +72,13 @@ const Hero = () => {
 
           {/* SCROLL VELOCITY - BALANCED SMOOTH & FAST SETTINGS */}
           <div className="relative w-screen -mx-[50vw] left-1/2 overflow-x-visible overflow-y-visible py-4 mt-10">
-            {/* Mobile Symbol - positioned in the center of scroll text */}
-            <div className="md:hidden absolute inset-0 flex items-center justify-center z-20">
-              <AbstractSymbol isMobile={true} />
-            </div>
-
             <ScrollVelocity
               texts={["FULLSTACK JAVASCRIPT ENGINEER | JUNIOR WEB DEVELOPMENT"]}
-              velocity={50}
-              damping={40}
-              stiffness={500}
+              velocity={50} // Nilai yang reasonable dan pasti bergerak
+              // Balanced Spring Configuration
+              damping={40} // Smooth tapi tidak terlalu lambat
+              stiffness={500} // Responsive
+              // Velocity Mapping yang proven work
               velocityMapping={{ input: [0, 1000], output: [0, 6] }}
               parallaxClassName="relative w-auto overflow-visible"
               scrollerClassName="inline-block whitespace-nowrap text-center"
@@ -93,29 +89,32 @@ const Hero = () => {
                 lineHeight: "1.2",
                 color: "rgba(245, 245, 245, 0.3)",
               }}
+              // Balanced Momentum & Acceleration
               enableMomentum={true}
-              momentumDecay={0.92}
-              accelerationFactor={4.0}
-              maxMomentumVelocity={300}
-              smoothingFactor={0.2}
-              easeInOutPower={2}
-              naturalDelay={0.01}
+              momentumDecay={0.92} // Decay yang reasonable
+              accelerationFactor={4.0} // Tidak terlalu ekstrem
+              maxMomentumVelocity={300} // Speed yang reasonable
+              // Smooth tapi tidak terlalu lambat
+              smoothingFactor={0.2} // Nilai yang pasti bekerja
+              easeInOutPower={2} // Standard easing
+              naturalDelay={0.01} // Delay minimal
+              // Smooth Skew Effect yang pasti terlihat
               skewDirection="auto"
-              maxSkew={25}
-              skewSensitivity={0.015}
-              maxShift={6}
-              shiftSensitivity={0.01}
+              maxSkew={25} // Nilai yang reasonable
+              skewSensitivity={0.015} // Sensitivity yang terlihat
+              maxShift={6} // Shift yang subtle tapi terlihat
+              shiftSensitivity={0.01} // Sensitivity yang terlihat
+              // Transform Origin
               skewOrigin="center"
             />
           </div>
         </header>
 
-        {/* RIGHT: ABSTRACT SYMBOL - Desktop only with proper height constraint */}
-        <figure className="hidden md:flex items-center justify-center h-[calc(100vh-120px)] max-h-[600px]">
+        {/* <figure>
           <div className="hero-3d-layout">
-            <AbstractSymbol />
+            <Globe />
           </div>
-        </figure>
+        </figure> */}
       </div>
       <AnimatedCounter />
     </section>
