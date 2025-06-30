@@ -262,6 +262,27 @@ const SplashScreen = ({ onComplete }) => {
           z-index: -1;
         }
 
+        .white-text {
+          color: white;
+          text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .white-text-glow {
+          position: relative;
+          color: white;
+        }
+
+        .white-text-glow::before {
+          content: attr(data-text);
+          position: absolute;
+          top: 0;
+          left: 0;
+          color: white;
+          filter: blur(8px);
+          opacity: 0.7;
+          z-index: -1;
+        }
+
         .splash-title-letter {
           transition: all 0.3s ease;
         }
@@ -382,7 +403,7 @@ const SplashScreen = ({ onComplete }) => {
                   stage >= 1 ? "splash-logo-active" : ""
                 }`}
               >
-                {/* Letter A with enhanced effects */}
+                {/* Letter A with enhanced effects - kept as gradient */}
                 <div className="splash-letter-container">
                   <div
                     className={`splash-letter-a gradient-text-glow ${
@@ -438,7 +459,7 @@ const SplashScreen = ({ onComplete }) => {
               </div>
             </div>
 
-            {/* Enhanced Text Animation with Gradient */}
+            {/* Enhanced Text Animation - Only AZRL | WEBDEV with gradient */}
             <div
               className={`splash-text ${
                 stage >= 2 ? "splash-text-active" : ""
@@ -492,22 +513,21 @@ const SplashScreen = ({ onComplete }) => {
                 </span>
               </h1>
               <p
-                className={`splash-subtitle gradient-text-glow ${
+                className={`splash-subtitle white-text-glow ${
                   stage >= 3 ? "splash-subtitle-active" : ""
                 }`}
                 data-text="Junior Web Development"
                 style={{
                   fontSize: "1.2rem",
                   fontWeight: "500",
+                  color: "white",
                 }}
               >
-                <span className="animated-gradient">
-                  Junior Web Development
-                </span>
+                Junior Web Development
               </p>
             </div>
 
-            {/* Enhanced Loading Animation */}
+            {/* Enhanced Loading Animation - changed to white text */}
             <div
               className={`splash-loading ${
                 stage >= 3 ? "splash-loading-active" : ""
@@ -538,14 +558,15 @@ const SplashScreen = ({ onComplete }) => {
                 ))}
               </div>
               <p
-                className="splash-loading-text gradient-text-glow"
+                className="splash-loading-text white-text-glow"
                 data-text="Loading Experience..."
                 style={{
                   fontSize: "1rem",
                   fontWeight: "500",
+                  color: "white",
                 }}
               >
-                <span className="animated-gradient">Loading Experience...</span>
+                Loading Experience...
               </p>
             </div>
 
