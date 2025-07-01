@@ -11,7 +11,7 @@ const TestimonialCard = ({ testimonial, isActive }) => (
   >
     <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 h-full hover:bg-white/10 transition-all duration-300">
       {/* Quote Icon */}
-      <Quote className="text-purple-400 mb-4 opacity-60" size={20} />
+      <Quote className="text-[#00F0FF] mb-4 opacity-60" size={20} />
 
       {/* Review Text */}
       <p className="text-gray-300 leading-relaxed mb-6 text-sm line-clamp-4">
@@ -30,13 +30,13 @@ const TestimonialCard = ({ testimonial, isActive }) => (
         <img
           src={testimonial.imgPath}
           alt={testimonial.name}
-          className="w-10 h-10 rounded-full object-cover border-2 border-purple-500/30"
+          className="w-10 h-10 rounded-full object-cover border-2 border-[#5200FF]/30"
         />
         <div className="min-w-0 flex-1">
           <h4 className="font-semibold text-white text-sm truncate">
             {testimonial.name}
           </h4>
-          <p className="text-purple-400 text-xs opacity-80 truncate">
+          <p className="text-[#FF2DF7] text-xs opacity-80 truncate">
             {testimonial.mentions}
           </p>
         </div>
@@ -129,9 +129,17 @@ const Testimonials = () => {
                 onClick={() => setCurrentIndex(index)}
                 className={`h-1 rounded-full transition-all duration-300 ${
                   index === currentIndex
-                    ? "bg-purple-400 w-8"
+                    ? "w-8"
                     : "bg-white/20 w-2 hover:bg-white/40"
                 }`}
+                style={
+                  index === currentIndex
+                    ? {
+                        background:
+                          "linear-gradient(90deg, #00F0FF 0%, #5200FF 48%, #FF2DF7 100%)",
+                      }
+                    : {}
+                }
               />
             ))}
           </div>
@@ -145,7 +153,16 @@ const Testimonials = () => {
                 key={index}
                 className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4"
               >
-                <div className="text-xl md:text-2xl font-bold text-purple-400 mb-1">
+                <div
+                  className="text-xl md:text-2xl font-bold mb-1"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, #00F0FF 0%, #5200FF 48%, #FF2DF7 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
                   {stat.value}
                   {stat.suffix}
                 </div>

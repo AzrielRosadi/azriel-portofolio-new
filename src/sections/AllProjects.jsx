@@ -93,6 +93,23 @@ const AllProjects = () => {
     },
     {
       id: 4,
+      title: "DOML | AI Marketing Optimized Reach",
+      des: "This website is a prototype landing page for DOML, a marketing platform concept based on Artificial Intelligence (AI). This page is designed to convey DOML's vision, benefits, and potential features to potential users, business partners, or investors.",
+      img: "/images/Frame 3.png",
+      iconLists: [
+        "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+        "https://cdn.jsdelivr.net/gh/gilbarbara/logos/logos/tailwindcss-icon.svg",
+        "https://lucide.dev/logo.svg",
+        "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postcss/postcss-original.svg",
+        "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/stripe.svg",
+      ],
+      githubLink: "https://github.com/AzrielRosadi/DOML-AZRL",
+      liveLink: "https://doml-azrl.vercel.app/",
+      category: "web",
+      year: 2025,
+    },
+    {
+      id: 5,
       title: "Citra Negara Website",
       des: "Platform pencarian film dan serial TV yang comprehensive dengan memanfaatkan database IMDb melalui API integration.",
       img: "/images/cnhome.png",
@@ -109,7 +126,7 @@ const AllProjects = () => {
       year: 2024,
     },
     {
-      id: 5,
+      id: 6,
       title: "Mechstrom: War Zone",
       des: "Proyek ini merupakan pembuatan game 3D sederhana menggunakan Unity Engine dan bahasa C#, dengan memanfaatkan asset gratis untuk pembelajaran dan pengembangan gameplay dasar.",
       img: "/images/gamesslandscape.png",
@@ -134,7 +151,7 @@ const AllProjects = () => {
       year: 2024,
     },
     {
-      id: 6,
+      id: 7,
       title: "Tools Scraper - GUI Application",
       des: "A GUI-based desktop application specifically designed to automatically and efficiently scrape product data from the Shopee e-commerce platform.",
       img: "/images/scrapperr.png",
@@ -151,7 +168,7 @@ const AllProjects = () => {
       year: 2024,
     },
     {
-      id: 7,
+      id: 8,
       title: "Games Pacman - Classic Arcade",
       des: "Pac-Man is a classic arcade game created by Toru Iwatani of Namco and first released in 1980 in Japan.",
       img: "/images/pacman.png",
@@ -168,7 +185,7 @@ const AllProjects = () => {
       year: 2023,
     },
     {
-      id: 8,
+      id: 9,
       title: "Games Tetris - Classic Puzzle",
       des: "Tetris is a puzzle game created by Alexey Pajitnov, a Russian programmer, in 1984 at the Soviet Academy of Sciences.",
       img: "/images/tetris.png",
@@ -185,7 +202,7 @@ const AllProjects = () => {
       year: 2023,
     },
     {
-      id: 9,
+      id: 10,
       title: "Search Film - IMDb API",
       des: "Platform pencarian film dan serial TV yang comprehensive dengan memanfaatkan database IMDb melalui API integration.",
       img: "/images/film.png",
