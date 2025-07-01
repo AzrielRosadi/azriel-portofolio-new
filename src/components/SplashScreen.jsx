@@ -317,6 +317,329 @@ const SplashScreen = ({ onComplete }) => {
           -webkit-text-fill-color: transparent;
           background-clip: text;
         }
+
+        /* Mobile Responsive Styles */
+        .splash-container {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 9999;
+          background: #000000;
+        }
+
+        .splash-content {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 20px;
+          box-sizing: border-box;
+        }
+
+        .splash-content-center {
+          text-align: center;
+          width: 100%;
+          max-width: 800px;
+        }
+
+        .splash-logo-container {
+          position: relative;
+          margin-bottom: 30px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .splash-logo {
+          transform: ${stage >= 1 ? "scale(1)" : "scale(0.8)"};
+          opacity: ${stage >= 1 ? "1" : "0"};
+          transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .splash-letter-container {
+          position: relative;
+          display: inline-block;
+        }
+
+        .splash-letter-a {
+          font-size: clamp(3rem, 8vw, 5rem);
+          font-weight: bold;
+          line-height: 1;
+          transition: all 0.5s ease;
+        }
+
+        .splash-orbit-container {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: clamp(80px, 15vw, 120px);
+          height: clamp(80px, 15vw, 120px);
+        }
+
+        .splash-orbit-dot {
+          position: absolute;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #00f0ff;
+          opacity: ${stage >= 2 ? "1" : "0"};
+          transition: opacity 0.5s ease;
+        }
+
+        .splash-ring {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: clamp(100px, 18vw, 140px);
+          height: clamp(100px, 18vw, 140px);
+          border: 2px solid transparent;
+          border-radius: 50%;
+          transition: all 1s ease;
+        }
+
+        .splash-text {
+          margin-bottom: 40px;
+          opacity: ${stage >= 2 ? "1" : "0"};
+          transform: ${stage >= 2 ? "translateY(0)" : "translateY(20px)"};
+          transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .splash-title {
+          font-size: clamp(1.8rem, 6vw, 3rem);
+          font-weight: bold;
+          line-height: 1.2;
+          margin: 0 0 15px 0;
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          align-items: center;
+          gap: 0.2em;
+        }
+
+        .splash-title-azrl,
+        .splash-title-webdev {
+          display: flex;
+        }
+
+        .splash-title-separator {
+          margin: 0 0.3em;
+        }
+
+        .splash-subtitle {
+          font-size: clamp(1rem, 3vw, 1.2rem);
+          font-weight: 500;
+          margin: 0;
+          opacity: ${stage >= 3 ? "1" : "0"};
+          transform: ${stage >= 3 ? "translateY(0)" : "translateY(15px)"};
+          transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+          color: white;
+        }
+
+        .splash-loading {
+          margin-top: 30px;
+          opacity: ${stage >= 3 ? "1" : "0"};
+          transform: ${stage >= 3 ? "translateY(0)" : "translateY(15px)"};
+          transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.5s;
+        }
+
+        .splash-loading-dots {
+          display: flex;
+          justify-content: center;
+          gap: 8px;
+          margin-bottom: 15px;
+        }
+
+        .splash-loading-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          animation: ${stage >= 3 ? "pulse" : "none"} 1.4s ease-in-out infinite;
+        }
+
+        .splash-loading-text {
+          font-size: clamp(0.9rem, 2.5vw, 1rem);
+          font-weight: 500;
+          margin: 0;
+          color: white;
+        }
+
+        .splash-progress-container {
+          position: fixed;
+          bottom: 30px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: min(300px, 80vw);
+          height: 4px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 2px;
+          overflow: hidden;
+          opacity: ${stage >= 1 ? "1" : "0"};
+          transition: opacity 0.5s ease;
+        }
+
+        .splash-progress-bar {
+          height: 100%;
+          border-radius: 2px;
+          transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes pulse {
+          0%,
+          80%,
+          100% {
+            transform: scale(0.8);
+            opacity: 0.5;
+          }
+          40% {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+
+        @keyframes orbit-0 {
+          0% {
+            transform: rotate(0deg) translateX(40px) rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg) translateX(40px) rotate(-360deg);
+          }
+        }
+
+        @keyframes orbit-1 {
+          0% {
+            transform: rotate(72deg) translateX(40px) rotate(-72deg);
+          }
+          100% {
+            transform: rotate(432deg) translateX(40px) rotate(-432deg);
+          }
+        }
+
+        @keyframes orbit-2 {
+          0% {
+            transform: rotate(144deg) translateX(40px) rotate(-144deg);
+          }
+          100% {
+            transform: rotate(504deg) translateX(40px) rotate(-504deg);
+          }
+        }
+
+        @keyframes orbit-3 {
+          0% {
+            transform: rotate(216deg) translateX(40px) rotate(-216deg);
+          }
+          100% {
+            transform: rotate(576deg) translateX(40px) rotate(-576deg);
+          }
+        }
+
+        @keyframes orbit-4 {
+          0% {
+            transform: rotate(288deg) translateX(40px) rotate(-288deg);
+          }
+          100% {
+            transform: rotate(648deg) translateX(40px) rotate(-648deg);
+          }
+        }
+
+        /* Media Queries untuk fine-tuning */
+        @media (max-width: 480px) {
+          .splash-content {
+            padding: 15px;
+          }
+
+          .splash-logo-container {
+            margin-bottom: 25px;
+          }
+
+          .splash-text {
+            margin-bottom: 30px;
+          }
+
+          .splash-title-separator {
+            margin: 0 0.2em;
+          }
+
+          .splash-orbit-container {
+            width: 70px;
+            height: 70px;
+          }
+
+          .splash-ring {
+            width: 90px;
+            height: 90px;
+          }
+
+          .splash-orbit-dot {
+            width: 4px;
+            height: 4px;
+          }
+
+          @keyframes orbit-0 {
+            0% {
+              transform: rotate(0deg) translateX(35px) rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg) translateX(35px) rotate(-360deg);
+            }
+          }
+
+          @keyframes orbit-1 {
+            0% {
+              transform: rotate(72deg) translateX(35px) rotate(-72deg);
+            }
+            100% {
+              transform: rotate(432deg) translateX(35px) rotate(-432deg);
+            }
+          }
+
+          @keyframes orbit-2 {
+            0% {
+              transform: rotate(144deg) translateX(35px) rotate(-144deg);
+            }
+            100% {
+              transform: rotate(504deg) translateX(35px) rotate(-504deg);
+            }
+          }
+
+          @keyframes orbit-3 {
+            0% {
+              transform: rotate(216deg) translateX(35px) rotate(-216deg);
+            }
+            100% {
+              transform: rotate(576deg) translateX(35px) rotate(-576deg);
+            }
+          }
+
+          @keyframes orbit-4 {
+            0% {
+              transform: rotate(288deg) translateX(35px) rotate(-288deg);
+            }
+            100% {
+              transform: rotate(648deg) translateX(35px) rotate(-648deg);
+            }
+          }
+        }
+
+        @media (max-width: 320px) {
+          .splash-orbit-container {
+            width: 60px;
+            height: 60px;
+          }
+
+          .splash-ring {
+            width: 80px;
+            height: 80px;
+          }
+        }
       `}</style>
 
       <div
@@ -334,69 +657,14 @@ const SplashScreen = ({ onComplete }) => {
           showVideo={showVideo}
         />
 
-        {/* Star Background (layer kedua) */}
+        {/* Star Background (layer kedua) - Background utama sekarang */}
         <SplashStarsCanvas stage={stage} />
-
-        {/* Enhanced Background Effects */}
-        <div className="splash-background" style={{ zIndex: 3 }}>
-          {/* Multi-layer Gradient Overlay dengan transparansi yang disesuaikan */}
-          <div
-            className="splash-gradient splash-gradient-primary"
-            style={{
-              background: `radial-gradient(circle at center, 
-                rgba(0, 240, 255, 0.1) 0%, 
-                rgba(82, 0, 255, 0.2) 50%, 
-                rgba(255, 45, 247, 0.15) 100%)`,
-            }}
-          />
-          <div
-            className="splash-gradient splash-gradient-secondary"
-            style={{
-              background: `linear-gradient(45deg, 
-                rgba(0, 240, 255, 0.05) 0%, 
-                rgba(82, 0, 255, 0.1) 50%, 
-                rgba(255, 45, 247, 0.08) 100%)`,
-            }}
-          />
-
-          {/* Animated Background Shapes dengan transparansi */}
-          <div
-            className={`splash-bg-circle ${
-              stage >= 1 ? "splash-bg-circle-active" : ""
-            }`}
-            style={{ opacity: 0.3 }}
-          />
-          <div
-            className={`splash-bg-square ${
-              stage >= 2 ? "splash-bg-square-active" : ""
-            }`}
-            style={{ opacity: 0.2 }}
-          />
-          <div
-            className={`splash-bg-diamond ${
-              stage >= 3 ? "splash-bg-diamond-active" : ""
-            }`}
-            style={{ opacity: 0.25 }}
-          />
-        </div>
 
         {/* Main Content */}
         <div className="splash-content" style={{ zIndex: 4 }}>
           <div className="splash-content-center">
             {/* Enhanced Logo Container */}
             <div className="splash-logo-container">
-              {/* Multi-layer Glow Effect */}
-              <div
-                className={`splash-glow splash-glow-inner ${
-                  stage >= 1 ? "splash-glow-active" : ""
-                }`}
-              />
-              <div
-                className={`splash-glow splash-glow-outer ${
-                  stage >= 1 ? "splash-glow-active" : ""
-                }`}
-              />
-
               {/* Enhanced Main Logo */}
               <div
                 className={`splash-logo ${
@@ -414,8 +682,6 @@ const SplashScreen = ({ onComplete }) => {
                       transform: `rotateY(${
                         stage >= 2 ? logoRotation * 2 : 0
                       }deg) scale(${stage >= 2 ? 1.1 : 1})`,
-                      fontSize: "4rem",
-                      fontWeight: "bold",
                     }}
                   >
                     <span className="animated-gradient">A</span>
@@ -475,8 +741,6 @@ const SplashScreen = ({ onComplete }) => {
                       style={{
                         animationDelay: `${i * 0.1}s`,
                         display: "inline-block",
-                        fontSize: "3rem",
-                        fontWeight: "bold",
                       }}
                     >
                       <span className="animated-gradient">{letter}</span>
@@ -486,11 +750,6 @@ const SplashScreen = ({ onComplete }) => {
                 <span
                   className="splash-title-separator gradient-text-glow"
                   data-text="|"
-                  style={{
-                    fontSize: "3rem",
-                    fontWeight: "bold",
-                    margin: "0 0.5rem",
-                  }}
                 >
                   <span className="animated-gradient">|</span>
                 </span>
@@ -503,8 +762,6 @@ const SplashScreen = ({ onComplete }) => {
                       style={{
                         animationDelay: `${(i + 4) * 0.1}s`,
                         display: "inline-block",
-                        fontSize: "3rem",
-                        fontWeight: "bold",
                       }}
                     >
                       <span className="animated-gradient">{letter}</span>
@@ -517,11 +774,6 @@ const SplashScreen = ({ onComplete }) => {
                   stage >= 3 ? "splash-subtitle-active" : ""
                 }`}
                 data-text="Junior Web Development"
-                style={{
-                  fontSize: "1.2rem",
-                  fontWeight: "500",
-                  color: "white",
-                }}
               >
                 Junior Web Development
               </p>
@@ -560,11 +812,6 @@ const SplashScreen = ({ onComplete }) => {
               <p
                 className="splash-loading-text white-text-glow"
                 data-text="Loading Experience..."
-                style={{
-                  fontSize: "1rem",
-                  fontWeight: "500",
-                  color: "white",
-                }}
               >
                 Loading Experience...
               </p>
@@ -576,7 +823,6 @@ const SplashScreen = ({ onComplete }) => {
                 stage >= 1 ? "splash-progress-visible" : ""
               }`}
             >
-              <div className="splash-progress-track" />
               <div
                 className="splash-progress-bar"
                 style={{
@@ -594,7 +840,6 @@ const SplashScreen = ({ onComplete }) => {
                     "0 0 15px #00F0FF, 0 0 30px #5200FF, 0 0 45px #FF2DF7",
                 }}
               />
-              <div className="splash-progress-glow" />
             </div>
           </div>
         </div>
