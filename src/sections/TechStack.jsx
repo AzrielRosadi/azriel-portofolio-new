@@ -55,260 +55,310 @@ const TechStack = () => {
   }, []);
 
   return (
-    <section id="skills" className="flex-center section-padding">
-      <div className="w-full h-full md:px-10 px-5">
-        <TitleHeader
-          title="My Preferred Tech Stack"
-          sub="🤝 The Skills I Bring to The Table"
-        />
+    <>
+      <style jsx>{`
+        .gradient-text-dev {
+          background: linear-gradient(
+            45deg,
+            #00f0ff 0%,
+            #5200ff 48%,
+            #ff2df7 100%
+          );
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-shadow: none !important;
+        }
 
-        <div
-          className={cn(
-            "relative flex w-full items-center justify-center overflow-hidden rounded-lg mt-12",
-            isMobile ? "h-[650px] p-8" : "h-[700px] p-16"
-          )}
-          ref={containerRef}
-        >
+        .animated-gradient-dev {
+          background: linear-gradient(
+            45deg,
+            #00f0ff,
+            #5200ff,
+            #ff2df7,
+            #00f0ff
+          );
+          background-size: 400% 400%;
+          animation: gradient-shift-dev 3s ease infinite;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        @keyframes gradient-shift-dev {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+      `}</style>
+
+      <section id="skills" className="flex-center section-padding">
+        <div className="w-full h-full md:px-10 px-5">
+          <TitleHeader
+            title="My Preferred Tech Stack"
+            sub="🤝 The Skills I Bring to The Table"
+          />
+
           <div
             className={cn(
-              "flex size-full flex-col items-stretch justify-between",
-              isMobile
-                ? "max-h-[600px] max-w-lg gap-8"
-                : "max-h-[600px] max-w-7xl gap-12"
+              "relative flex w-full items-center justify-center overflow-hidden rounded-lg mt-12",
+              isMobile ? "h-[650px] p-8" : "h-[700px] p-16"
             )}
+            ref={containerRef}
           >
-            {/* Top Row */}
             <div
               className={cn(
-                "flex flex-row items-center",
-                isMobile ? "justify-between px-1" : "justify-between px-0"
+                "flex size-full flex-col items-stretch justify-between",
+                isMobile
+                  ? "max-h-[600px] max-w-lg gap-8"
+                  : "max-h-[600px] max-w-7xl gap-12"
               )}
             >
-              <Circle
-                ref={reactRef}
-                className="bg-gray-50 border-gray-200"
-                size={isMobile ? "small" : "default"}
+              {/* Top Row */}
+              <div
+                className={cn(
+                  "flex flex-row items-center",
+                  isMobile ? "justify-between px-1" : "justify-between px-0"
+                )}
               >
-                <TechIcons.react />
-              </Circle>
-              <Circle
-                ref={nextjsRef}
-                className="bg-gray-50 border-gray-200"
-                size={isMobile ? "small" : "default"}
-              >
-                <TechIcons.nextjs />
-              </Circle>
-              <Circle
-                ref={tailwindRef}
-                className="bg-gray-50 border-gray-200"
-                size={isMobile ? "small" : "default"}
-              >
-                <TechIcons.tailwind />
-              </Circle>
-              {!isMobile && (
-                <>
+                <Circle
+                  ref={reactRef}
+                  className="bg-gray-50 border-gray-200"
+                  size={isMobile ? "small" : "default"}
+                >
+                  <TechIcons.react />
+                </Circle>
+                <Circle
+                  ref={nextjsRef}
+                  className="bg-gray-50 border-gray-200"
+                  size={isMobile ? "small" : "default"}
+                >
+                  <TechIcons.nextjs />
+                </Circle>
+                <Circle
+                  ref={tailwindRef}
+                  className="bg-gray-50 border-gray-200"
+                  size={isMobile ? "small" : "default"}
+                >
+                  <TechIcons.tailwind />
+                </Circle>
+                {!isMobile && (
+                  <>
+                    <Circle
+                      ref={javascriptRef}
+                      className="bg-gray-50 border-gray-200"
+                    >
+                      <TechIcons.javascript />
+                    </Circle>
+                    <Circle
+                      ref={html5Ref}
+                      className="bg-gray-50 border-gray-200"
+                    >
+                      <TechIcons.html5 />
+                    </Circle>
+                  </>
+                )}
+              </div>
+
+              {/* Mobile: Additional Top Row with better spacing */}
+              {isMobile && (
+                <div className="flex flex-row items-center justify-between px-12">
                   <Circle
                     ref={javascriptRef}
                     className="bg-gray-50 border-gray-200"
+                    size="small"
                   >
                     <TechIcons.javascript />
                   </Circle>
-                  <Circle ref={html5Ref} className="bg-gray-50 border-gray-200">
+                  <Circle
+                    ref={html5Ref}
+                    className="bg-orange-50 border-orange-200"
+                    size="small"
+                  >
                     <TechIcons.html5 />
                   </Circle>
-                </>
+                </div>
               )}
-            </div>
 
-            {/* Mobile: Additional Top Row with better spacing */}
-            {isMobile && (
-              <div className="flex flex-row items-center justify-between px-12">
-                <Circle
-                  ref={javascriptRef}
-                  className="bg-gray-50 border-gray-200"
-                  size="small"
-                >
-                  <TechIcons.javascript />
-                </Circle>
-                <Circle
-                  ref={html5Ref}
-                  className="bg-orange-50 border-orange-200"
-                  size="small"
-                >
-                  <TechIcons.html5 />
-                </Circle>
-              </div>
-            )}
-
-            {/* Center with more vertical space */}
-            <div
-              className={cn(
-                "flex flex-row items-center justify-center",
-                isMobile ? "py-8" : "py-12"
-              )}
-            >
-              <Circle
-                ref={centerRef}
+              {/* Center with more vertical space */}
+              <div
                 className={cn(
-                  "bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200",
-                  isMobile ? "size-20" : "size-28"
+                  "flex flex-row items-center justify-center",
+                  isMobile ? "py-8" : "py-12"
                 )}
               >
-                <div
+                <Circle
+                  ref={centerRef}
                   className={cn(
-                    "font-bold text-purple-600",
-                    isMobile ? "text-2xl" : "text-4xl"
+                    "bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200",
+                    isMobile ? "size-20" : "size-28"
                   )}
                 >
-                  DEV
-                </div>
-              </Circle>
-            </div>
+                  <div
+                    className={cn(
+                      "font-bold animated-gradient-dev",
+                      isMobile ? "text-2xl" : "text-4xl"
+                    )}
+                  >
+                    DEV
+                  </div>
+                </Circle>
+              </div>
 
-            {/* Bottom Row */}
-            <div
-              className={cn(
-                "flex flex-row items-center",
-                isMobile ? "justify-between px-1" : "justify-between px-0"
-              )}
-            >
-              <Circle
-                ref={css3Ref}
-                className="bg-gray-50 border-gray-200"
-                size={isMobile ? "small" : "default"}
+              {/* Bottom Row */}
+              <div
+                className={cn(
+                  "flex flex-row items-center",
+                  isMobile ? "justify-between px-1" : "justify-between px-0"
+                )}
               >
-                <TechIcons.css3 />
-              </Circle>
-              <Circle
-                ref={nodejsRef}
-                className="bg-gray-50 border-gray-200"
-                size={isMobile ? "small" : "default"}
-              >
-                <TechIcons.nodejs />
-              </Circle>
-              <Circle
-                ref={laravelRef}
-                className="bg-gray-50 border-gray-200"
-                size={isMobile ? "small" : "default"}
-              >
-                <TechIcons.laravel />
-              </Circle>
-              {!isMobile && (
-                <>
-                  <Circle ref={mysqlRef} className="bg-gray-50 border-gray-200">
+                <Circle
+                  ref={css3Ref}
+                  className="bg-gray-50 border-gray-200"
+                  size={isMobile ? "small" : "default"}
+                >
+                  <TechIcons.css3 />
+                </Circle>
+                <Circle
+                  ref={nodejsRef}
+                  className="bg-gray-50 border-gray-200"
+                  size={isMobile ? "small" : "default"}
+                >
+                  <TechIcons.nodejs />
+                </Circle>
+                <Circle
+                  ref={laravelRef}
+                  className="bg-gray-50 border-gray-200"
+                  size={isMobile ? "small" : "default"}
+                >
+                  <TechIcons.laravel />
+                </Circle>
+                {!isMobile && (
+                  <>
+                    <Circle
+                      ref={mysqlRef}
+                      className="bg-gray-50 border-gray-200"
+                    >
+                      <TechIcons.mysql />
+                    </Circle>
+                    <Circle
+                      ref={typescriptRef}
+                      className="bg-gray-50 border-gray-200"
+                    >
+                      <TechIcons.typescript />
+                    </Circle>
+                  </>
+                )}
+              </div>
+
+              {/* Mobile: Additional Bottom Row with better spacing */}
+              {isMobile && (
+                <div className="flex flex-row items-center justify-between px-12">
+                  <Circle
+                    ref={mysqlRef}
+                    className="bg-blue-50 border-blue-200"
+                    size="small"
+                  >
                     <TechIcons.mysql />
                   </Circle>
                   <Circle
                     ref={typescriptRef}
-                    className="bg-gray-50 border-gray-200"
+                    className="bg-purple-50 border-purple-200"
+                    size="small"
                   >
                     <TechIcons.typescript />
                   </Circle>
-                </>
+                </div>
               )}
             </div>
 
-            {/* Mobile: Additional Bottom Row with better spacing */}
-            {isMobile && (
-              <div className="flex flex-row items-center justify-between px-12">
-                <Circle
-                  ref={mysqlRef}
-                  className="bg-blue-50 border-blue-200"
-                  size="small"
-                >
-                  <TechIcons.mysql />
-                </Circle>
-                <Circle
-                  ref={typescriptRef}
-                  className="bg-purple-50 border-purple-200"
-                  size="small"
-                >
-                  <TechIcons.typescript />
-                </Circle>
-              </div>
-            )}
+            {/* Animated Beams - Adjusted for new positions */}
+            <AnimatedBeam
+              containerRef={containerRef}
+              fromRef={reactRef}
+              toRef={centerRef}
+              curvature={-85}
+              endYOffset={-20}
+            />
+            <AnimatedBeam
+              containerRef={containerRef}
+              fromRef={nextjsRef}
+              toRef={centerRef}
+              curvature={-45}
+              endYOffset={-20}
+            />
+            <AnimatedBeam
+              containerRef={containerRef}
+              fromRef={tailwindRef}
+              toRef={centerRef}
+              curvature={0}
+              endYOffset={-20}
+            />
+            <AnimatedBeam
+              containerRef={containerRef}
+              fromRef={javascriptRef}
+              toRef={centerRef}
+              curvature={45}
+              endYOffset={-20}
+            />
+            <AnimatedBeam
+              containerRef={containerRef}
+              fromRef={html5Ref}
+              toRef={centerRef}
+              curvature={85}
+              endYOffset={-20}
+            />
+
+            <AnimatedBeam
+              containerRef={containerRef}
+              fromRef={css3Ref}
+              toRef={centerRef}
+              curvature={-85}
+              endYOffset={20}
+              reverse
+            />
+            <AnimatedBeam
+              containerRef={containerRef}
+              fromRef={nodejsRef}
+              toRef={centerRef}
+              curvature={-45}
+              endYOffset={20}
+              reverse
+            />
+            <AnimatedBeam
+              containerRef={containerRef}
+              fromRef={laravelRef}
+              toRef={centerRef}
+              curvature={0}
+              endYOffset={20}
+              reverse
+            />
+            <AnimatedBeam
+              containerRef={containerRef}
+              fromRef={mysqlRef}
+              toRef={centerRef}
+              curvature={45}
+              endYOffset={20}
+              reverse
+            />
+            <AnimatedBeam
+              containerRef={containerRef}
+              fromRef={typescriptRef}
+              toRef={centerRef}
+              curvature={85}
+              endYOffset={20}
+              reverse
+            />
           </div>
-
-          {/* Animated Beams - Adjusted for new positions */}
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={reactRef}
-            toRef={centerRef}
-            curvature={-85}
-            endYOffset={-20}
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={nextjsRef}
-            toRef={centerRef}
-            curvature={-45}
-            endYOffset={-20}
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={tailwindRef}
-            toRef={centerRef}
-            curvature={0}
-            endYOffset={-20}
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={javascriptRef}
-            toRef={centerRef}
-            curvature={45}
-            endYOffset={-20}
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={html5Ref}
-            toRef={centerRef}
-            curvature={85}
-            endYOffset={-20}
-          />
-
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={css3Ref}
-            toRef={centerRef}
-            curvature={-85}
-            endYOffset={20}
-            reverse
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={nodejsRef}
-            toRef={centerRef}
-            curvature={-45}
-            endYOffset={20}
-            reverse
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={laravelRef}
-            toRef={centerRef}
-            curvature={0}
-            endYOffset={20}
-            reverse
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={mysqlRef}
-            toRef={centerRef}
-            curvature={45}
-            endYOffset={20}
-            reverse
-          />
-          <AnimatedBeam
-            containerRef={containerRef}
-            fromRef={typescriptRef}
-            toRef={centerRef}
-            curvature={85}
-            endYOffset={20}
-            reverse
-          />
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

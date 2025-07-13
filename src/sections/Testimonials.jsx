@@ -144,33 +144,6 @@ const Testimonials = () => {
             ))}
           </div>
         </div>
-
-        {/* Simple Stats */}
-        <div className="mt-16 max-w-md mx-auto">
-          <div className="grid grid-cols-3 gap-4 text-center">
-            {testimonialStats.map((stat, index) => (
-              <div
-                key={index}
-                className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg p-4"
-              >
-                <div
-                  className="text-xl md:text-2xl font-bold mb-1"
-                  style={{
-                    background:
-                      "linear-gradient(90deg, #00F0FF 0%, #5200FF 48%, #FF2DF7 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  {stat.value}
-                  {stat.suffix}
-                </div>
-                <div className="text-gray-400 text-xs">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
     </section>
   );

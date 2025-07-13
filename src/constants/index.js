@@ -51,9 +51,9 @@ const logoIconsList = [
   {
     imgPath: "/images/logos/company-logo-3.png",
   },
-  {
-    imgPath: "/images/logos/company-logo-4.png",
-  },
+  // {
+  //   imgPath: "/images/logos/company-logo-4.png",
+  // },
   {
     imgPath: "/images/logos/company-logo-5.png",
   },
@@ -171,7 +171,7 @@ const expCards = [
     imgPath: "/images/mbuutt_166x37.png",
     logoPath: "/images/logombuuttT.png",
     title: "Full Stack Laravel Developer",
-    date: "May 2025 - Present",
+    date: "Jan 2025 - Feb 2025",
     responsibilities: [
       "Memimpin pengembangan platform web Mbuutt Laundry sebagai Fullstack Developer, dengan fokus kemudahan pemeliharaan sistem.",
       "Secara mandiri membangun seluruh fitur frontend dan backend untuk memastikan fungsionalitas sistem berjalan lancar dan memberikan pengalaman pengguna yang optimal.",
@@ -184,11 +184,26 @@ const expCards = [
     imgPath: "/images/logoliboyy_clear_166x37.png",
     logoPath: "/images/logoliboyynew50.png",
     title: "Fullstack Javacript Developer",
-    date: "May 2025 - Present",
+    date: "March 2025 - May 2025",
     responsibilities: [
       "Membangun aplikasi web responsif menggunakan React dan mengintegrasikannya dengan backend Node.js serta database PostgreSQL.",
       "Meningkatkan performa aplikasi dan pengalaman pengguna melalui optimasi kode dan pengujian menyeluruh.",
       "Mengimplementasikan fitur-fitur berdasarkan masukan dari client untuk memenuhi kebutuhan pengguna.",
+    ],
+  },
+  {
+    review:
+      "Saat ini saya menjalani program internship sebagai Front-End Developer Intern di Starspace Studio, sebuah program intensif yang tidak hanya berfokus pada pengembangan teknis, tetapi juga budaya kerja kolaboratif dan kreatif.",
+    imgPath: "/images/logocodespace.png",
+    logoPath: "/images/codespacelogo50.png",
+    title: "Front-End Developer Intern",
+    date: "June 2025 - Present",
+    responsibilities: [
+      "Mengembangkan antarmuka web interaktif dan responsif, berdasarkan desain dari Figma.",
+      "Terlibat dalam proyek nyata sebagai bagian dari misi (Mission Possible), bekerja kolaboratif dalam tim lintas bidang (UI/UX, Backend, dll).",
+      "Update progres harian menggunakan ClickUp dan aktif dalam weekly meeting & coffee roulette untuk networking internal.",
+      "Berpartisipasi dalam sesi mentoring dengan profesional industri dan juga reverse mentorship untuk berbagi insight sebagai fresh talent.",
+      "Mendokumentasikan pembelajaran setiap minggu melalui #WeeklyWins dan sharing knowledge ke tim.",
     ],
   },
 ];

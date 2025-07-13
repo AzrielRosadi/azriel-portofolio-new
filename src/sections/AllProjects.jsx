@@ -1,4 +1,3 @@
-// src/section/AllProjects.jsx
 import { useRef, useState, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -14,6 +13,7 @@ const AllProjects = () => {
   const navigate = useNavigate();
   const sectionRef = useRef(null);
   const [filter, setFilter] = useState("all");
+  const [hasInitialLoad, setHasInitialLoad] = useState(false);
 
   // Use the popup hook
   const {
@@ -76,23 +76,6 @@ const AllProjects = () => {
     },
     {
       id: 3,
-      title: "Imaginify | AI SaaS Platform",
-      des: "REAL Software-as-a-Service app with AI features and payments & credits system that you might even turn into a side income or business idea.",
-      img: "/images/imaginifynew.png",
-      iconLists: [
-        "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
-        "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
-        "https://cdn.jsdelivr.net/gh/gilbarbara/logos/logos/stripe.svg",
-        "https://cdn.jsdelivr.net/gh/gilbarbara/logos/logos/cloudinary.svg",
-        "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/clerk.svg",
-      ],
-      githubLink: "https://github.com/AzrielRosadi/AiSaas-Application",
-      liveLink: "https://github.com/AzrielRosadi/AiSaas-Application",
-      category: "ai",
-      year: 2025,
-    },
-    {
-      id: 4,
       title: "DOML | AI Marketing Optimized Reach",
       des: "This website is a prototype landing page for DOML, a marketing platform concept based on Artificial Intelligence (AI). This page is designed to convey DOML's vision, benefits, and potential features to potential users, business partners, or investors.",
       img: "/images/Frame 3.png",
@@ -106,6 +89,24 @@ const AllProjects = () => {
       githubLink: "https://github.com/AzrielRosadi/DOML-AZRL",
       liveLink: "https://doml-azrl.vercel.app/",
       category: "web",
+      year: 2025,
+    },
+    {
+      id: 4,
+      title: "Imaginify | AI SaaS Platform",
+      des: "REAL Software-as-a-Service app with AI features and payments & credits system that you might even turn into a side income or business idea. (PROGRESS)",
+      img: "/images/imaginifynew.png",
+      popupImages: ["/images/imaginifynew.png"],
+      iconLists: [
+        "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
+        "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
+        "https://cdn.jsdelivr.net/gh/gilbarbara/logos/logos/stripe.svg",
+        "https://cdn.jsdelivr.net/gh/gilbarbara/logos/logos/cloudinary.svg",
+        "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/clerk.svg",
+      ],
+      githubLink: "https://github.com/AzrielRosadi/AiSaas-Application",
+      liveLink: "https://github.com/AzrielRosadi/AiSaas-Application",
+      category: "ai",
       year: 2025,
     },
     {
@@ -233,78 +234,365 @@ const AllProjects = () => {
       ? allProjects
       : allProjects.filter((project) => project.category === filter);
 
-  // Reset animations when filter changes
-  useEffect(() => {
-    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    gsap.fromTo(
-      ".project-card-animation",
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        stagger: 0.15,
-        delay: 0.1,
-      }
-    );
-  }, [filteredProjects]);
+  // Function to animate individual card with all its elements
+  const animateCard = (cardElement, index = 0) => {
+    const image = cardElement.querySelector(".project-image");
+    const title = cardElement.querySelector(".project-title");
+    const description = cardElement.querySelector(".project-description");
+    const icons = cardElement.querySelectorAll(".project-icon");
+    const viewBtn = cardElement.querySelector(".project-view-btn");
+    const actionBtns = cardElement.querySelectorAll(".project-action-btn");
 
-  useGSAP(() => {
-    if (sectionRef.current) {
-      gsap.fromTo(
-        sectionRef.current,
-        { opacity: 0, y: 50 },
-        { opacity: 1, y: 0, duration: 1.5 }
+    // Create timeline for this card
+    const tl = gsap.timeline({ delay: index * 0.2 });
+
+    // Animate card container first
+    tl.fromTo(
+      cardElement,
+      { y: 80, opacity: 0, scale: 0.9 },
+      { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" }
+    );
+
+    // Animate image
+    if (image) {
+      tl.fromTo(
+        image,
+        { y: 30, opacity: 0, scale: 0.9 },
+        { y: 0, opacity: 1, scale: 1, duration: 0.6, ease: "power2.out" },
+        "-=0.4"
       );
     }
 
-    gsap.fromTo(
-      ".project-card-animation",
-      { y: 50, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        stagger: 0.15,
-        scrollTrigger: {
-          trigger: ".projects-grid",
-          start: "top bottom-=100",
+    // Animate title
+    if (title) {
+      tl.fromTo(
+        title,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+        "-=0.3"
+      );
+    }
+
+    // Animate description
+    if (description) {
+      tl.fromTo(
+        description,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+        "-=0.2"
+      );
+    }
+
+    // Animate icons
+    if (icons.length > 0) {
+      tl.fromTo(
+        icons,
+        { x: -20, opacity: 0, scale: 0.8 },
+        {
+          x: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.4,
+          stagger: 0.1,
+          ease: "back.out(1.7)",
         },
-      }
-    );
+        "-=0.2"
+      );
+    }
+
+    // Animate view button
+    if (viewBtn) {
+      tl.fromTo(
+        viewBtn,
+        { x: 20, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.4, ease: "power2.out" },
+        "-=0.3"
+      );
+    }
+
+    // Animate action buttons
+    if (actionBtns.length > 0) {
+      tl.fromTo(
+        actionBtns,
+        { y: -10, opacity: 0, scale: 0.8 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.4,
+          stagger: 0.1,
+          ease: "back.out(1.7)",
+        },
+        "-=0.4"
+      );
+    }
+
+    return tl;
+  };
+
+  // Reset all card elements to initial state
+  const resetCardElements = () => {
+    gsap.set(".project-card-animation", {
+      y: 80,
+      opacity: 0,
+      scale: 0.9,
+    });
+    gsap.set(".project-image", {
+      y: 30,
+      opacity: 0,
+      scale: 0.9,
+    });
+    gsap.set(".project-title", {
+      y: 20,
+      opacity: 0,
+    });
+    gsap.set(".project-description", {
+      y: 20,
+      opacity: 0,
+    });
+    gsap.set(".project-icon", {
+      x: -20,
+      opacity: 0,
+      scale: 0.8,
+    });
+    gsap.set(".project-view-btn", {
+      x: 20,
+      opacity: 0,
+    });
+    gsap.set(".project-action-btn", {
+      y: -10,
+      opacity: 0,
+      scale: 0.8,
+    });
+  };
+
+  // Handle filter changes
+  useEffect(() => {
+    if (!hasInitialLoad) return;
+
+    // Kill existing triggers
+    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+
+    // Reset all elements
+    resetCardElements();
+
+    // Small delay to ensure DOM updates
+    setTimeout(() => {
+      setupScrollTriggers();
+    }, 100);
+  }, [filteredProjects, hasInitialLoad]);
+
+  // Setup scroll triggers
+  const setupScrollTriggers = () => {
+    ScrollTrigger.batch(".project-card-animation", {
+      onEnter: (elements) => {
+        elements.forEach((element, index) => {
+          animateCard(element, index);
+        });
+      },
+      onLeave: (elements) => {
+        gsap.to(elements, {
+          opacity: 0.3,
+          scale: 0.95,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      },
+      onEnterBack: (elements) => {
+        gsap.to(elements, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          ease: "power2.out",
+        });
+      },
+      onLeaveBack: (elements) => {
+        gsap.to(elements, {
+          opacity: 0.3,
+          scale: 0.95,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      },
+      start: "top 85%",
+      end: "bottom 15%",
+    });
+  };
+
+  // Initial setup
+  useGSAP(() => {
+    // Animate section container
+    if (sectionRef.current) {
+      gsap.fromTo(
+        sectionRef.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 1, ease: "power2.out" }
+      );
+    }
+
+    // Initially hide all card elements
+    resetCardElements();
+
+    // Setup scroll triggers after a short delay
+    setTimeout(() => {
+      setupScrollTriggers();
+      setHasInitialLoad(true);
+    }, 200);
+
+    // Cleanup on unmount
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
   }, []);
 
+  // Improved handleBackToHome function that works with hash navigation
   const handleBackToHome = () => {
+    // Check if we're already on the home page
+    if (window.location.pathname === "/") {
+      // If already on home page, just scroll to work section
+      const workSection = document.getElementById("work");
+      if (workSection) {
+        workSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+      return;
+    }
+
+    // Navigate to home page first
     navigate("/");
+
+    // Wait for navigation and DOM to be ready
+    const scrollToWork = () => {
+      const workSection = document.getElementById("work");
+      if (workSection) {
+        workSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+        return true;
+      }
+      return false;
+    };
+
+    // Try scrolling with multiple attempts
+    const maxAttempts = 5;
+    let attempts = 0;
+
+    const tryScroll = () => {
+      attempts++;
+      if (scrollToWork()) {
+        console.log(
+          `Successfully scrolled to work section on attempt ${attempts}`
+        );
+      } else if (attempts < maxAttempts) {
+        setTimeout(tryScroll, 200 * attempts); // Increasing delay
+      } else {
+        console.warn(
+          "Failed to scroll to work section after multiple attempts"
+        );
+      }
+    };
+
+    // Start trying after initial delay
+    setTimeout(tryScroll, 300);
+  };
+
+  // Alternative solution using window.location (more reliable for hash navigation)
+  const handleBackToHomeAlternative = () => {
+    // Use window.location for direct hash navigation
+    window.location.href = "/#work";
+
+    // Optional: Add smooth scroll behavior after page load
     setTimeout(() => {
       const workSection = document.getElementById("work");
       if (workSection) {
-        workSection.scrollIntoView({ behavior: "smooth" });
+        workSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
       }
     }, 100);
   };
 
-  // PERBAIKAN: Function untuk handle project click - redirect ke live link instead of popup
-  const handleProjectClick = (project, e) => {
-    // Pastikan event tidak bubbling ke parent elements
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
+  // Most robust solution - works with both scenarios
+  const handleBackToHomeRobust = () => {
+    const currentPath = window.location.pathname;
 
-    console.log("Project clicked:", project.title); // Debug log
-
-    // Redirect ke live link jika tersedia
-    if (project.liveLink && project.liveLink !== "#") {
-      window.open(project.liveLink, "_blank", "noopener,noreferrer");
+    if (currentPath === "/") {
+      // Already on home page, just scroll
+      const workSection = document.getElementById("work");
+      if (workSection) {
+        workSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
     } else {
-      // Jika live link tidak tersedia, buka popup sebagai fallback
-      openPopup(project);
+      // Navigate to home page
+      navigate("/");
+
+      // Create a promise-based approach for better control
+      const waitForElement = (selector, timeout = 3000) => {
+        return new Promise((resolve, reject) => {
+          const startTime = Date.now();
+
+          const checkElement = () => {
+            const element = document.getElementById(selector);
+            if (element) {
+              resolve(element);
+            } else if (Date.now() - startTime > timeout) {
+              reject(
+                new Error(`Element ${selector} not found within ${timeout}ms`)
+              );
+            } else {
+              setTimeout(checkElement, 100);
+            }
+          };
+
+          checkElement();
+        });
+      };
+
+      // Wait for navigation to complete and element to be available
+      setTimeout(() => {
+        waitForElement("work")
+          .then((element) => {
+            element.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          })
+          .catch((error) => {
+            console.warn("Could not scroll to work section:", error);
+          });
+      }, 200);
     }
   };
 
-  // ALTERNATIF 1: Jika Anda ingin selalu redirect ke GitHub jika live link tidak tersedia
-  const handleProjectClickAlternative1 = (project, e) => {
+  // Simple and clean solution (recommended)
+  const handleBackToHomeSimple = () => {
+    navigate("/");
+
+    // Multiple attempts with exponential backoff
+    const delays = [300, 600, 1000];
+
+    delays.forEach((delay) => {
+      setTimeout(() => {
+        const workSection = document.getElementById("work");
+        if (workSection) {
+          workSection.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }, delay);
+    });
+  };
+
+  // Function untuk handle project click
+  const handleProjectClick = (project, e) => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -312,13 +600,34 @@ const AllProjects = () => {
 
     console.log("Project clicked:", project.title);
 
-    // Prioritas: Live Link -> GitHub -> Popup
     if (project.liveLink && project.liveLink !== "#") {
       window.open(project.liveLink, "_blank", "noopener,noreferrer");
-    } else if (project.githubLink && project.githubLink !== "#") {
-      window.open(project.githubLink, "_blank", "noopener,noreferrer");
     } else {
       openPopup(project);
+    }
+  };
+
+  // Function untuk handle card GitHub click
+  const handleCardGithubClick = (githubLink, e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    if (githubLink && githubLink !== "#") {
+      window.open(githubLink, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  // Function untuk handle card Live Link click
+  const handleCardLiveLinkClick = (liveLink, e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    if (liveLink && liveLink !== "#") {
+      window.open(liveLink, "_blank", "noopener,noreferrer");
     }
   };
 
@@ -371,14 +680,14 @@ const AllProjects = () => {
                   containerClassName="w-full h-full"
                 >
                   <div className="relative w-full">
-                    {/* GitHub and Live Link Icons - PERBAIKAN: Gunakan handler yang sudah diperbaiki */}
+                    {/* GitHub and Live Link Icons */}
                     <div className="absolute top-2 right-2 z-20 flex gap-2">
                       {/* GitHub Icon */}
                       <button
                         onClick={(e) =>
                           handleCardGithubClick(item.githubLink, e)
                         }
-                        className="p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-purple-500/50 hover:bg-purple-500/20 transition-all duration-200 group"
+                        className="project-action-btn p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-purple-500/50 hover:bg-purple-500/20 transition-all duration-200 group"
                         title="View on GitHub"
                       >
                         <svg
@@ -395,7 +704,7 @@ const AllProjects = () => {
                         onClick={(e) =>
                           handleCardLiveLinkClick(item.liveLink, e)
                         }
-                        className="p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-purple-500/50 hover:bg-purple-500/20 transition-all duration-200 group"
+                        className="project-action-btn p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-purple-500/50 hover:bg-purple-500/20 transition-all duration-200 group"
                         title="View Live Site"
                         disabled={item.liveLink === "#"}
                         style={{ opacity: item.liveLink === "#" ? 0.5 : 1 }}
@@ -416,7 +725,7 @@ const AllProjects = () => {
                       </button>
                     </div>
 
-                    {/* PERBAIKAN: Project Content - Tambahkan proper event handling */}
+                    {/* Project Content */}
                     <div
                       className="cursor-pointer select-none"
                       onClick={(e) => handleProjectClick(item, e)}
@@ -428,8 +737,8 @@ const AllProjects = () => {
                         }
                       }}
                     >
-                      {/* Project Image dengan style yang sama seperti ShowcaseSection */}
-                      <div className="relative flex items-center justify-center w-full overflow-hidden h-[20vh] lg:h-[30vh] mb-6">
+                      {/* Project Image */}
+                      <div className="project-image relative flex items-center justify-center w-full overflow-hidden h-[20vh] lg:h-[30vh] mb-6">
                         <div
                           className="relative w-full h-full overflow-hidden lg:rounded-3xl rounded-2xl"
                           style={{ backgroundColor: "#13162D" }}
@@ -450,14 +759,14 @@ const AllProjects = () => {
                         />
                       </div>
 
-                      {/* Project Info dengan padding yang sama */}
+                      {/* Project Info */}
                       <div className="px-4">
-                        <h1 className="font-bold lg:text-2xl md:text-xl text-lg line-clamp-2 text-white mb-3">
+                        <h1 className="project-title font-bold lg:text-2xl md:text-xl text-lg line-clamp-2 text-white mb-3">
                           {item.title}
                         </h1>
 
                         <p
-                          className="lg:text-base text-sm line-clamp-3 mb-6 leading-relaxed"
+                          className="project-description lg:text-base text-sm line-clamp-3 mb-6 leading-relaxed"
                           style={{
                             color: "#BEC1DD",
                           }}
@@ -465,15 +774,15 @@ const AllProjects = () => {
                           {item.des}
                         </p>
 
-                        {/* Bottom section dengan layout yang sama */}
-                        <div className="flex items-center justify-between">
+                        {/* Bottom section */}
+                        <div className="flex items-center gap-4">
                           <div className="flex items-center">
                             {item.iconLists
                               .slice(0, 4)
                               .map((icon, iconIndex) => (
                                 <div
                                   key={iconIndex}
-                                  className="border border-white/[.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center hover:border-purple-500/50 transition-colors duration-200"
+                                  className="project-icon border border-white/[.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center hover:border-purple-500/50 transition-colors duration-200"
                                   style={{
                                     transform: `translateX(-${
                                       5 * iconIndex + 2
@@ -494,7 +803,7 @@ const AllProjects = () => {
                               ))}
                             {item.iconLists.length > 4 && (
                               <div
-                                className="border border-white/[.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center text-white-200 text-xs"
+                                className="project-icon border border-white/[.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center text-white-200 text-xs"
                                 style={{
                                   transform: `translateX(-${5 * 4 + 2}px)`,
                                 }}
@@ -505,7 +814,7 @@ const AllProjects = () => {
                           </div>
 
                           {/* View Project Arrow */}
-                          <div className="flex items-center gap-2 text-purple-400 group-hover:text-purple-300 transition-colors duration-200">
+                          <div className="project-view-btn flex items-center gap-2 text-purple-400 group-hover:text-purple-300 transition-colors duration-200">
                             <span className="text-sm font-medium">View</span>
                             <div className="transform rotate-45 w-3 h-3 border-r-2 border-t-2 border-current group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200"></div>
                           </div>
@@ -555,7 +864,7 @@ const AllProjects = () => {
         </div>
       </div>
 
-      {/* PERBAIKAN: Project Detail Popup - Pastikan prop yang benar dikirim */}
+      {/* Project Detail Popup */}
       <ProjectDetailPopup
         isOpen={isPopupOpen}
         project={selectedProject}

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -12,9 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 const ShowcaseSection = () => {
   const navigate = useNavigate();
   const sectionRef = useRef(null);
-  const project1 = useRef(null);
-  const project2 = useRef(null);
-  const project3 = useRef(null);
+  const [hasInitialLoad, setHasInitialLoad] = useState(false);
 
   // Menggunakan custom hook untuk popup functionality
   const {
@@ -77,61 +75,247 @@ const ShowcaseSection = () => {
     },
     {
       id: 3,
-      title: "Imaginify | AI SaaS Platform",
-      des: "REAL Software-as-a-Service app with AI features and payments & credits system that you might even turn into a side income or business idea.",
-      img: "/images/imaginifynew.png",
-      popupImages: ["/images/imaginifynew.png"],
+      title: "DOML | AI Marketing Optimized Reach",
+      des: "This website is a prototype landing page for DOML, a marketing platform concept based on Artificial Intelligence (AI). This page is designed to convey DOML's vision, benefits, and potential features to potential users, business partners, or investors.",
+      img: "/images/Frame 3.png",
       iconLists: [
-        "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg",
-        "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
-        "https://cdn.jsdelivr.net/gh/gilbarbara/logos/logos/stripe.svg",
-        "https://cdn.jsdelivr.net/gh/gilbarbara/logos/logos/cloudinary.svg",
-        "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/clerk.svg",
+        "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+        "https://cdn.jsdelivr.net/gh/gilbarbara/logos/logos/tailwindcss-icon.svg",
+        "https://lucide.dev/logo.svg",
+        "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postcss/postcss-original.svg",
+        "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/stripe.svg",
       ],
-      githubLink: "https://github.com/AzrielRosadi/AiSaas-Application",
-      liveLink: "https://github.com/AzrielRosadi/AiSaas-Application",
-      category: "ai",
+      githubLink: "https://github.com/AzrielRosadi/DOML-AZRL",
+      liveLink: "https://doml-azrl.vercel.app/",
+      category: "web",
       year: 2025,
     },
   ];
 
-  useGSAP(() => {
-    // Animation for the main section
-    gsap.fromTo(
-      sectionRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 1.5 }
+  // Function to animate individual card with all its elements
+  const animateCard = (cardElement, index = 0) => {
+    const image = cardElement.querySelector(".project-image");
+    const title = cardElement.querySelector(".project-title");
+    const description = cardElement.querySelector(".project-description");
+    const icons = cardElement.querySelectorAll(".project-icon");
+    const viewBtn = cardElement.querySelector(".project-view-btn");
+    const actionBtns = cardElement.querySelectorAll(".project-action-btn");
+
+    // Create timeline for this card
+    const tl = gsap.timeline({ delay: index * 0.2 });
+
+    // Animate card container first
+    tl.fromTo(
+      cardElement,
+      { y: 80, opacity: 0, scale: 0.9 },
+      { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" }
     );
 
-    // Animations for each app showcase
-    const cards = [project1.current, project2.current, project3.current];
+    // Animate image
+    if (image) {
+      tl.fromTo(
+        image,
+        { y: 30, opacity: 0, scale: 0.9 },
+        { y: 0, opacity: 1, scale: 1, duration: 0.6, ease: "power2.out" },
+        "-=0.4"
+      );
+    }
 
-    cards.forEach((card, index) => {
-      if (card) {
-        // Check if ref exists
-        gsap.fromTo(
-          card,
-          {
-            y: 50,
-            opacity: 0,
-          },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            delay: 0.3 * (index + 1),
-            scrollTrigger: {
-              trigger: card,
-              start: "top bottom-=100",
-            },
-          }
-        );
-      }
+    // Animate title
+    if (title) {
+      tl.fromTo(
+        title,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+        "-=0.3"
+      );
+    }
+
+    // Animate description
+    if (description) {
+      tl.fromTo(
+        description,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+        "-=0.2"
+      );
+    }
+
+    // Animate icons
+    if (icons.length > 0) {
+      tl.fromTo(
+        icons,
+        { x: -20, opacity: 0, scale: 0.8 },
+        {
+          x: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.4,
+          stagger: 0.1,
+          ease: "back.out(1.7)",
+        },
+        "-=0.2"
+      );
+    }
+
+    // Animate view button
+    if (viewBtn) {
+      tl.fromTo(
+        viewBtn,
+        { x: 20, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.4, ease: "power2.out" },
+        "-=0.3"
+      );
+    }
+
+    // Animate action buttons
+    if (actionBtns.length > 0) {
+      tl.fromTo(
+        actionBtns,
+        { y: -10, opacity: 0, scale: 0.8 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.4,
+          stagger: 0.1,
+          ease: "back.out(1.7)",
+        },
+        "-=0.4"
+      );
+    }
+
+    return tl;
+  };
+
+  // Reset all card elements to initial state
+  const resetCardElements = () => {
+    gsap.set(".project-card-animation", {
+      y: 80,
+      opacity: 0,
+      scale: 0.9,
     });
+    gsap.set(".project-image", {
+      y: 30,
+      opacity: 0,
+      scale: 0.9,
+    });
+    gsap.set(".project-title", {
+      y: 20,
+      opacity: 0,
+    });
+    gsap.set(".project-description", {
+      y: 20,
+      opacity: 0,
+    });
+    gsap.set(".project-icon", {
+      x: -20,
+      opacity: 0,
+      scale: 0.8,
+    });
+    gsap.set(".project-view-btn", {
+      x: 20,
+      opacity: 0,
+    });
+    gsap.set(".project-action-btn", {
+      y: -10,
+      opacity: 0,
+      scale: 0.8,
+    });
+  };
+
+  // Setup scroll triggers
+  const setupScrollTriggers = () => {
+    ScrollTrigger.batch(".project-card-animation", {
+      onEnter: (elements) => {
+        elements.forEach((element, index) => {
+          animateCard(element, index);
+        });
+      },
+      onLeave: (elements) => {
+        gsap.to(elements, {
+          opacity: 0.3,
+          scale: 0.95,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      },
+      onEnterBack: (elements) => {
+        gsap.to(elements, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          ease: "power2.out",
+        });
+      },
+      onLeaveBack: (elements) => {
+        gsap.to(elements, {
+          opacity: 0.3,
+          scale: 0.95,
+          duration: 0.3,
+          ease: "power2.out",
+        });
+      },
+      start: "top 85%",
+      end: "bottom 15%",
+    });
+  };
+
+  // Effect to handle body scroll when popup is open
+  useEffect(() => {
+    if (isPopupOpen) {
+      // Disable body scroll when popup is open
+      document.body.style.overflow = "hidden";
+      document.body.style.paddingRight = "0px"; // Prevent layout shift
+    } else {
+      // Re-enable body scroll when popup is closed
+      document.body.style.overflow = "unset";
+      document.body.style.paddingRight = "0px";
+    }
+
+    // Cleanup function
+    return () => {
+      document.body.style.overflow = "unset";
+      document.body.style.paddingRight = "0px";
+    };
+  }, [isPopupOpen]);
+
+  // Initial setup
+  useGSAP(() => {
+    // Animate section container
+    if (sectionRef.current) {
+      gsap.fromTo(
+        sectionRef.current,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 1, ease: "power2.out" }
+      );
+    }
+
+    // Initially hide all card elements
+    resetCardElements();
+
+    // Setup scroll triggers after a short delay
+    setTimeout(() => {
+      setupScrollTriggers();
+      setHasInitialLoad(true);
+    }, 200);
+
+    // Cleanup on unmount
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
   }, []);
 
   const handleShowAllProjects = () => {
     navigate("/projects");
+
+    // Scroll ke atas setelah navigasi
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }, 100);
   };
 
   // Function to handle card click (redirect to GitHub or live link)
@@ -145,28 +329,34 @@ const ShowcaseSection = () => {
     }
   };
 
+  // Handle popup open with proper event handling
+  const handlePopupOpen = (project, e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openPopup(project, e);
+  };
+
   return (
-    <div id="work" ref={sectionRef} className="py-20">
+    <div id="work" ref={sectionRef} className="py-20 relative">
       <div className="flex flex-wrap items-center justify-center p-4 gap-8 lg:gap-16 mt-10">
         {projects.map((item, index) => (
           <div
-            className="lg:min-h-[35rem] h-[32rem] flex items-center justify-center w-full sm:w-96 max-w-sm"
+            className="project-card-animation lg:min-h-[35rem] h-[32rem] flex items-center justify-center w-full sm:w-96 max-w-sm"
             key={item.id}
-            ref={index === 0 ? project1 : index === 1 ? project2 : project3}
           >
             <PinContainer
               title="Detail Project"
-              onClick={(e) => openPopup(item, e)}
+              onClick={(e) => handlePopupOpen(item, e)}
               className="w-full cursor-pointer"
               containerClassName="w-full h-full"
             >
               <div className="relative w-full">
                 {/* GitHub and Live Link Icons */}
-                <div className="absolute top-2 right-2 z-20 flex gap-2">
+                <div className="absolute top-2 right-2 z-10 flex gap-2">
                   {/* GitHub Icon */}
                   <button
                     onClick={(e) => handleGithubClick(item.githubLink, e)}
-                    className="p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-purple-500/50 hover:bg-purple-500/20 transition-all duration-200 group"
+                    className="project-action-btn p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-purple-500/50 hover:bg-purple-500/20 transition-all duration-200 group"
                     title="View on GitHub"
                   >
                     <svg
@@ -181,7 +371,7 @@ const ShowcaseSection = () => {
                   {/* Live Link Icon */}
                   <button
                     onClick={(e) => handleLiveLinkClick(item.liveLink, e)}
-                    className="p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-purple-500/50 hover:bg-purple-500/20 transition-all duration-200 group"
+                    className="project-action-btn p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-purple-500/50 hover:bg-purple-500/20 transition-all duration-200 group"
                     title="View Live Site"
                   >
                     <svg
@@ -205,7 +395,7 @@ const ShowcaseSection = () => {
                   className="cursor-pointer"
                   onClick={(e) => handleCardClick(item, e)}
                 >
-                  <div className="relative flex items-center justify-center w-full overflow-hidden h-[20vh] lg:h-[30vh] mb-6">
+                  <div className="project-image relative flex items-center justify-center w-full overflow-hidden h-[20vh] lg:h-[30vh] mb-6">
                     <div
                       className="relative w-full h-full overflow-hidden lg:rounded-3xl rounded-2xl"
                       style={{ backgroundColor: "#13162D" }}
@@ -227,12 +417,12 @@ const ShowcaseSection = () => {
                   </div>
 
                   <div className="px-4">
-                    <h1 className="font-bold lg:text-2xl md:text-xl text-lg line-clamp-2 text-white mb-3">
+                    <h1 className="project-title font-bold lg:text-2xl md:text-xl text-lg line-clamp-2 text-white mb-3">
                       {item.title}
                     </h1>
 
                     <p
-                      className="lg:text-base text-sm line-clamp-3 mb-6 leading-relaxed"
+                      className="project-description lg:text-base text-sm line-clamp-3 mb-6 leading-relaxed"
                       style={{
                         color: "#BEC1DD",
                       }}
@@ -240,12 +430,12 @@ const ShowcaseSection = () => {
                       {item.des}
                     </p>
 
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-4">
                       <div className="flex items-center">
                         {item.iconLists.slice(0, 4).map((icon, iconIndex) => (
                           <div
                             key={iconIndex}
-                            className="border border-white/[.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center hover:border-purple-500/50 transition-colors duration-200"
+                            className="project-icon border border-white/[.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center hover:border-purple-500/50 transition-colors duration-200"
                             style={{
                               transform: `translateX(-${5 * iconIndex + 2}px)`,
                             }}
@@ -264,7 +454,7 @@ const ShowcaseSection = () => {
                         ))}
                         {item.iconLists.length > 4 && (
                           <div
-                            className="border border-white/[.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center text-white-200 text-xs"
+                            className="project-icon border border-white/[.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center text-white-200 text-xs"
                             style={{ transform: `translateX(-${5 * 4 + 2}px)` }}
                           >
                             +{item.iconLists.length - 4}
@@ -273,7 +463,7 @@ const ShowcaseSection = () => {
                       </div>
 
                       {/* View Project Arrow */}
-                      <div className="flex items-center gap-2 text-purple-400 group-hover:text-purple-300 transition-colors duration-200">
+                      <div className="project-view-btn flex items-center gap-2 text-purple-400 group-hover:text-purple-300 transition-colors duration-200">
                         <span className="text-sm font-medium">View</span>
                         <div className="transform rotate-45 w-3 h-3 border-r-2 border-t-2 border-current group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200"></div>
                       </div>
@@ -314,7 +504,7 @@ const ShowcaseSection = () => {
         </button>
       </div>
 
-      {/* Project Detail Popup menggunakan komponen terpisah */}
+      {/* Project Detail Popup menggunakan komponen terpisah dengan Portal */}
       <ProjectDetailPopup
         isOpen={isPopupOpen}
         project={selectedProject}

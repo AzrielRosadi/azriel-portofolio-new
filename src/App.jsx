@@ -1,4 +1,4 @@
-// App.jsx - Enhanced version dengan fix horizontal scroll
+// App.jsx - Enhanced version dengan fix horizontal scroll dan z-index management
 import React, { useState, Suspense } from "react";
 import {
   BrowserRouter as Router,
@@ -20,7 +20,6 @@ import Contact from "./sections/Contact";
 import Footer from "./sections/Footer";
 import NavBar from "./components/Navbar";
 import StarsCanvas from "./components/StarBackground";
-import { SmoothCursor } from "./components/ui/smooth-cursor";
 import AllProjects from "./sections/AllProjects";
 
 // Enhanced Loading fallback untuk WebGL
@@ -88,9 +87,16 @@ const Layout = ({ children }) => {
     location.pathname.startsWith("/project/");
 
   return (
-    <div className="relative w-full overflow-x-hidden" style={{ zIndex: 10 }}>
-      {!hideNavbar && <NavBar />}
-      {children}
+    <div className="relative w-full overflow-x-hidden">
+      {/* Navbar with proper z-index */}
+      {!hideNavbar && (
+        <div className="relative z-50">
+          <NavBar />
+        </div>
+      )}
+
+      {/* Main content */}
+      <div className="relative z-10">{children}</div>
     </div>
   );
 };
@@ -113,13 +119,16 @@ const App = () => {
   return (
     <Router>
       {/* Root container dengan overflow control */}
-      <div className="relative no-cursor w-full min-h-screen overflow-x-hidden">
+      <div
+        className="relative w-full min-h-screen overflow-x-hidden"
+        style={{ cursor: "auto" }}
+      >
         <div
           className={`transition-opacity duration-500 w-full ${
             isLoading ? "opacity-0" : "opacity-100"
           }`}
         >
-          {/* StarBackground dengan overflow protection */}
+          {/* StarBackground dengan z-index terendah */}
           <div
             className="fixed inset-0 w-full h-full overflow-hidden"
             style={{ zIndex: 1 }}
@@ -129,18 +138,10 @@ const App = () => {
             </Suspense>
           </div>
 
-          {/* Smooth Cursor dengan boundary */}
-          <div
-            className="fixed inset-0 pointer-events-none overflow-hidden"
-            style={{ zIndex: 50 }}
-          >
-            <SmoothCursor />
-          </div>
-
-          {/* Content container */}
+          {/* Content container dengan z-index yang tepat */}
           <div
             className="relative w-full overflow-x-hidden"
-            style={{ zIndex: 10 }}
+            style={{ zIndex: 10, cursor: "auto" }}
           >
             <Layout>
               <Routes>
@@ -209,6 +210,9 @@ const App = () => {
             </Layout>
           </div>
         </div>
+
+        {/* Portal untuk popup dengan z-index tertinggi */}
+        <div id="popup-portal" className="relative z-[9999]"></div>
       </div>
     </Router>
   );
