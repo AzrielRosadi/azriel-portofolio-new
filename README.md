@@ -1,12 +1,50 @@
-# React + Vite
+# 🌐 Azriel WebDev – Personal Portfolio Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Halo! Saya **Azriel Rosadi**, seorang **Junior Web Developer** | **Fullstack JavaScript Engineer** yang membangun proyek nyata dari ide digital.  
+Website ini adalah representasi dari skill, pengalaman, dan hasil kerja saya di dunia pengembangan web.
 
-Currently, two official plugins are available:
+🔗 **Live Demo**: [azrl-webdev.vercel.app](https://azrl-webdev.vercel.app)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### ⚛️ Frontend Framework
+- React 19
+- Vite
+
+### 🎨 Styling
+- Tailwind CSS
+
+### 🧠 3D & Animasi
+- Three.js
+- React Three Fiber
+- Framer Motion
+- GSAP
+
+### 🧩 UI Components
+- shadcn/ui
+- Lucide React (icons)
+- React Bits
+- Aceternity UI
+- Magic UI
+
+### 🔧 Utilities
+- React Router (routing)
+- EmailJS (form kontak)
+
+---
+
+## 📌 Fitur Website
+
+- 🔥 **Hero Section** – CTA untuk melihat karya terbaik
+- 📊 **Statistik** – Jumlah klien, proyek, dan tingkat kepuasan
+- 💼 **Portfolio** – Showcase proyek seperti top-up system, website laundry, dan AI marketing
+- 🧠 **Pengalaman Kerja** – Timeline pengalaman di berbagai peran developer
+- 🛠️ **Tech Stack Visual** – Mindmap teknologi yang dikuasai
+- 🌟 **Testimoni** – Ulasan langsung dari klien
+- 📬 **Kontak** – Formulir untuk koneksi langsung + link media sosial
+- 🌌 **Animated Star Background** – Efek interaktif untuk kesan modern
+
+---
+
