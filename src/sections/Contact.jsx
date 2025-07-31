@@ -9,12 +9,9 @@ const Contact = () => {
   const sectionRef = useRef(null);
   const [loading, setLoading] = useState(false);
 
-  // State untuk animasi
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isLanyardVisible, setIsLanyardVisible] = useState(false);
   const [shouldStartPhysics, setShouldStartPhysics] = useState(false);
-
-  // New states untuk drop animation
   const [shouldDropLanyard, setShouldDropLanyard] = useState(false);
   const [hasLanyardDropped, setHasLanyardDropped] = useState(false);
 
@@ -24,38 +21,30 @@ const Contact = () => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // Form animation
           setIsFormVisible(true);
           setIsLanyardVisible(true);
 
-          // Lanyard drop sequence
           if (!hasLanyardDropped) {
-            // Small delay before starting the drop animation
             setTimeout(() => {
               setShouldDropLanyard(true);
               setShouldStartPhysics(true);
             }, 200);
 
-            // Mark as dropped after animation completes
             setTimeout(() => {
               setHasLanyardDropped(true);
             }, 2500);
           } else {
-            // Jika sudah pernah drop, langsung show tanpa animasi drop lagi
             setShouldStartPhysics(true);
           }
         } else {
-          // Reset visibility when out of view
           setIsFormVisible(false);
           setIsLanyardVisible(false);
           setShouldStartPhysics(false);
-          // Note: Tidak reset shouldDropLanyard dan hasLanyardDropped
-          // agar tidak drop lagi ketika kembali ke section
         }
       },
       {
-        threshold: 0.2, // Trigger lebih awal untuk animasi yang lebih smooth
-        rootMargin: "-50px 0px", // Offset untuk timing yang lebih baik
+        threshold: 0.2,
+        rootMargin: "-50px 0px",
       }
     );
 
@@ -63,14 +52,12 @@ const Contact = () => {
     return () => observer.disconnect();
   }, [hasLanyardDropped]);
 
-  // Global trigger function untuk navbar
   useEffect(() => {
     window.triggerLanyardDrop = () => {
       setIsLanyardVisible(true);
       setShouldDropLanyard(true);
       setShouldStartPhysics(true);
 
-      // Scroll ke section jika belum terlihat
       if (sectionRef.current) {
         sectionRef.current.scrollIntoView({
           behavior: "smooth",
@@ -78,7 +65,6 @@ const Contact = () => {
         });
       }
 
-      // Mark as dropped
       setTimeout(() => {
         setHasLanyardDropped(true);
       }, 2500);
@@ -121,31 +107,32 @@ const Contact = () => {
     <section
       id="contact"
       ref={sectionRef}
-      className="flex-center section-padding"
+      className="flex-center pt-12 pb-20 md:pt-20 md:pb-32"
     >
       <div className="w-full h-full md:px-10 px-5">
         <TitleHeader
           title="Get in Touch – Let's Connect"
           sub="💬 Have questions or ideas? Let's talk! 🚀"
+          className="text-center md:text-left"
         />
 
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 mt-16 items-start">
-          {/* KIRI: Formulir Kontak - SEPENUHNYA TRANSPARAN */}
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-10 mt-10 md:mt-16 items-start">
+          {/* KIRI: Formulir */}
           <div
-            className={`xl:col-span-5 p-10 mt-35 transition-all duration-700 ${
+            className={`xl:col-span-5 p-5 md:p-10 mt-10 transition-all duration-700 ${
               isFormVisible
                 ? "opacity-100 translate-x-0"
                 : "opacity-0 -translate-x-10"
             }`}
             style={{
-              background: "transparent", // Sepenuhnya transparan
-              border: "none", // Tanpa border
+              background: "transparent",
+              border: "none",
             }}
           >
             <form
               ref={formRef}
               onSubmit={handleSubmit}
-              className="w-full flex flex-col gap-7"
+              className="w-full flex flex-col gap-y-6"
             >
               <div>
                 <label
@@ -162,7 +149,7 @@ const Contact = () => {
                   onChange={handleChange}
                   placeholder="What's your good name?"
                   required
-                  className="w-full p-3 rounded-lg bg-transparent border-b-2 border-white/30 text-white placeholder-white/70 focus:outline-none focus:border-purple-400/80 transition-all"
+                  className="w-full p-3 rounded-lg bg-transparent border-b-2 border-white/30 text-white placeholder-white/70 focus:outline-none focus:border-white transition-all"
                 />
               </div>
 
@@ -181,7 +168,7 @@ const Contact = () => {
                   onChange={handleChange}
                   placeholder="What's your email address?"
                   required
-                  className="w-full p-3 rounded-lg bg-transparent border-b-2 border-white/30 text-white placeholder-white/70 focus:outline-none focus:border-purple-400/80 transition-all"
+                  className="w-full p-3 rounded-lg bg-transparent border-b-2 border-white/30 text-white placeholder-white/70 focus:outline-none focus:border-white transition-all"
                 />
               </div>
 
@@ -200,7 +187,7 @@ const Contact = () => {
                   placeholder="How can I help you?"
                   rows="5"
                   required
-                  className="w-full p-3 rounded-lg bg-transparent border-b-2 border-white/30 text-white placeholder-white/70 focus:outline-none focus:border-purple-400/80 transition-all resize-none"
+                  className="w-full p-3 rounded-lg bg-transparent border-b-2 border-white/30 text-white placeholder-white/70 focus:outline-none focus:border-white transition-all resize-none"
                 />
               </div>
 
@@ -211,31 +198,30 @@ const Contact = () => {
               >
                 <div className="relative z-10 flex items-center justify-center gap-2">
                   <p>{loading ? "Sending..." : "Submit"}</p>
-                  <div className="transform group-hover:translate-x-1 transition-transform"></div>
                 </div>
               </button>
             </form>
           </div>
 
-          {/* KANAN: Lanyard - SEPENUHNYA MENYATU */}
+          {/* KANAN: Lanyard */}
           <div
             className={`xl:col-span-7 overflow-hidden h-full flex items-start justify-center transition-all duration-500 ${
               isLanyardVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
             }`}
             style={{
-              background: "transparent", // Sepenuhnya transparan
-              border: "none", // Tanpa border
+              background: "transparent",
+              border: "none",
             }}
           >
             <div className="w-full h-full hover:cursor-grab rounded-xl">
               <Lanyard
                 position={[0, 0, 13]}
-                gravity={[0, -40, 0]} // Menggunakan gravity dari props
+                gravity={[0, -40, 0]}
                 startPhysics={shouldStartPhysics}
                 fov={20}
                 transparent={true}
-                shouldDrop={shouldDropLanyard} // New prop
-                onDropComplete={handleLanyardDropComplete} // New prop
+                shouldDrop={shouldDropLanyard}
+                onDropComplete={handleLanyardDropComplete}
               />
             </div>
           </div>

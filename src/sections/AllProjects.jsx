@@ -221,14 +221,6 @@ const AllProjects = () => {
     },
   ];
 
-  const categories = [
-    { key: "all", label: "All Projects" },
-    { key: "web", label: "Web Development" },
-    { key: "desktop", label: "Desktop Apps" },
-    { key: "game", label: "Game Development" },
-    { key: "ai", label: "AI & Machine Learning" },
-  ];
-
   const filteredProjects =
     filter === "all"
       ? allProjects
@@ -638,33 +630,16 @@ const AllProjects = () => {
         {/* Header dengan spacing yang konsisten */}
         <div className="text-center mb-16">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-            All <span className="text-purple">Projects</span>
+            All{" "}
+            <span className="text-transparent bg-gradient-to-r from-gray-300 to-gray-500 bg-clip-text">
+              Projects
+            </span>
           </h1>
           <p className="text-white-200 text-base sm:text-lg max-w-2xl mx-auto">
             Explore my complete portfolio of work across different technologies
             and domains
           </p>
         </div>
-
-        {/* Filter Categories dengan spacing yang diperbaiki */}
-        <div className="mb-16">
-          <div className="flex flex-wrap justify-center gap-3 lg:gap-4">
-            {categories.map((category) => (
-              <button
-                key={category.key}
-                onClick={() => setFilter(category.key)}
-                className={`px-4 py-2.5 lg:px-6 lg:py-3 rounded-full font-medium transition-all duration-300 text-sm lg:text-base whitespace-nowrap transform hover:scale-105 ${
-                  filter === category.key
-                    ? "bg-purple-600 text-white shadow-lg shadow-purple-500/25 scale-105"
-                    : "bg-black-200/80 text-white-200 hover:bg-purple-600/20 hover:text-purple-300 border border-white/[0.1] backdrop-blur-sm"
-                }`}
-              >
-                {category.label}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* Projects Grid dengan layout yang sama seperti ShowcaseSection */}
         <div className="projects-grid mb-20">
           <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-16">
@@ -687,11 +662,11 @@ const AllProjects = () => {
                         onClick={(e) =>
                           handleCardGithubClick(item.githubLink, e)
                         }
-                        className="project-action-btn p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-purple-500/50 hover:bg-purple-500/20 transition-all duration-200 group"
+                        className="project-action-btn p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-gray-400/60 hover:bg-gray-500/20 transition-all duration-200 group"
                         title="View on GitHub"
                       >
                         <svg
-                          className="w-4 h-4 text-white group-hover:text-purple-300 transition-colors"
+                          className="w-4 h-4 text-white group-hover:text-gray-200 transition-colors"
                           fill="currentColor"
                           viewBox="0 0 24 24"
                         >
@@ -704,13 +679,13 @@ const AllProjects = () => {
                         onClick={(e) =>
                           handleCardLiveLinkClick(item.liveLink, e)
                         }
-                        className="project-action-btn p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-purple-500/50 hover:bg-purple-500/20 transition-all duration-200 group"
+                        className="project-action-btn p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-gray-400/60 hover:bg-gray-500/20 transition-all duration-200 group"
                         title="View Live Site"
                         disabled={item.liveLink === "#"}
                         style={{ opacity: item.liveLink === "#" ? 0.5 : 1 }}
                       >
                         <svg
-                          className="w-4 h-4 text-white group-hover:text-purple-300 transition-colors"
+                          className="w-4 h-4 text-white group-hover:text-gray-200 transition-colors"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -754,7 +729,7 @@ const AllProjects = () => {
                           alt="project preview"
                           className="z-10 absolute inset-0 w-full h-full object-cover rounded-2xl lg:rounded-3xl"
                           onError={(e) => {
-                            e.target.src = `https://via.placeholder.com/400x300/8B5CF6/FFFFFF?text=Project+${item.id}`;
+                            e.target.src = `https://via.placeholder.com/400x300/9CA3AF/FFFFFF?text=Project+${item.id}`;
                           }}
                         />
                       </div>
@@ -782,7 +757,7 @@ const AllProjects = () => {
                               .map((icon, iconIndex) => (
                                 <div
                                   key={iconIndex}
-                                  className="project-icon border border-white/[.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center hover:border-purple-500/50 transition-colors duration-200"
+                                  className="project-icon border border-white/[.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center hover:border-gray-400/60 transition-colors duration-200"
                                   style={{
                                     transform: `translateX(-${
                                       5 * iconIndex + 2
@@ -796,7 +771,7 @@ const AllProjects = () => {
                                     onError={(e) => {
                                       e.target.style.display = "none";
                                       e.target.parentElement.innerHTML =
-                                        '<div class="w-2 h-2 bg-purple-500 rounded-full"></div>';
+                                        '<div class="w-2 h-2 bg-gray-400 rounded-full"></div>';
                                     }}
                                   />
                                 </div>
@@ -814,7 +789,7 @@ const AllProjects = () => {
                           </div>
 
                           {/* View Project Arrow */}
-                          <div className="project-view-btn flex items-center gap-2 text-purple-400 group-hover:text-purple-300 transition-colors duration-200">
+                          <div className="project-view-btn flex items-center gap-2 text-gray-300 group-hover:text-gray-100 transition-colors duration-200">
                             <span className="text-sm font-medium">View</span>
                             <div className="transform rotate-45 w-3 h-3 border-r-2 border-t-2 border-current group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200"></div>
                           </div>
@@ -827,7 +802,6 @@ const AllProjects = () => {
             ))}
           </div>
         </div>
-
         {/* Empty State */}
         {filteredProjects.length === 0 && (
           <div className="text-center py-20">
@@ -840,20 +814,19 @@ const AllProjects = () => {
             </p>
             <button
               onClick={() => setFilter("all")}
-              className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition-colors duration-200"
+              className="bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900 text-white px-6 py-3 rounded-lg transition-all duration-200"
             >
               Show All Projects
             </button>
           </div>
         )}
-
         {/* Back to Home Button */}
         <div className="flex justify-center mb-20">
           <button
             onClick={handleBackToHome}
-            className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden font-bold text-white transition duration-300 ease-out border-2 border-purple-500 rounded-full shadow-md bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+            className="group relative inline-flex items-center justify-center px-8 py-4 overflow-hidden font-bold text-white transition duration-300 ease-out border-2 border-gray-400 rounded-full shadow-md bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900"
           >
-            <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-purple-500 group-hover:translate-x-0 ease">
+            <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-gray-500 to-slate-600 group-hover:translate-x-0 ease">
               <div className="transform w-4 h-4 border-l-2 border-b-2 border-current -rotate-45"></div>
             </span>
             <span className="absolute flex items-center justify-center w-full h-full text-white transition-all duration-300 transform group-hover:translate-x-full ease">

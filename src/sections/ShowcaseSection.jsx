@@ -356,11 +356,11 @@ const ShowcaseSection = () => {
                   {/* GitHub Icon */}
                   <button
                     onClick={(e) => handleGithubClick(item.githubLink, e)}
-                    className="project-action-btn p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-purple-500/50 hover:bg-purple-500/20 transition-all duration-200 group"
+                    className="project-action-btn p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-gray-400/60 hover:bg-gray-500/20 transition-all duration-200 group"
                     title="View on GitHub"
                   >
                     <svg
-                      className="w-4 h-4 text-white group-hover:text-purple-300 transition-colors"
+                      className="w-4 h-4 text-white group-hover:text-gray-200 transition-colors"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
@@ -371,11 +371,11 @@ const ShowcaseSection = () => {
                   {/* Live Link Icon */}
                   <button
                     onClick={(e) => handleLiveLinkClick(item.liveLink, e)}
-                    className="project-action-btn p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-purple-500/50 hover:bg-purple-500/20 transition-all duration-200 group"
+                    className="project-action-btn p-2 bg-black/80 backdrop-blur-sm rounded-full border border-white/[.2] hover:border-gray-400/60 hover:bg-gray-500/20 transition-all duration-200 group"
                     title="View Live Site"
                   >
                     <svg
-                      className="w-4 h-4 text-white group-hover:text-purple-300 transition-colors"
+                      className="w-4 h-4 text-white group-hover:text-gray-200 transition-colors"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -411,7 +411,7 @@ const ShowcaseSection = () => {
                       alt="project preview"
                       className="z-10 absolute inset-0 w-full h-full object-cover rounded-2xl lg:rounded-3xl"
                       onError={(e) => {
-                        e.target.src = `https://via.placeholder.com/400x300/8B5CF6/FFFFFF?text=Project+${item.id}`;
+                        e.target.src = `https://via.placeholder.com/400x300/9CA3AF/FFFFFF?text=Project+${item.id}`;
                       }}
                     />
                   </div>
@@ -435,7 +435,7 @@ const ShowcaseSection = () => {
                         {item.iconLists.slice(0, 4).map((icon, iconIndex) => (
                           <div
                             key={iconIndex}
-                            className="project-icon border border-white/[.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center hover:border-purple-500/50 transition-colors duration-200"
+                            className="project-icon border border-white/[.2] rounded-full bg-black lg:w-10 lg:h-10 w-8 h-8 flex justify-center items-center hover:border-gray-400/60 transition-colors duration-200"
                             style={{
                               transform: `translateX(-${5 * iconIndex + 2}px)`,
                             }}
@@ -447,7 +447,7 @@ const ShowcaseSection = () => {
                               onError={(e) => {
                                 e.target.style.display = "none";
                                 e.target.parentElement.innerHTML =
-                                  '<div class="w-2 h-2 bg-purple-500 rounded-full"></div>';
+                                  '<div class="w-2 h-2 bg-gray-400 rounded-full"></div>';
                               }}
                             />
                           </div>
@@ -463,7 +463,7 @@ const ShowcaseSection = () => {
                       </div>
 
                       {/* View Project Arrow */}
-                      <div className="project-view-btn flex items-center gap-2 text-purple-400 group-hover:text-purple-300 transition-colors duration-200">
+                      <div className="project-view-btn flex items-center gap-2 text-gray-300 group-hover:text-gray-100 transition-colors duration-200">
                         <span className="text-sm font-medium">View</span>
                         <div className="transform rotate-45 w-3 h-3 border-r-2 border-t-2 border-current group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-200"></div>
                       </div>
@@ -480,9 +480,9 @@ const ShowcaseSection = () => {
       <div className="flex justify-center mt-16">
         <button
           onClick={handleShowAllProjects}
-          className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-bold text-white transition duration-300 ease-out border-2 border-purple-500 rounded-full shadow-md bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+          className="group relative inline-flex items-center justify-center px-8 py-3 overflow-hidden font-bold text-white transition duration-300 ease-out border-2 border-gray-400 rounded-full shadow-md bg-gradient-to-r from-gray-600 to-gray-800 hover:from-gray-700 hover:to-gray-900"
         >
-          <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-purple-500 group-hover:translate-x-0 ease">
+          <span className="absolute inset-0 flex items-center justify-center w-full h-full text-white duration-300 -translate-x-full bg-gradient-to-r from-gray-500 to-slate-600 group-hover:translate-x-0 ease">
             <svg
               className="w-6 h-6"
               fill="none"
