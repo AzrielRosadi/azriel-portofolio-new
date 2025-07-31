@@ -20,6 +20,7 @@ import Contact from "./sections/Contact";
 import Footer from "./sections/Footer";
 import StarsCanvas from "./components/StarBackground";
 import AllProjects from "./sections/AllProjects";
+import SmoothScrollProvider from "./components/SmoothScrollProvider"; // Tambahkan ini
 
 // Import Navbar - UNCOMMENTED dan path disesuaikan
 import NavBar from "./components/navbar/Nav";
@@ -141,7 +142,7 @@ const App = () => {
       {/* Root container dengan overflow control */}
       <div
         className="relative w-full min-h-screen overflow-x-hidden"
-        style={{ cursor: "auto" }}
+        data-scroll-container
       >
         <div
           className={`transition-opacity duration-500 w-full ${
@@ -163,71 +164,75 @@ const App = () => {
             className="relative w-full overflow-x-hidden"
             style={{ zIndex: 10, cursor: "auto" }}
           >
-            <Layout>
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route
-                  path="/projects"
-                  element={
-                    <div className="w-full overflow-x-hidden">
-                      <AllProjects />
-                    </div>
-                  }
-                />
-                <Route
-                  path="*"
-                  element={
-                    <div className="min-h-screen flex items-center justify-center relative w-full overflow-x-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-purple-900/20 to-black/90" />
+            <SmoothScrollProvider>
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route
+                    path="/projects"
+                    element={
+                      <div className="w-full overflow-x-hidden">
+                        <AllProjects />
+                      </div>
+                    }
+                  />
+                  <Route
+                    path="*"
+                    element={
+                      <div className="min-h-screen flex items-center justify-center relative w-full overflow-x-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-purple-900/20 to-black/90" />
 
-                      <div className="text-center relative z-10 max-w-2xl mx-auto px-4">
-                        <div className="mb-8">
-                          <div className="text-6xl sm:text-8xl mb-6 animate-bounce">
-                            <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
-                              🌟
-                            </span>
+                        <div className="text-center relative z-10 max-w-2xl mx-auto px-4">
+                          <div className="mb-8">
+                            <div className="text-6xl sm:text-8xl mb-6 animate-bounce">
+                              <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
+                                🌟
+                              </span>
+                            </div>
+
+                            <h1 className="text-6xl sm:text-8xl font-bold mb-4 bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600 bg-clip-text text-transparent relative">
+                              404
+                              <div className="absolute inset-0 text-6xl sm:text-8xl font-bold blur-2xl bg-gradient-to-r from-purple-400/30 via-pink-500/30 to-purple-600/30 bg-clip-text text-transparent -z-10">
+                                404
+                              </div>
+                            </h1>
+
+                            <p className="text-white/80 text-lg sm:text-xl mb-8 font-light tracking-wide">
+                              Lost in the digital cosmos...
+                            </p>
+                            <p className="text-white/60 text-sm mb-8 max-w-md mx-auto">
+                              The page you're searching for has drifted into
+                              another dimension.
+                            </p>
                           </div>
 
-                          <h1 className="text-6xl sm:text-8xl font-bold mb-4 bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600 bg-clip-text text-transparent relative">
-                            404
-                            <div className="absolute inset-0 text-6xl sm:text-8xl font-bold blur-2xl bg-gradient-to-r from-purple-400/30 via-pink-500/30 to-purple-600/30 bg-clip-text text-transparent -z-10">
-                              404
+                          <div className="space-y-6">
+                            <a
+                              href="/"
+                              className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/25 group"
+                            >
+                              <span className="text-xl group-hover:animate-bounce">
+                                🏠
+                              </span>
+                              <span className="font-medium">
+                                Return to Base
+                              </span>
+                            </a>
+
+                            <div className="text-sm text-white/50 max-w-md mx-auto">
+                              <p className="italic">
+                                "Not all who wander are lost, but this page
+                                definitely is."
+                              </p>
                             </div>
-                          </h1>
-
-                          <p className="text-white/80 text-lg sm:text-xl mb-8 font-light tracking-wide">
-                            Lost in the digital cosmos...
-                          </p>
-                          <p className="text-white/60 text-sm mb-8 max-w-md mx-auto">
-                            The page you're searching for has drifted into
-                            another dimension.
-                          </p>
-                        </div>
-
-                        <div className="space-y-6">
-                          <a
-                            href="/"
-                            className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-4 rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/25 group"
-                          >
-                            <span className="text-xl group-hover:animate-bounce">
-                              🏠
-                            </span>
-                            <span className="font-medium">Return to Base</span>
-                          </a>
-
-                          <div className="text-sm text-white/50 max-w-md mx-auto">
-                            <p className="italic">
-                              "Not all who wander are lost, but this page
-                              definitely is."
-                            </p>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  }
-                />
-              </Routes>
-            </Layout>
+                    }
+                  />
+                </Routes>
+              </Layout>
+            </SmoothScrollProvider>
           </div>
         </div>
 
