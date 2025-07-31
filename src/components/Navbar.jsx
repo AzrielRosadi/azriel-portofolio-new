@@ -1,8 +1,8 @@
+// NavBar.jsx - Versi sederhana dan aman
 import { useState, useEffect } from "react";
-
 import { navLinks } from "../constants";
 
-const NavBar = () => {
+const NavBar = ({ scrollTo }) => {
   // track if the user has scrolled down the page
   const [scrolled, setScrolled] = useState(false);
 
@@ -10,7 +10,6 @@ const NavBar = () => {
     // create an event listener for when the user scrolls
     const handleScroll = () => {
       // check if the user has scrolled down at least 10px
-      // if so, set the state to true
       const isScrolled = window.scrollY > 10;
       setScrolled(isScrolled);
     };
@@ -22,40 +21,59 @@ const NavBar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Handler untuk navigation dengan smooth scroll
+  const handleNavClick = (e, link) => {
+    e.preventDefault();
+
+    if (scrollTo && link.startsWith("#")) {
+      // Gunakan locomotive scroll jika tersedia
+      scrollTo(link);
+    } else {
+      // Fallback ke native smooth scroll
+      const targetElement = document.querySelector(link);
+      if (targetElement) {
+        targetElement.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    }
+  };
+
   // Handler untuk contact button dengan smooth scroll dan lanyard trigger
   const handleContactClick = (e) => {
     e.preventDefault();
 
-    // Scroll smooth ke section contact
-    const contactSection = document.getElementById("contact");
-    if (contactSection) {
-      // Calculate scroll distance for optimal timing
-      const targetPosition = contactSection.offsetTop;
-      const currentPosition = window.pageYOffset;
-      const distance = Math.abs(targetPosition - currentPosition);
-
-      // Estimate scroll duration (max 1 second)
-      const scrollDuration = Math.min(distance / 2, 1000);
-
-      // Start smooth scroll
-      contactSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-
-      // Trigger lanyard drop at optimal timing (70% of scroll completion)
-      setTimeout(() => {
-        if (window.triggerLanyardDrop) {
-          window.triggerLanyardDrop();
-        }
-      }, scrollDuration * 0.7);
+    if (scrollTo) {
+      // Gunakan locomotive scroll
+      scrollTo("#contact");
+    } else {
+      // Fallback ke native scroll
+      const contactSection = document.getElementById("contact");
+      if (contactSection) {
+        contactSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
     }
+
+    // Trigger lanyard drop setelah delay
+    setTimeout(() => {
+      if (window.triggerLanyardDrop) {
+        window.triggerLanyardDrop();
+      }
+    }, 1000);
   };
 
   return (
     <header className={`navbar ${scrolled ? "scrolled" : "not-scrolled"}`}>
       <div className="inner">
-        <a href="#hero" className="logo">
+        <a
+          href="#hero"
+          className="logo"
+          onClick={(e) => handleNavClick(e, "#hero")}
+        >
           Azriel | WebDev
         </a>
 
@@ -63,7 +81,7 @@ const NavBar = () => {
           <ul>
             {navLinks.map(({ link, name }) => (
               <li key={name} className="group">
-                <a href={link}>
+                <a href={link} onClick={(e) => handleNavClick(e, link)}>
                   <span>{name}</span>
                   <span className="underline" />
                 </a>
@@ -72,7 +90,7 @@ const NavBar = () => {
           </ul>
         </nav>
 
-        {/* Updated contact button dengan smooth scroll dan lanyard trigger */}
+        {/* Contact button dengan smooth scroll dan lanyard trigger */}
         <button
           onClick={handleContactClick}
           className="contact-btn group"

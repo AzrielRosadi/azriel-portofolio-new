@@ -1,4 +1,4 @@
-// App.jsx - Enhanced version dengan fix horizontal scroll dan z-index management
+// App.jsx - Enhanced version dengan navbar integration
 import React, { useState, Suspense } from "react";
 import {
   BrowserRouter as Router,
@@ -18,9 +18,11 @@ import TechStack from "./sections/TechStack";
 import Testimonials from "./sections/Testimonials";
 import Contact from "./sections/Contact";
 import Footer from "./sections/Footer";
-import NavBar from "./components/Navbar";
 import StarsCanvas from "./components/StarBackground";
 import AllProjects from "./sections/AllProjects";
+
+// Import Navbar - UNCOMMENTED dan path disesuaikan
+import NavBar from "./components/navbar/Nav";
 
 // Enhanced Loading fallback untuk WebGL
 const WebGLFallback = () => (
@@ -62,18 +64,36 @@ const WebGLFallback = () => (
   </div>
 );
 
-// Homepage Component
+// Homepage Component dengan section IDs yang sesuai navbar
 const HomePage = () => {
   return (
     <div className="w-full overflow-x-hidden">
-      <Hero />
+      {/* Hero section dengan ID untuk navbar navigation */}
+      <div id="hero">
+        <Hero />
+      </div>
+
       <ShowcaseSection />
       <LogoSection />
       <FeatureCard />
-      <ExperienceSection />
-      <TechStack />
-      <Testimonials />
-      <Contact />
+
+      {/* About section dengan ID untuk navbar navigation */}
+      <div id="about">
+        <ExperienceSection />
+      </div>
+
+      {/* Projects section dengan ID untuk navbar navigation */}
+      <div id="projects">
+        <TechStack />
+      </div>
+
+      {/* <Testimonials /> */}
+
+      {/* Contact section dengan ID untuk navbar navigation */}
+      <div id="contact">
+        <Contact />
+      </div>
+
       <Footer />
     </div>
   );
@@ -88,7 +108,7 @@ const Layout = ({ children }) => {
 
   return (
     <div className="relative w-full overflow-x-hidden">
-      {/* Navbar with proper z-index */}
+      {/* Navbar with proper z-index - NAVBAR SEKARANG AKTIF */}
       {!hideNavbar && (
         <div className="relative z-50">
           <NavBar />

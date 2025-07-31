@@ -278,57 +278,59 @@ const TechStack = () => {
               )}
             </div>
 
-            {/* Animated Beams - Adjusted for new positions */}
+            {/* Animated Beams - Fixed positions and curvatures to match the image */}
+            {/* Top Row Beams */}
             <AnimatedBeam
               containerRef={containerRef}
               fromRef={reactRef}
               toRef={centerRef}
-              curvature={-85}
-              endYOffset={-20}
+              curvature={-30}
+              endYOffset={0}
             />
             <AnimatedBeam
               containerRef={containerRef}
               fromRef={nextjsRef}
               toRef={centerRef}
-              curvature={-45}
-              endYOffset={-20}
+              curvature={-15}
+              endYOffset={0}
             />
             <AnimatedBeam
               containerRef={containerRef}
               fromRef={tailwindRef}
               toRef={centerRef}
               curvature={0}
-              endYOffset={-20}
+              endYOffset={0}
             />
             <AnimatedBeam
               containerRef={containerRef}
               fromRef={javascriptRef}
               toRef={centerRef}
-              curvature={45}
-              endYOffset={-20}
+              curvature={15}
+              endYOffset={0}
             />
             <AnimatedBeam
               containerRef={containerRef}
               fromRef={html5Ref}
               toRef={centerRef}
-              curvature={85}
-              endYOffset={-20}
+              curvature={30}
+              endYOffset={0}
             />
 
+            {/* Bottom Row Beams */}
             <AnimatedBeam
               containerRef={containerRef}
               fromRef={css3Ref}
               toRef={centerRef}
-              curvature={-85}
-              endYOffset={20}
+              curvature={30}
+              endYOffset={0}
               reverse
             />
             <AnimatedBeam
               containerRef={containerRef}
               fromRef={nodejsRef}
               toRef={centerRef}
-              curvature={-45}
-              endYOffset={20}
+              curvature={15}
+              endYOffset={0}
               reverse
             />
             <AnimatedBeam
@@ -336,23 +338,23 @@ const TechStack = () => {
               fromRef={laravelRef}
               toRef={centerRef}
               curvature={0}
-              endYOffset={20}
+              endYOffset={0}
               reverse
             />
             <AnimatedBeam
               containerRef={containerRef}
               fromRef={mysqlRef}
               toRef={centerRef}
-              curvature={45}
-              endYOffset={20}
+              curvature={-15}
+              endYOffset={0}
               reverse
             />
             <AnimatedBeam
               containerRef={containerRef}
               fromRef={typescriptRef}
               toRef={centerRef}
-              curvature={85}
-              endYOffset={20}
+              curvature={-30}
+              endYOffset={0}
               reverse
             />
           </div>

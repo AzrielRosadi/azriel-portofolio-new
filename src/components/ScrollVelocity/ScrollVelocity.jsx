@@ -10,6 +10,12 @@ import {
   useVelocity,
   useAnimationFrame,
 } from "framer-motion";
+// Custom wrap function to replace @motionone/utils import
+function wrap(min, max, v) {
+  const range = max - min;
+  const mod = (((v - min) % range) + range) % range;
+  return mod + min;
+}
 
 function useElementWidth(ref) {
   const [width, setWidth] = useState(0);
@@ -22,6 +28,102 @@ function useElementWidth(ref) {
     return () => window.removeEventListener("resize", updateWidth);
   }, [ref]);
   return width;
+}
+
+// ParallaxText Component - Converted from TSX
+function ParallaxText({ children, baseVelocity = 100, direction }) {
+  const baseX = useMotionValue(0);
+  const { scrollY } = useScroll();
+  const scrollVelocity = useVelocity(scrollY);
+  const smoothVelocity = useSpring(scrollVelocity, {
+    damping: 50, // Semakin tinggi = semakin lambat/smooth
+    stiffness: 300, // Semakin tinggi = semakin responsif
+  });
+  const skewVelocity = useSpring(scrollVelocity, {
+    stiffness: 100,
+    damping: 30,
+  });
+  const skewVelocityFactor = useTransform(
+    skewVelocity,
+    [-1000, 1000],
+    [-30, 30]
+  );
+  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
+    clamp: false,
+  });
+  const x = useTransform(baseX, (v) => `${wrap(-20, -45, v)}%`);
+  const directionFactor = useRef(1);
+
+  useAnimationFrame((t, delta) => {
+    let moveBy = directionFactor.current * baseVelocity * (delta / 1000);
+
+    if (velocityFactor.get() < 0) {
+      directionFactor.current = -1;
+    } else if (velocityFactor.get() > 0) {
+      directionFactor.current = 1;
+    }
+
+    moveBy += directionFactor.current * moveBy * velocityFactor.get();
+    baseX.set(baseX.get() + moveBy);
+  });
+
+  return (
+    <motion.div
+      initial={{ x: direction, opacity: 0 }}
+      animate={{
+        x: 0,
+        opacity: 1,
+      }}
+      transition={{
+        delay: 2,
+        duration: 1,
+        ease: "easeOut", // Fixed from "easings: 'eas'" typo
+      }}
+      className="m-0 flex flex-nowrap overflow-hidden whitespace-nowrap leading-[0.8] tracking-[-2px]"
+    >
+      <motion.div
+        style={{ x }}
+        className="flex flex-nowrap whitespace-nowrap text-4xl font-semibold uppercase md:text-8xl lg:text-9xl"
+      >
+        <motion.span
+          style={{ skew: skewVelocityFactor }}
+          className="mr-10 block"
+        >
+          {children}{" "}
+        </motion.span>
+        <motion.span
+          style={{ skew: skewVelocityFactor }}
+          className="mr-10 block"
+        >
+          {children}{" "}
+        </motion.span>
+        <motion.span
+          style={{ skew: skewVelocityFactor }}
+          className="mr-10 block"
+        >
+          {children}{" "}
+        </motion.span>
+        <motion.span
+          style={{ skew: skewVelocityFactor }}
+          className="mr-10 block"
+        >
+          {children}{" "}
+        </motion.span>
+        <motion.span
+          style={{ skew: skewVelocityFactor }}
+          className="mr-10 block"
+        >
+          {children}{" "}
+        </motion.span>
+        <motion.span
+          style={{ skew: skewVelocityFactor }}
+          className="mr-10 block"
+        >
+          {children}{" "}
+        </motion.span>
+      </motion.div>
+    </motion.div>
+  );
 }
 
 export default function ScrollVelocity({
@@ -55,7 +157,30 @@ export default function ScrollVelocity({
   smoothingFactor = 0.15, // faktor smoothing untuk transisi (0.05-0.3)
   easeInOutPower = 2, // kekuatan ease in/out (1-4)
   naturalDelay = 0.1, // delay natural untuk responsivitas (0-0.5)
+  // New parameter to choose between complex or simple mode
+  useSimpleMode = false, // Toggle between complex ScrollVelocity and simple ParallaxText
 }) {
+  // Simple ParallaxText Mode
+  if (useSimpleMode) {
+    return (
+      <section className={parallaxClassName} style={parallaxStyle}>
+        <div className="flex flex-col gap-4">
+          {texts.map((text, index) => (
+            <ParallaxText
+              key={index}
+              baseVelocity={index % 2 !== 0 ? -velocity : velocity}
+              direction={index % 2 !== 0 ? -100 : 100}
+              className={`${scrollerClassName} ${className}`}
+            >
+              {text}
+            </ParallaxText>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  // Complex VelocityText Mode (Original)
   function VelocityText({
     children,
     baseVelocity = velocity,
@@ -112,7 +237,7 @@ export default function ScrollVelocity({
     const copyRef = useRef(null);
     const copyWidth = useElementWidth(copyRef);
 
-    function wrap(min, max, v) {
+    function wrapValue(min, max, v) {
       const range = max - min;
       const mod = (((v - min) % range) + range) % range;
       return mod + min;
@@ -120,7 +245,7 @@ export default function ScrollVelocity({
 
     const x = useTransform(baseX, (v) => {
       if (copyWidth === 0) return "0px";
-      return `${wrap(-copyWidth, 0, v)}px`;
+      return `${wrapValue(-copyWidth, 0, v)}px`;
     });
 
     // Transform untuk skew dan translateY
@@ -371,3 +496,6 @@ export default function ScrollVelocity({
     </section>
   );
 }
+
+// Export both components
+export { ParallaxText };
