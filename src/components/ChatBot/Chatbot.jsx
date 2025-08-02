@@ -1,3 +1,4 @@
+// src/components/ChatBot/Chatbot.jsx - Updated untuk Vercel
 import React, { useState, useRef, useEffect } from "react";
 import {
   Send,
@@ -51,9 +52,17 @@ const ChatMessage = ({ message, index }) => {
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <p className="text-xs sm:text-sm whitespace-pre-wrap leading-relaxed font-medium break-words">
-              {message.text}
-            </p>
+            {/* Enhanced HTML rendering untuk formatted responses */}
+            {message.sender === "bot" && message.text.includes("<div") ? (
+              <div
+                className="text-xs sm:text-sm leading-relaxed font-medium break-words"
+                dangerouslySetInnerHTML={{ __html: message.text }}
+              />
+            ) : (
+              <p className="text-xs sm:text-sm whitespace-pre-wrap leading-relaxed font-medium break-words">
+                {message.text}
+              </p>
+            )}
             <p
               className={`text-xs mt-2 font-light transition-opacity duration-300 ${
                 message.sender === "user" ? "text-gray-300" : "text-gray-500"
@@ -84,7 +93,7 @@ const Chatbot = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
-  const [scrollPosition, setScrollPosition] = useState("bottom"); // "top", "middle", "bottom"
+  const [scrollPosition, setScrollPosition] = useState("bottom");
   const messagesEndRef = useRef(null);
   const messagesStartRef = useRef(null);
   const messagesContainerRef = useRef(null);
@@ -130,14 +139,12 @@ const Chatbot = () => {
     const isAtTop = scrollTop === 0;
     const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
 
-    // Prevent scroll propagation when at boundaries
     if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
       e.preventDefault();
       e.stopPropagation();
     }
   };
 
-  // Additional touch event handling for mobile
   const handleTouchMove = (e) => {
     e.stopPropagation();
   };
@@ -146,13 +153,12 @@ const Chatbot = () => {
     scrollToBottom();
   }, [messages]);
 
-  // FIXED: Enhanced initial animation sequence - langsung bounce tanpa delay berlebihan
+  // Enhanced initial animation sequence
   useEffect(() => {
-    // Langsung tampil dan bounce setelah splash screen selesai
     const initialTimer = setTimeout(() => {
       setIsVisible(true);
-      setHasAnimatedIn(true); // Langsung set animated untuk bounce effect
-    }, 2800); // Setelah splash screen
+      setHasAnimatedIn(true);
+    }, 2800);
 
     return () => {
       clearTimeout(initialTimer);
@@ -176,7 +182,6 @@ const Chatbot = () => {
     setIsTransitioning(true);
 
     if (isOpen) {
-      // Closing animation
       document.body.classList.remove("chat-open");
 
       setTimeout(() => {
@@ -184,7 +189,6 @@ const Chatbot = () => {
         setIsTransitioning(false);
       }, 500);
     } else {
-      // Opening animation
       setIsOpen(true);
       document.body.classList.add("chat-open");
 
@@ -194,54 +198,112 @@ const Chatbot = () => {
     }
   };
 
-  // Enhanced API call with better error handling
+  // FIXED: Enhanced API call untuk Vercel serverless function
   const sendToAPI = async (message, retryCount = 0) => {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 15000);
 
-      const response = await fetch("http://localhost:5000/api/chat", {
+      // FIXED: Menggunakan relative path untuk Vercel deployment
+      const apiUrl =
+        process.env.NODE_ENV === "production"
+          ? "/api/chat" // Production: relative path
+          : "http://localhost:3000/api/chat"; // Development: full URL
+
+      console.log("🔗 API URL:", apiUrl);
+      console.log("🌍 Environment:", process.env.NODE_ENV);
+
+      const response = await fetch(apiUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({ message }),
         signal: controller.signal,
       });
 
       clearTimeout(timeoutId);
 
-      if (!response.ok)
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("❌ API Response Error:", response.status, errorText);
+        throw new Error(
+          `HTTP error! status: ${response.status} - ${errorText}`
+        );
+      }
 
       const data = await response.json();
-      if (data.metadata) console.log("🔍 Website data:", data.metadata);
+      console.log("✅ API Response received:", data.metadata);
 
       return data.response;
     } catch (error) {
-      console.error("API Error:", error);
+      console.error("❌ API Error:", error);
 
       if (
         retryCount < 2 &&
-        (error.message.includes("fetch") || error.message.includes("network"))
+        (error.message.includes("fetch") ||
+          error.message.includes("network") ||
+          error.message.includes("AbortError"))
       ) {
+        console.log(`🔄 Retrying API call (${retryCount + 1}/3)...`);
         await new Promise((resolve) => setTimeout(resolve, 1000));
         return sendToAPI(message, retryCount + 1);
       }
 
       // Smart fallback responses
       if (!isOnline) {
-        return "🔌 Koneksi terputus. Silakan periksa internet Anda.\n\n📧 Kontak langsung: azrlwebdev@gmail.com\n🌐 Portfolio: https://azrl-webdev.vercel.app/";
+        return `🔌 **Koneksi terputus**
+
+Silakan periksa koneksi internet Anda dan coba lagi.
+
+📧 **Kontak langsung:** azrlwebdev@gmail.com
+🌐 **Portfolio:** https://azrl-webdev.vercel.app/`;
       }
 
       const msg = message.toLowerCase();
       if (msg.includes("proyek") || msg.includes("project")) {
-        return "🚀 Portfolio Azriel: 25+ projects completed!\n\n• Gaming platforms & E-commerce\n• 3D Interactive websites\n• Management systems\n\n🔗 Detail: https://azrl-webdev.vercel.app/";
+        return `🚀 **Portfolio Azriel Rosadi**
+
+📊 **Highlights:**
+🔸 **25+** projects completed
+🔸 **95%** client satisfaction  
+🔸 Gaming platforms & E-commerce
+🔸 3D Interactive websites
+🔸 Management systems
+
+🔗 **Detail lengkap:** https://azrl-webdev.vercel.app/`;
       }
 
       if (msg.includes("kontak") || msg.includes("contact")) {
-        return "📞 Kontak Azriel:\n\n✉️ azrlwebdev@gmail.com\n🌐 https://azrl-webdev.vercel.app/\n⚡ Response: < 24 jam";
+        return `📞 **Hubungi Azriel:**
+
+✉️ **Email:** azrlwebdev@gmail.com
+🌐 **Website:** https://azrl-webdev.vercel.app/
+⚡ **Response:** < 24 jam
+
+💼 **Available untuk:** New projects & collaborations`;
       }
 
-      return "😅 Server sedang maintenance. Coba lagi sebentar!\n\n📧 Email: azrlwebdev@gmail.com\n🌐 Portfolio: https://azrl-webdev.vercel.app/";
+      if (msg.includes("teknologi") || msg.includes("tech")) {
+        return `💻 **Tech Stack Azriel:**
+
+🎨 **Frontend:** React, Next.js, Three.js, TypeScript
+⚙️ **Backend:** Node.js, Laravel, PHP  
+🗄️ **Database:** PostgreSQL, MySQL
+🎮 **3D Graphics:** Three.js, WebGL
+
+✨ **Special:** Interactive 3D web experiences!`;
+      }
+
+      return `😅 **Server sedang maintenance**
+
+Coba lagi dalam beberapa saat!
+
+📧 **Email:** azrlwebdev@gmail.com
+🌐 **Portfolio:** https://azrl-webdev.vercel.app/
+
+*Server will back online soon.*`;
     }
   };
 
@@ -269,9 +331,10 @@ const Chatbot = () => {
       };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
+      console.error("❌ Send message error:", error);
       const errorMessage = {
         id: Date.now() + 1,
-        text: "🚨 Terjadi kesalahan. Silakan coba lagi atau hubungi: azrlwebdev@gmail.com",
+        text: "🚨 **Terjadi kesalahan**\n\nSilakan coba lagi atau hubungi: **azrlwebdev@gmail.com**",
         sender: "bot",
         timestamp: new Date(),
       };
@@ -559,7 +622,7 @@ const Chatbot = () => {
       {/* Fixed positioning dengan enhanced animations */}
       <div className="fixed bottom-0 right-0 z-[9999] pointer-events-none">
         <div className="pointer-events-auto">
-          {/* FIXED: Enhanced Floating Action Button - langsung bounce */}
+          {/* Enhanced Floating Action Button */}
           <div
             className={`transition-all duration-700 ease-out ${
               isOpen
@@ -776,7 +839,7 @@ const Chatbot = () => {
                 }}
               >
                 <div className="p-3 sm:p-6 space-y-2 sm:space-y-3 min-h-full">
-                  {/* FIXED: Scroll reference for top */}
+                  {/* Scroll reference for top */}
                   <div ref={messagesStartRef} />
 
                   {messages.map((message, index) => (
@@ -826,7 +889,7 @@ const Chatbot = () => {
                   <div ref={messagesEndRef} />
                 </div>
 
-                {/* FIXED: Enhanced smart scroll navigation button */}
+                {/* Enhanced smart scroll navigation button */}
                 {messages.length > 3 && scrollPosition !== "bottom" && (
                   <button
                     onClick={handleScrollNavigation}
