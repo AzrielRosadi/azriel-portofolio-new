@@ -1297,3 +1297,38 @@ html.lenis {
 .lenis.lenis-stopped {
   overflow: hidden;
 }
+
+/* Tambahkan CSS ini ke file global atau component */
+
+/* Force bold untuk semua strong elements dalam chat */
+.chat-message strong,
+.chat-message [style*="font-weight: 700"],
+.chat-message [style*="font-weight: bold"] {
+  font-weight: 700 !important;
+  font-family: inherit !important;
+  color: inherit !important;
+  display: inline !important;
+}
+
+/* Pastikan Tailwind font-bold bekerja */
+.chat-message .font-bold {
+  font-weight: 700 !important;
+}
+
+/* Force semua formatting */
+.chat-message em {
+  font-style: italic !important;
+}
+
+.chat-message code {
+  background-color: #e5e7eb !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  font-family: "Courier New", monospace !important;
+  font-size: 0.875em !important;
+}
+
+/* Debug - tambahkan border untuk lihat apakah element bold terbuat */
+.chat-message strong {
+  border: 1px solid red !important; /* HAPUS SETELAH TESTING */
+}

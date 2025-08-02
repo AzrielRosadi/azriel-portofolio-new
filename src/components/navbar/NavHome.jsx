@@ -24,7 +24,7 @@ export default function NavHome({ isScrolled }) {
       }`}
     >
       <div className="overflow-hidden pb-1">
-        <Link to="#hero" className="group inline-flex items-center gap-x-2">
+        <Link to="/" className="group inline-flex items-center gap-x-2">
           <div
             className={`p-2 rounded-lg transition-all duration-300 ${
               isScrolled ? "bg-white/10 backdrop-blur-sm" : "bg-transparent"
