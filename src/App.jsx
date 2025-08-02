@@ -1,4 +1,4 @@
-// App.jsx - Enhanced version dengan navbar integration
+// App.jsx - Enhanced version dengan chatbot integration
 import React, { useState, Suspense } from "react";
 import {
   BrowserRouter as Router,
@@ -20,10 +20,14 @@ import Contact from "./sections/Contact";
 import Footer from "./sections/Footer";
 import StarsCanvas from "./components/StarBackground";
 import AllProjects from "./sections/AllProjects";
-import SmoothScrollProvider from "./components/SmoothScrollProvider"; // Tambahkan ini
+import SmoothScrollProvider from "./components/SmoothScrollProvider";
 
-// Import Navbar - UNCOMMENTED dan path disesuaikan
+// Import Navbar
 import NavBar from "./components/navbar/Nav";
+
+// ===== TAMBAHKAN IMPORT INI =====
+import Chatbot from "./components/ChatBot";
+// ===== END TAMBAHAN =====
 
 // Enhanced Loading fallback untuk WebGL
 const WebGLFallback = () => (
@@ -118,6 +122,12 @@ const Layout = ({ children }) => {
 
       {/* Main content */}
       <div className="relative z-10">{children}</div>
+
+      {/* ===== TAMBAHKAN CHATBOT DI SINI ===== */}
+      <div className="relative z-50">
+        <Chatbot />
+      </div>
+      {/* ===== END TAMBAHAN ===== */}
     </div>
   );
 };
