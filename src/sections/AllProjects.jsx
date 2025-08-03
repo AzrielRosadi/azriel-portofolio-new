@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -13,7 +13,7 @@ const AllProjects = () => {
   const navigate = useNavigate();
   const sectionRef = useRef(null);
   const [filter, setFilter] = useState("all");
-  const [hasInitialLoad, setHasInitialLoad] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   // Use the popup hook
   const {
@@ -147,7 +147,7 @@ const AllProjects = () => {
         "https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/stripe.svg",
       ],
       githubLink: "#",
-      liveLink: "#", // Untuk game yang tidak ada live demo
+      liveLink: "#",
       category: "game",
       year: 2024,
     },
@@ -226,8 +226,8 @@ const AllProjects = () => {
       ? allProjects
       : allProjects.filter((project) => project.category === filter);
 
-  // Function to animate individual card with all its elements
-  const animateCard = (cardElement, index = 0) => {
+  // Improved animation function with better timing and easing
+  const animateCard = useCallback((cardElement, index = 0) => {
     const image = cardElement.querySelector(".project-image");
     const title = cardElement.querySelector(".project-title");
     const description = cardElement.querySelector(".project-description");
@@ -235,227 +235,289 @@ const AllProjects = () => {
     const viewBtn = cardElement.querySelector(".project-view-btn");
     const actionBtns = cardElement.querySelectorAll(".project-action-btn");
 
-    // Create timeline for this card
-    const tl = gsap.timeline({ delay: index * 0.2 });
+    // Kill any existing animations on this element
+    gsap.killTweensOf([
+      cardElement,
+      image,
+      title,
+      description,
+      icons,
+      viewBtn,
+      actionBtns,
+    ]);
 
-    // Animate card container first
+    // Create timeline with optimized settings
+    const tl = gsap.timeline({
+      delay: index * 0.15,
+      defaults: { ease: "power2.out" },
+    });
+
+    // Animate card container
     tl.fromTo(
       cardElement,
-      { y: 80, opacity: 0, scale: 0.9 },
-      { y: 0, opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" }
+      {
+        y: 60,
+        opacity: 0,
+        scale: 0.95,
+        transformOrigin: "center center",
+      },
+      {
+        y: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.8,
+      }
     );
 
-    // Animate image
+    // Animate image with subtle scale effect
     if (image) {
       tl.fromTo(
         image,
-        { y: 30, opacity: 0, scale: 0.9 },
-        { y: 0, opacity: 1, scale: 1, duration: 0.6, ease: "power2.out" },
+        {
+          y: 20,
+          opacity: 0,
+          scale: 1.05,
+        },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          duration: 0.6,
+        },
+        "-=0.5"
+      );
+    }
+
+    // Animate text elements
+    if (title) {
+      tl.fromTo(
+        title,
+        { y: 15, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5 },
         "-=0.4"
       );
     }
 
-    // Animate title
-    if (title) {
+    if (description) {
       tl.fromTo(
-        title,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+        description,
+        { y: 15, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5 },
         "-=0.3"
       );
     }
 
-    // Animate description
-    if (description) {
-      tl.fromTo(
-        description,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
-        "-=0.2"
-      );
-    }
-
-    // Animate icons
+    // Animate icons with stagger
     if (icons.length > 0) {
       tl.fromTo(
         icons,
-        { x: -20, opacity: 0, scale: 0.8 },
+        {
+          x: -15,
+          opacity: 0,
+          scale: 0.9,
+        },
         {
           x: 0,
           opacity: 1,
           scale: 1,
           duration: 0.4,
-          stagger: 0.1,
-          ease: "back.out(1.7)",
+          stagger: 0.08,
+          ease: "back.out(1.4)",
         },
-        "-=0.2"
-      );
-    }
-
-    // Animate view button
-    if (viewBtn) {
-      tl.fromTo(
-        viewBtn,
-        { x: 20, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.4, ease: "power2.out" },
         "-=0.3"
       );
     }
 
-    // Animate action buttons
+    // Animate buttons
+    if (viewBtn) {
+      tl.fromTo(
+        viewBtn,
+        { x: 15, opacity: 0 },
+        { x: 0, opacity: 1, duration: 0.4 },
+        "-=0.4"
+      );
+    }
+
     if (actionBtns.length > 0) {
       tl.fromTo(
         actionBtns,
-        { y: -10, opacity: 0, scale: 0.8 },
+        {
+          y: -8,
+          opacity: 0,
+          scale: 0.9,
+        },
         {
           y: 0,
           opacity: 1,
           scale: 1,
           duration: 0.4,
           stagger: 0.1,
-          ease: "back.out(1.7)",
+          ease: "back.out(1.4)",
         },
-        "-=0.4"
+        "-=0.5"
       );
     }
 
     return tl;
-  };
+  }, []);
 
-  // Reset all card elements to initial state
-  const resetCardElements = () => {
+  // Clean reset function
+  const resetCardElements = useCallback(() => {
+    // Kill all existing animations first
+    gsap.killTweensOf(
+      ".project-card-animation, .project-image, .project-title, .project-description, .project-icon, .project-view-btn, .project-action-btn"
+    );
+
+    // Set initial states
     gsap.set(".project-card-animation", {
-      y: 80,
+      y: 60,
       opacity: 0,
-      scale: 0.9,
+      scale: 0.95,
+      clearProps: "transform",
     });
+
     gsap.set(".project-image", {
-      y: 30,
+      y: 20,
+      opacity: 0,
+      scale: 1.05,
+      clearProps: "transform",
+    });
+
+    gsap.set(".project-title, .project-description", {
+      y: 15,
+      opacity: 0,
+      clearProps: "transform",
+    });
+
+    gsap.set(".project-icon", {
+      x: -15,
       opacity: 0,
       scale: 0.9,
+      clearProps: "transform",
     });
-    gsap.set(".project-title", {
-      y: 20,
-      opacity: 0,
-    });
-    gsap.set(".project-description", {
-      y: 20,
-      opacity: 0,
-    });
-    gsap.set(".project-icon", {
-      x: -20,
-      opacity: 0,
-      scale: 0.8,
-    });
+
     gsap.set(".project-view-btn", {
-      x: 20,
+      x: 15,
       opacity: 0,
+      clearProps: "transform",
     });
+
     gsap.set(".project-action-btn", {
-      y: -10,
+      y: -8,
       opacity: 0,
-      scale: 0.8,
+      scale: 0.9,
+      clearProps: "transform",
     });
-  };
+  }, []);
 
-  // Handle filter changes
-  useEffect(() => {
-    if (!hasInitialLoad) return;
-
-    // Kill existing triggers
+  // Improved scroll triggers setup
+  const setupScrollTriggers = useCallback(() => {
+    // Clear existing triggers
     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
-    // Reset all elements
+    // Use requestAnimationFrame to ensure DOM is ready
+    requestAnimationFrame(() => {
+      const cards = document.querySelectorAll(".project-card-animation");
+
+      if (cards.length === 0) return;
+
+      // Batch animation for better performance
+      ScrollTrigger.batch(cards, {
+        onEnter: (elements) => {
+          elements.forEach((element, index) => {
+            animateCard(element, index);
+          });
+        },
+        onLeave: (elements) => {
+          gsap.to(elements, {
+            opacity: 0.4,
+            scale: 0.98,
+            duration: 0.3,
+            ease: "power2.out",
+            overwrite: "auto",
+          });
+        },
+        onEnterBack: (elements) => {
+          gsap.to(elements, {
+            opacity: 1,
+            scale: 1,
+            duration: 0.4,
+            ease: "power2.out",
+            overwrite: "auto",
+          });
+        },
+        onLeaveBack: (elements) => {
+          gsap.to(elements, {
+            opacity: 0.4,
+            scale: 0.98,
+            duration: 0.3,
+            ease: "power2.out",
+            overwrite: "auto",
+          });
+        },
+        start: "top 90%",
+        end: "bottom 10%",
+        once: false,
+        refreshPriority: 1,
+      });
+
+      ScrollTrigger.refresh();
+    });
+  }, [animateCard]);
+
+  // Handle filter changes with improved timing
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    // Clear existing triggers and animations
+    ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+
+    // Reset elements immediately
     resetCardElements();
 
-    // Small delay to ensure DOM updates
-    setTimeout(() => {
+    // Setup new triggers after DOM update
+    const timer = setTimeout(() => {
       setupScrollTriggers();
-    }, 100);
-  }, [filteredProjects, hasInitialLoad]);
+    }, 50);
 
-  // Setup scroll triggers
-  const setupScrollTriggers = () => {
-    ScrollTrigger.batch(".project-card-animation", {
-      onEnter: (elements) => {
-        elements.forEach((element, index) => {
-          animateCard(element, index);
-        });
-      },
-      onLeave: (elements) => {
-        gsap.to(elements, {
-          opacity: 0.3,
-          scale: 0.95,
-          duration: 0.3,
-          ease: "power2.out",
-        });
-      },
-      onEnterBack: (elements) => {
-        gsap.to(elements, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.5,
-          ease: "power2.out",
-        });
-      },
-      onLeaveBack: (elements) => {
-        gsap.to(elements, {
-          opacity: 0.3,
-          scale: 0.95,
-          duration: 0.3,
-          ease: "power2.out",
-        });
-      },
-      start: "top 85%",
-      end: "bottom 15%",
-    });
-  };
+    return () => clearTimeout(timer);
+  }, [filteredProjects, isInitialized, resetCardElements, setupScrollTriggers]);
 
-  // Initial setup
+  // Initial setup with useGSAP
   useGSAP(() => {
     // Animate section container
     if (sectionRef.current) {
       gsap.fromTo(
         sectionRef.current,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1, ease: "power2.out" }
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+        }
       );
     }
 
-    // Initially hide all card elements
+    // Initialize elements
     resetCardElements();
 
-    // Setup scroll triggers after a short delay
-    setTimeout(() => {
+    // Setup scroll triggers after initialization
+    const initTimer = setTimeout(() => {
       setupScrollTriggers();
-      setHasInitialLoad(true);
-    }, 200);
+      setIsInitialized(true);
+    }, 100);
 
-    // Cleanup on unmount
+    // Cleanup function
     return () => {
+      clearTimeout(initTimer);
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      gsap.killTweensOf("*");
     };
   }, []);
 
-  // Improved handleBackToHome function that works with hash navigation
-  const handleBackToHome = () => {
-    // Check if we're already on the home page
-    if (window.location.pathname === "/") {
-      // If already on home page, just scroll to work section
-      const workSection = document.getElementById("work");
-      if (workSection) {
-        workSection.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-      return;
-    }
-
-    // Navigate to home page first
-    navigate("/");
-
-    // Wait for navigation and DOM to be ready
+  // Improved navigation function
+  const handleBackToHome = useCallback(() => {
     const scrollToWork = () => {
       const workSection = document.getElementById("work");
       if (workSection) {
@@ -468,139 +530,44 @@ const AllProjects = () => {
       return false;
     };
 
-    // Try scrolling with multiple attempts
-    const maxAttempts = 5;
-    let attempts = 0;
-
-    const tryScroll = () => {
-      attempts++;
-      if (scrollToWork()) {
-        console.log(
-          `Successfully scrolled to work section on attempt ${attempts}`
-        );
-      } else if (attempts < maxAttempts) {
-        setTimeout(tryScroll, 200 * attempts); // Increasing delay
-      } else {
-        console.warn(
-          "Failed to scroll to work section after multiple attempts"
-        );
-      }
-    };
-
-    // Start trying after initial delay
-    setTimeout(tryScroll, 300);
-  };
-
-  // Alternative solution using window.location (more reliable for hash navigation)
-  const handleBackToHomeAlternative = () => {
-    // Use window.location for direct hash navigation
-    window.location.href = "/#work";
-
-    // Optional: Add smooth scroll behavior after page load
-    setTimeout(() => {
-      const workSection = document.getElementById("work");
-      if (workSection) {
-        workSection.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    }, 100);
-  };
-
-  // Most robust solution - works with both scenarios
-  const handleBackToHomeRobust = () => {
-    const currentPath = window.location.pathname;
-
-    if (currentPath === "/") {
-      // Already on home page, just scroll
-      const workSection = document.getElementById("work");
-      if (workSection) {
-        workSection.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
+    if (window.location.pathname === "/") {
+      scrollToWork();
     } else {
-      // Navigate to home page
       navigate("/");
 
-      // Create a promise-based approach for better control
-      const waitForElement = (selector, timeout = 3000) => {
-        return new Promise((resolve, reject) => {
-          const startTime = Date.now();
+      // Retry mechanism for navigation
+      const retryScroll = (attempts = 0) => {
+        if (attempts > 10) return;
 
-          const checkElement = () => {
-            const element = document.getElementById(selector);
-            if (element) {
-              resolve(element);
-            } else if (Date.now() - startTime > timeout) {
-              reject(
-                new Error(`Element ${selector} not found within ${timeout}ms`)
-              );
-            } else {
-              setTimeout(checkElement, 100);
-            }
-          };
-
-          checkElement();
-        });
+        setTimeout(() => {
+          if (!scrollToWork()) {
+            retryScroll(attempts + 1);
+          }
+        }, 100 + attempts * 50);
       };
 
-      // Wait for navigation to complete and element to be available
-      setTimeout(() => {
-        waitForElement("work")
-          .then((element) => {
-            element.scrollIntoView({
-              behavior: "smooth",
-              block: "start",
-            });
-          })
-          .catch((error) => {
-            console.warn("Could not scroll to work section:", error);
-          });
-      }, 200);
+      retryScroll();
     }
-  };
+  }, [navigate]);
 
-  // Simple and clean solution (recommended)
-  const handleBackToHomeSimple = () => {
-    navigate("/");
+  // Event handlers
+  const handleProjectClick = useCallback(
+    (project, e) => {
+      if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
 
-    // Multiple attempts with exponential backoff
-    const delays = [300, 600, 1000];
+      if (project.liveLink && project.liveLink !== "#") {
+        window.open(project.liveLink, "_blank", "noopener,noreferrer");
+      } else {
+        openPopup(project);
+      }
+    },
+    [openPopup]
+  );
 
-    delays.forEach((delay) => {
-      setTimeout(() => {
-        const workSection = document.getElementById("work");
-        if (workSection) {
-          workSection.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-          });
-        }
-      }, delay);
-    });
-  };
-
-  // Function untuk handle project click
-  const handleProjectClick = (project, e) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-
-    console.log("Project clicked:", project.title);
-
-    if (project.liveLink && project.liveLink !== "#") {
-      window.open(project.liveLink, "_blank", "noopener,noreferrer");
-    } else {
-      openPopup(project);
-    }
-  };
-
-  // Function untuk handle card GitHub click
-  const handleCardGithubClick = (githubLink, e) => {
+  const handleCardGithubClick = useCallback((githubLink, e) => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -609,10 +576,9 @@ const AllProjects = () => {
     if (githubLink && githubLink !== "#") {
       window.open(githubLink, "_blank", "noopener,noreferrer");
     }
-  };
+  }, []);
 
-  // Function untuk handle card Live Link click
-  const handleCardLiveLinkClick = (liveLink, e) => {
+  const handleCardLiveLinkClick = useCallback((liveLink, e) => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
@@ -621,13 +587,12 @@ const AllProjects = () => {
     if (liveLink && liveLink !== "#") {
       window.open(liveLink, "_blank", "noopener,noreferrer");
     }
-  };
+  }, []);
 
   return (
     <div className="min-h-screen py-20 px-4 sm:px-6 lg:px-8">
-      {/* Container dengan max-width dan center alignment */}
       <div ref={sectionRef} className="container mx-auto max-w-7xl">
-        {/* Header dengan spacing yang konsisten */}
+        {/* Header */}
         <div className="text-center mb-16">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
             All{" "}
@@ -635,12 +600,9 @@ const AllProjects = () => {
               Projects
             </span>
           </h1>
-          <p className="text-white-200 text-base sm:text-lg max-w-2xl mx-auto">
-            Explore my complete portfolio of work across different technologies
-            and domains
-          </p>
         </div>
-        {/* Projects Grid dengan layout yang sama seperti ShowcaseSection */}
+
+        {/* Projects Grid */}
         <div className="projects-grid mb-20">
           <div className="flex flex-wrap items-center justify-center gap-8 lg:gap-16">
             {filteredProjects.map((item) => (
@@ -657,7 +619,6 @@ const AllProjects = () => {
                   <div className="relative w-full">
                     {/* GitHub and Live Link Icons */}
                     <div className="absolute top-2 right-2 z-20 flex gap-2">
-                      {/* GitHub Icon */}
                       <button
                         onClick={(e) =>
                           handleCardGithubClick(item.githubLink, e)
@@ -674,7 +635,6 @@ const AllProjects = () => {
                         </svg>
                       </button>
 
-                      {/* Live Link Icon */}
                       <button
                         onClick={(e) =>
                           handleCardLiveLinkClick(item.liveLink, e)
@@ -802,6 +762,7 @@ const AllProjects = () => {
             ))}
           </div>
         </div>
+
         {/* Empty State */}
         {filteredProjects.length === 0 && (
           <div className="text-center py-20">
@@ -820,6 +781,7 @@ const AllProjects = () => {
             </button>
           </div>
         )}
+
         {/* Back to Home Button */}
         <div className="flex justify-center mb-20">
           <button
