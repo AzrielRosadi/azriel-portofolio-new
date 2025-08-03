@@ -311,7 +311,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "👋 **Halo! Saya AI Assistant untuk portfolio Azriel Rosadi!**\n\n✨ Saya menggunakan **data real-time** dari website dan siap membantu Anda:\n\n🚀 **Pengalaman & Proyek** (25+ completed)\n💻 **Tech Stack & Skills**\n💼 **Info Layanan & Pricing**\n📞 **Kontak & Kolaborasi**\n\nAda yang ingin Anda ketahui? Silakan bertanya! 🎯",
+      text: "👋 **Halo! Saya AI Assistant untuk portfolio Azriel Rosadi!**\n\n✨ Saya menggunakan **data real-time** dari website dan siap membantu Anda:\n\n🚀 **Pengalaman & Proyek**\n💻 **Tech Stack & Skills**\n💼 **Info Layanan & Pricing**\n📞 **Kontak & Kolaborasi**\n\nAda yang ingin Anda ketahui? Silakan bertanya! 🎯",
       sender: "bot",
       timestamp: new Date(),
       isTypingComplete: true,
@@ -483,7 +483,7 @@ const Chatbot = () => {
         return "🚀 **Portfolio Azriel - 25+ Projects Completed!**\n\n• **Platform Top-up Game & Social Media** - React, TypeScript, Node.js\n• **System Laundry Website** - Laravel 11, MySQL\n• **DOML AI Marketing Platform** - React, AI Integration\n• **Mechstrom: War Zone Game** - Unity, C#\n\n🌐 **Detail lengkap:** https://azrl-webdev.vercel.app/\n📧 **Diskusi proyek:** azrlwebdev@gmail.com";
       }
 
-      return "😅 **Server sedang maintenance.** Coba lagi sebentar!\n\n📧 **Email langsung:** azrlwebdev@gmail.com";
+      return "😅 **Server sedang maintenance.** Coba lagi sebentar!\n\n📧 **Email langsung:** azrlwebdev@gmail.com\n\n🌐 **Portfolio:** https://azrl-webdev.vercel.app/";
     }
   };
 
@@ -930,7 +930,7 @@ const Chatbot = () => {
 
                 <div className="relative z-10 flex-1 min-w-0">
                   <h3 className="font-bold text-sm sm:text-lg text-gray-800 drop-shadow-sm flex items-center gap-2">
-                    AI Assistant
+                    azrlwebdev
                     <Zap
                       size={12}
                       className="sm:w-4 sm:h-4 text-yellow-600 animate-pulse"
