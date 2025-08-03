@@ -684,13 +684,58 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
         return `🚀 **Portfolio Azriel - 25+ Projects Completed!**
 
 **Proyek Unggulan:**
-• **Platform Top-up Game & Social Media (2025)** - React, TypeScript, Node.js, PostgreSQL
-• **System Laundry Website (2025)** - Laravel 11, MySQL, TailwindCSS  
-• **DOML AI Marketing Platform (2025)** - React, AI Integration
-• **Mechstrom: War Zone Game (2024)** - Unity, C#
-• **Tools Scraper GUI Application (2024)** - Python
+• **Platform Top-up Game & Social Media (2025)**
+  - Tech Stack: React, TypeScript, TailwindCSS, Node.js, Express.js, PostgreSQL, Drizzle ORM, React Query
+  - Fitur: Sistem pembayaran terintegrasi, Multi-platform support
+  - Status: Successfully deployed & maintained
 
-💻 **Tech Stack Expertise:** React, Laravel, Node.js, Python, Unity
+• **System Laundry Website (2025)**
+  - Tech Stack: Laravel 11, MySQL, TailwindCSS, Blade Template, Laravel Breeze, Laravel Sanctum
+  - Fitur: Admin dashboard, Owner panel, Customer interface
+  - Status: Complete full-stack solution
+
+• **DOML AI Marketing Platform (2025)**
+  - Tech Stack: React, TailwindCSS, Lucide React, PostCSS
+  - Fitur: AI-powered marketing optimization, Modern interactive design
+  - Status: Prototype completed
+
+• **Imaginify AI SaaS Platform (2025)**
+  - Tech Stack: Next.js, MongoDB, Stripe, Cloudinary, Clerk
+  - Fitur: AI features, Credit-based payment system
+  - Status: In development
+
+• **Mechstrom: War Zone Game (2024)**
+  - Tech Stack: Unity Engine, C#, Blender
+  - Fitur: 3D gameplay, Free assets integration
+  - Status: Completed game prototype
+
+• **Tools Scraper GUI Application (2024)**
+  - Tech Stack: Python
+  - Fitur: Automated Shopee product data scraping
+  - Status: Desktop application completed
+
+• **Classic Games Collection (2023)**
+  - Pacman: JavaScript, HTML5 Canvas
+  - Tetris: JavaScript, HTML5
+  - Status: Fully playable web games
+
+• **Search Film Platform (2023)**
+  - Tech Stack: JavaScript, HTML5, CSS3, IMDb API
+  - Fitur: Comprehensive movie & TV series search
+  - Status: Fully functional web application
+
+• **Citra Negara School Website (2024)**
+  - Tech Stack: Go, JavaScript, SASS, CSS3, HTML5
+  - Fitur: Modern school website with backend
+  - Status: Successfully deployed
+
+📊 **Project Statistics:**
+• Total Projects: 25+
+• Success Rate: 100%
+• Client Satisfaction: 90%
+• On-time Delivery: 100%
+
+💻 **Expertise Areas:** Web Development, Game Development, Desktop Applications, AI Integration
 📧 **Diskusi proyek:** azrlwebdev@gmail.com`;
       }
 
@@ -740,32 +785,53 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
       ) {
         return `🌟 **Media Sosial Azriel Rosadi:**
 
-**💼 PROFESSIONAL PLATFORMS:**
-🔗 **LinkedIn:** Connect untuk networking profesional
-• Career updates & achievements
-• Tech industry insights
-• Professional connections
+**💼 Professional Platforms:**
+• **LinkedIn - Professional Networking**
+  - Profile: Fullstack Developer & Fresh Graduate
+  - Content: Career updates, tech industry insights, achievements
+  - Networking: Professional connections, collaboration opportunities
+  - Updates: Weekly posts about projects and learning journey
+  - Engagement: Industry discussions, best practices sharing
 
-🐙 **GitHub:** Follow untuk lihat code & projects  
-• 25+ repositories aktif
-• Open source contributions  
-• Latest development work
+• **GitHub - Code Repository & Open Source**
+  - Repositories: 25+ active public repositories
+  - Code Quality: Clean, documented, maintainable code
+  - Projects: Full-stack applications, games, tools, experiments
+  - Contributions: Regular commits and updates
+  - Showcase: Live demos and project documentation
+  - Tech Stack: React, Laravel, Unity, Python projects
 
-**📱 PERSONAL SOCIAL:**
-📸 **Instagram:** @azrlrsdi_
-• Behind the scenes development
-• Tech setup & workspace
-• Personal coding journey
+**📱 Personal Social Media:**
+• **Instagram (@azrlrsdi_) - Behind The Scenes**
+  - Content Focus: Development process, workspace setup, coding lifestyle
+  - Stories: Daily development activities, problem-solving sessions
+  - Posts: Tech gear reviews, setup tours, project highlights
+  - Community: Developer networking, inspiration sharing
+  - Personal Touch: Coding journey as fresh graduate
 
-**🚀 FOLLOW UNTUK:**
-• Latest project updates
-• Tech tips & tutorials
-• Development insights
-• Collaboration opportunities
+**🚀 Follow untuk mendapatkan:**
+• **Latest Project Updates:** Real-time development progress
+• **Tech Tips & Tutorials:** Practical coding insights
+• **Development Insights:** Problem-solving approaches
+• **Career Journey:** Fresh graduate to professional developer
+• **Collaboration Opportunities:** Project partnerships
+• **Community Engagement:** Developer networking events
 
-**📧 KONTAK BISNIS:** azrlwebdev@gmail.com
+**📊 Social Media Stats:**
+• **GitHub:** 25+ repositories, active contributions
+• **LinkedIn:** Professional network, industry engagement
+• **Instagram:** Behind-the-scenes content, personal branding
 
-💡 **Pro tip:** Connect di LinkedIn untuk networking profesional, follow GitHub untuk lihat latest projects!`;
+**💬 Platform Recommendations:**
+• **For Professional Networking:** Connect on LinkedIn
+• **For Code & Projects:** Follow on GitHub
+• **For Personal Insights:** Follow on Instagram
+• **For Business Inquiries:** Email azrlwebdev@gmail.com
+
+💡 **Pro Tips:**
+• LinkedIn: Best for professional discussions and opportunities
+• GitHub: Perfect for viewing code quality and project scope
+• Instagram: Great for seeing the person behind the code`;
       }
 
       // NEW: SPECIFIC LINKEDIN RESPONSE
@@ -890,27 +956,126 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
       }
 
       if (message.includes("pengalaman") || message.includes("experience")) {
-        return `💼 **Pengalaman Kerja Azriel:**
+        return `💼 **Pengalaman Kerja Azriel Rosadi:**
 
-🏢 **Frontend Developer Intern** - Starspace Studio (June 2025 - Present)
-🏢 **Fullstack JavaScript Developer** - Liboyy Store (March - May 2025)  
-🏢 **Fullstack Laravel Developer** - Mbuutt Laundry (Jan - Feb 2025)
-🏢 **Frontend Developer & Data Entry** - PT. Spektrum Kreasi Pratama (Nov 2023 - Feb 2024)
+**🏢 Frontend Developer Intern - Starspace Studio**
+• **Period:** June 2025 - Present (Current Position)
+• **Key Responsibilities:**
+  - Mengembangkan antarmuka web interaktif dan responsif berdasarkan desain Figma
+  - Terlibat dalam proyek nyata sebagai bagian dari Mission Possible
+  - Bekerja kolaboratif dalam tim lintas bidang
+  - Update progres harian menggunakan ClickUp
+  - Aktif dalam weekly meeting & coffee roulette
+  - Berpartisipasi dalam sesi mentoring dan reverse mentorship
+• **Skills Developed:** React, Figma to Code, Team Collaboration, Project Management
 
-📈 **Achievement:** 25+ completed projects, 90% client retention rate
-💻 **Expertise:** Fullstack Development, UI/UX Implementation, System Integration`;
+**🏪 Fullstack JavaScript Developer - Liboyy Store**
+• **Period:** March 2025 - May 2025 (3 months)
+• **Key Responsibilities:**
+  - Membangun aplikasi web responsif menggunakan React
+  - Mengintegrasikan frontend dengan backend Node.js
+  - Meningkatkan performa aplikasi dan user experience
+  - Mengimplementasikan fitur berdasarkan feedback client
+• **Tech Stack:** React, Node.js, PostgreSQL, Express.js
+• **Achievement:** Platform top-up game berhasil deployed
+
+**🧺 Fullstack Laravel Developer - Mbuutt Laundry**
+• **Period:** January 2025 - February 2025 (2 months)
+• **Key Responsibilities:**
+  - Memimpin pengembangan platform web Mbuutt Laundry sebagai Fullstack Developer
+  - Secara mandiri membangun seluruh fitur frontend dan backend
+  - Berkontribusi pada pengembangan alat internal dan komponen reusable
+• **Tech Stack:** Laravel 11, MySQL, TailwindCSS, Blade Template
+• **Achievement:** Complete laundry management system
+
+**🏢 Frontend Developer & Data Entry - PT. Spektrum Kreasi Pratama**
+• **Period:** November 2023 - February 2024 (4 months)
+• **Key Responsibilities:**
+  - Mengembangkan dan memelihara fitur frontend untuk inventory sistem laboratorium
+  - Mengoptimalkan aplikasi web untuk kecepatan dan skalabilitas maksimum
+  - Mengubah sertifikat fisik menjadi file PDF dan input ke Microsoft Excel
+• **Tech Stack:** JavaScript, HTML5, CSS3, Microsoft Excel
+• **Achievement:** Improved frontend performance significantly
+
+📈 **Career Highlights:**
+• **Total Experience:** 1+ years across 4 different positions
+• **Project Success Rate:** 100%
+• **Client Satisfaction:** 90%
+• **Skills Growth:** From Frontend to Full-stack expertise
+• **Industry Exposure:** E-commerce, Laundry Management, Education, Laboratory
+
+💻 **Core Competencies:** Full-stack Development, Team Leadership, Client Communication, Performance Optimization`;
       }
 
       if (message.includes("skill") || message.includes("teknologi")) {
-        return `💻 **Tech Stack Azriel:**
+        return `💻 **Tech Stack & Skills Azriel Rosadi:**
 
-**Frontend:** React, TypeScript, TailwindCSS, Next.js, JavaScript
-**Backend:** Node.js, Laravel, PHP, Express.js
-**Database:** PostgreSQL, MySQL, MongoDB
-**Game Development:** Unity, C#
-**Others:** Python, Git, Vercel, Drizzle ORM, React Query
+**🎨 Frontend Technologies:**
+• **Core:** HTML5, CSS3, JavaScript (ES6+)
+• **Frameworks/Libraries:** React, Next.js, TypeScript
+• **Styling:** TailwindCSS, SASS, PostCSS
+• **UI Libraries:** Lucide React, Framer Motion
+• **Tools:** Vite, Figma to Code
 
-🚀 **Spesialisasi:** Fullstack Development, API Integration, Real-time Applications`;
+**⚙️ Backend Technologies:**
+• **Runtime:** Node.js
+• **Frameworks:** Express.js, Laravel 11
+• **Languages:** PHP, JavaScript, Python
+• **API Development:** RESTful APIs, JSON handling
+• **Authentication:** Laravel Sanctum, Laravel Breeze
+
+**🗄️ Database & Storage:**
+• **Relational:** MySQL, PostgreSQL
+• **NoSQL:** MongoDB
+• **ORM/Query Builder:** Drizzle ORM, Eloquent ORM
+• **Cloud Storage:** Cloudinary
+• **Database Design:** Schema optimization, Indexing
+
+**🎮 Game Development:**
+• **Engine:** Unity (2D & 3D)
+• **Programming:** C#
+• **3D Modeling:** Blender (Basic)
+• **Game Physics:** Unity Physics System
+• **Asset Management:** Free & custom assets
+
+**🔧 Development Tools & Workflow:**
+• **Version Control:** Git, GitHub
+• **Deployment:** Vercel, Netlify
+• **Package Managers:** npm, Composer
+• **Project Management:** ClickUp
+• **Code Editor:** VS Code
+
+**💳 Payment & Integration:**
+• **Payment Gateway:** Stripe
+• **Authentication:** Clerk
+• **API Integration:** Third-party services
+• **Real-time Features:** WebSocket, React Query
+
+**🐍 Python & Automation:**
+• **Desktop Apps:** GUI Development
+• **Web Scraping:** Automated data extraction
+• **Data Processing:** File handling, CSV processing
+• **Automation Tools:** Custom scripts
+
+**☁️ Additional Skills:**
+• **Cloud Platforms:** Vercel deployment
+• **Performance Optimization:** Code splitting, Lazy loading
+• **Responsive Design:** Mobile-first approach
+• **SEO:** Basic optimization techniques
+• **Testing:** Manual testing, Debugging
+
+📊 **Proficiency Levels:**
+• **Expert:** React, JavaScript, Laravel, HTML/CSS
+• **Advanced:** Node.js, MySQL, Unity, Python
+• **Intermediate:** TypeScript, MongoDB, PostgreSQL
+• **Learning:** Next.js advanced features, Cloud services
+
+🚀 **Specialization Areas:**
+• Full-stack Web Applications
+• E-commerce Platforms
+• Management Systems
+• Game Development
+• API Development & Integration`;
       }
 
       if (message.includes("portfolio") || message.includes("website")) {
