@@ -1,7 +1,7 @@
 "use client";
 
 import useIsomorphicLayoutEffect from "../../hooks/UseIsomorphicLayoutEffect";
-import { cn } from "../../lib/utils";
+import { cn } from "../../../lib/utils";
 import gsap from "gsap";
 import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";

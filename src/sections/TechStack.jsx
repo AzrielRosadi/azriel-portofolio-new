@@ -1,7 +1,7 @@
 "use client";
 
 import { forwardRef, useRef, useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@lib/utils";
 import { AnimatedBeam } from "@/components/magicui/animated-beam";
 import TitleHeader from "../components/TitleHeader";
 

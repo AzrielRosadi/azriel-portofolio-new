@@ -1,7 +1,7 @@
 "use client";
 
 import useIsomorphicLayoutEffect from "../../hooks/UseIsomorphicLayoutEffect";
-import { cn } from "../../lib/utils";
+import { cn } from "../../../lib/utils";
 import gsap from "gsap";
 import { useRef } from "react";
 import MagneticEffect from "../providers/MagneticEffect";

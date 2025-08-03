@@ -8,6 +8,12 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@lib": path.resolve(__dirname, "./lib"), // <-- tambahkan ini
+    },
+  },
+  server: {
+    fs: {
+      allow: ["."], // <-- izinkan akses ke direktori luar src
     },
   },
   optimizeDeps: {
