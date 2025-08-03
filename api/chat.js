@@ -1,4 +1,4 @@
-// /api/chat.js - Vercel Serverless Function
+// /api/chat.js - Vercel Serverless Function (FIXED)
 import axios from "axios";
 import * as cheerio from "cheerio";
 
@@ -401,6 +401,45 @@ function isPortfolioRelated(message) {
   return portfolioKeywords.some((keyword) => messageLower.includes(keyword));
 }
 
+// Function untuk membersihkan response dari URL duplikat
+function cleanDuplicateUrls(text) {
+  // Regex untuk mendeteksi URL yang duplikat dalam format yang berbeda
+  const urlPattern = /(https?:\/\/[^\s\[\]()]+)/g;
+  const markdownLinkPattern = /\[([^\]]*)\]\((https?:\/\/[^\)]+)\)/g;
+
+  let urls = new Set();
+  let cleanedText = text;
+
+  // Extract semua URL dari text
+  const foundUrls = text.match(urlPattern) || [];
+  const foundMarkdownLinks = [...text.matchAll(markdownLinkPattern)];
+
+  // Jika ada URL duplikat, hapus yang berlebihan
+  if (foundUrls.length > 1) {
+    // Ambil URL pertama saja
+    const firstUrl = foundUrls[0];
+
+    // Hapus URL duplikat sisanya
+    for (let i = 1; i < foundUrls.length; i++) {
+      const duplicateUrl = foundUrls[i];
+      // Hapus URL duplikat dari text
+      cleanedText = cleanedText.replace(
+        new RegExp(duplicateUrl.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"),
+        ""
+      );
+    }
+
+    // Bersihkan format yang rusak akibat penghapusan
+    cleanedText = cleanedText
+      .replace(/\(\s*\)/g, "") // Hapus () kosong
+      .replace(/\[\s*\]/g, "") // Hapus [] kosong
+      .replace(/\s+/g, " ") // Normalize spaces
+      .trim();
+  }
+
+  return cleanedText;
+}
+
 // Function untuk generate response menggunakan Gemini 2.0 Flash
 async function generateGeminiResponse(userMessage, portfolioData) {
   try {
@@ -526,8 +565,13 @@ GAYA KOMUNIKASI:
 - Gunakan bahasa Indonesia yang natural dan ramah, namun jika user menanyakan dalam bahasa Inggris atau bahasa lainnya, balas sesuai bahasa yang digunakan user
 - Sertakan emoji yang relevan untuk membuat percakapan lebih menarik
 - Berikan informasi yang spesifik dan actionable
-- PENTING: Hanya sertakan satu link/URL per respons untuk menghindari duplikasi
-- Prioritaskan link yang paling relevan dengan pertanyaan
+
+ATURAN PENTING UNTUK LINK/URL:
+- WAJIB: Hanya sertakan MAKSIMAL 1 (SATU) link/URL per respons
+- Pilih link yang PALING RELEVAN dengan pertanyaan user
+- JANGAN PERNAH menampilkan link yang sama berulang kali
+- HINDARI duplikasi URL dalam format apapun
+- Jika perlu menyebutkan beberapa platform, cukup sebutkan namanya tanpa link
 
 DATA PORTFOLIO TERKINI:
 ${portfolioContext}
@@ -535,17 +579,19 @@ ${portfolioContext}
 PANDUAN RESPONS:
 - Untuk pertanyaan tentang proyek: Jelaskan detail teknis, tech stack, tahun pembuatan, dan hasil
 - Untuk pertanyaan tentang pengalaman: Fokus pada achievement, tanggal, dan kontribusi spesifik
-- Untuk pertanyaan kontak/kolaborasi: Berikan HANYA satu kontak yang paling relevan
+- Untuk pertanyaan kontak/kolaborasi: Berikan HANYA satu kontak yang paling relevan (email ATAU portfolio website)
 - Untuk pertanyaan pricing/layanan: Arahkan untuk diskusi detail via email
-- TIDAK BOLEH ada URL/link yang duplikat dalam satu respons
-- Maksimal satu link per respons
+- PRIORITASKAN kualitas informasi daripada kuantitas link
+
+CONTOH YANG BENAR:
+❌ SALAH: "Kunjungi https://azrl-webdev.vercel.app dan juga https://azrl-webdev.vercel.app"
+✅ BENAR: "Kunjungi portfolio di https://azrl-webdev.vercel.app"
 
 PENTING: 
 - Gunakan informasi yang akurat sesuai data portfolio
 - Sebutkan tanggal/periode yang spesifik untuk pengalaman kerja
 - Jelaskan tech stack yang digunakan untuk setiap proyek
-- HINDARI memberikan link yang sama berulang kali atau lebih dari satu link
-- Prioritaskan kualitas informasi daripada kuantitas link
+- PRIORITASKAN: Satu link berkualitas > Multiple link duplikat
 
 Selalu prioritaskan informasi dari data portfolio yang fresh dan akurat.`
       : `Anda adalah AI Assistant yang ramah dan helpful. Anda dapat menjawab berbagai pertanyaan umum dengan baik.
@@ -577,7 +623,7 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
           {
             parts: [
               {
-                text: `${systemPrompt}\n\nPertanyaan User: ${userMessage}\n\nBerikan respons yang informatif dan engaging:`,
+                text: `${systemPrompt}\n\nPertanyaan User: ${userMessage}\n\nBerikan respons yang informatif dan engaging (INGAT: maksimal 1 URL per respons):`,
               },
             ],
           },
@@ -615,11 +661,14 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
       throw new Error("Response tidak valid dari Gemini API");
     }
 
-    return aiResponse.trim();
+    // Bersihkan URL duplikat dari response
+    const cleanedResponse = cleanDuplicateUrls(aiResponse.trim());
+
+    return cleanedResponse;
   } catch (error) {
     console.error("❌ Error generating Gemini response:", error.message);
 
-    // Enhanced fallback responses berdasarkan kata kunci
+    // Enhanced fallback responses berdasarkan kata kunci (TANPA URL DUPLIKAT)
     const message = userMessage.toLowerCase();
 
     // Check if it's a portfolio-related question for fallback
@@ -670,6 +719,20 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
 **Others:** Python, Git, Vercel, Drizzle ORM, React Query
 
 🚀 **Spesialisasi:** Fullstack Development, API Integration, Real-time Applications`;
+      }
+
+      if (message.includes("portfolio") || message.includes("website")) {
+        return `🌟 **Portfolio Azriel Rosadi:**
+
+Lihat semua proyek dan pengalaman lengkap di: https://azrl-webdev.vercel.app
+
+✨ **Highlights:**
+• 25+ Completed Projects
+• 90% Client Retention Rate  
+• Fullstack Development Expertise
+• Fresh Graduate dengan pengalaman praktis
+
+💼 **Ready for collaboration!**`;
       }
 
       return `😅 **Server sedang maintenance.** Coba lagi sebentar!
