@@ -678,54 +678,34 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
 
     if (isPortfolioRelated(userMessage)) {
       if (message.includes("proyek") || message.includes("project")) {
-        return `🚀 **Portfolio Azriel - 25+ Projects Completed!**
+        return `🚀 **Proyek Unggulan Azriel - 25+ Projects Completed**
 
 **• Platform Top-up Game & Social Media (2025)**
-  - Tech Stack: React, TypeScript, TailwindCSS, Node.js, Express.js, PostgreSQL, Drizzle ORM, React Query
+  - Tech Stack: React, TypeScript, TailwindCSS, Node.js, Express.js, PostgreSQL
   - Fitur: Sistem pembayaran terintegrasi, Multi-platform support
   - Status: Successfully deployed & maintained
-  - Client: Liboyy Store (@liboyystore_26)
+  - Client: Liboyy Store
 
 **• System Laundry Website (2025)**
-  - Tech Stack: Laravel 11, MySQL, TailwindCSS, Blade Template, Laravel Breeze, Laravel Sanctum
+  - Tech Stack: Laravel 11, MySQL, TailwindCSS, Blade Template, Laravel Sanctum
   - Fitur: Admin dashboard, Owner panel, Customer interface
   - Status: Complete full-stack solution
-  - Client: Mbuutt Company (@mbuuttcorp)
+  - Client: Mbuutt Company
 
 **• DOML AI Marketing Platform (2025)**
   - Tech Stack: React, TailwindCSS, Lucide React, PostCSS
-  - Fitur: AI-powered marketing optimization, Modern interactive design
+  - Fitur: AI-powered marketing optimization, Modern UI/UX
   - Status: Prototype completed
 
 **• Imaginify AI SaaS Platform (2025)**
   - Tech Stack: Next.js, MongoDB, Stripe, Cloudinary, Clerk
   - Fitur: AI features, Credit-based payment system
-  - Status: In development
+  - Status: In active development
 
 **• Mechstrom: War Zone Game (2024)**
   - Tech Stack: Unity Engine, C#, Blender
-  - Fitur: 3D gameplay, Free assets integration
+  - Fitur: 3D gameplay mechanics, Physics-based combat
   - Status: Completed game prototype
-
-**• Tools Scraper GUI Application (2024)**
-  - Tech Stack: Python
-  - Fitur: Automated Shopee product data scraping
-  - Status: Desktop application completed
-
-**• Classic Games Collection (2023)**
-  - Pacman: JavaScript, HTML5 Canvas
-  - Tetris: JavaScript, HTML5
-  - Status: Fully playable web games
-
-**• Search Film Platform (2023)**
-  - Tech Stack: JavaScript, HTML5, CSS3, IMDb API
-  - Fitur: Comprehensive movie & TV series search
-  - Status: Fully functional web application
-
-**• Citra Negara School Website (2024)**
-  - Tech Stack: Go, JavaScript, SASS, CSS3, HTML5
-  - Fitur: Modern school website with backend
-  - Status: Successfully deployed
 
 **📊 Project Statistics:**
 • Total Projects: 25+
@@ -733,144 +713,88 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
 • Client Satisfaction: 90%
 • On-time Delivery: 100%
 
-**💻 Expertise Areas:**
-• Web Development
-• Game Development
-• Desktop Applications
-• AI Integration
-
-📧 **Diskusi proyek:** azrlwebdev@gmail.com`;
+**💬 Tertarik diskusi proyek?**
+📧 Email: azrlwebdev@gmail.com`;
       }
 
       if (message.includes("pengalaman") || message.includes("experience")) {
-        return `💼 **Pengalaman Kerja Azriel Rosadi:**
+        return `💼 **Pengalaman Kerja Azriel Rosadi**
 
 **• Frontend Developer Intern - Starspace Studio**
   - Period: June 2025 - Present (Current Position)
-  - Key Responsibilities:
-    • Mengembangkan antarmuka web interaktif dan responsif berdasarkan desain Figma
-    • Terlibat dalam proyek nyata sebagai bagian dari Mission Possible
-    • Bekerja kolaboratif dalam tim lintas bidang
-    • Update progres harian menggunakan ClickUp
-    • Aktif dalam weekly meeting & coffee roulette
-    • Berpartisipasi dalam sesi mentoring dan reverse mentorship
-  - Skills Developed: React, Figma to Code, Team Collaboration, Project Management
+  - Responsibilities: Mengembangkan antarmuka web interaktif berdasarkan desain Figma
+  - Team Work: Kolaborasi dalam tim lintas bidang, weekly meeting & mentoring
+  - Tools: ClickUp untuk project tracking, React development
+  - Achievement: Successfully integrated into professional development team
 
 **• Fullstack JavaScript Developer - Liboyy Store**
   - Period: March 2025 - May 2025 (3 months)
-  - Key Responsibilities:
-    • Membangun aplikasi web responsif menggunakan React
-    • Mengintegrasikan frontend dengan backend Node.js
-    • Meningkatkan performa aplikasi dan user experience
-    • Mengimplementasikan fitur berdasarkan feedback client
   - Tech Stack: React, Node.js, PostgreSQL, Express.js
-  - Achievement: Platform top-up game berhasil deployed
+  - Responsibilities: Membangun aplikasi web responsif dan backend integration
+  - Achievement: Platform top-up game berhasil deployed dengan performa optimal
 
 **• Fullstack Laravel Developer - Mbuutt Laundry**
   - Period: January 2025 - February 2025 (2 months)
-  - Key Responsibilities:
-    • Memimpin pengembangan platform web Mbuutt Laundry sebagai Fullstack Developer
-    • Secara mandiri membangun seluruh fitur frontend dan backend
-    • Berkontribusi pada pengembangan alat internal dan komponen reusable
   - Tech Stack: Laravel 11, MySQL, TailwindCSS, Blade Template
-  - Achievement: Complete laundry management system
+  - Responsibilities: Memimpin pengembangan platform secara mandiri
+  - Achievement: Complete laundry management system dengan multi-role dashboard
 
-**• Frontend Developer & Data Entry - PT. Spektrum Kreasi Pratama**
+**• Frontend Developer - PT. Spektrum Kreasi Pratama**
   - Period: November 2023 - February 2024 (4 months)
-  - Key Responsibilities:
-    • Mengembangkan dan memelihara fitur frontend untuk inventory sistem laboratorium
-    • Mengoptimalkan aplikasi web untuk kecepatan dan skalabilitas maksimum
-    • Mengubah sertifikat fisik menjadi file PDF dan input ke Microsoft Excel
   - Tech Stack: JavaScript, HTML5, CSS3, Microsoft Excel
-  - Achievement: Improved frontend performance significantly
+  - Responsibilities: Frontend development untuk inventory sistem laboratorium
+  - Achievement: Improved application performance dan data processing efficiency
 
 **📈 Career Highlights:**
-• Total Experience: 1+ years across 4 different positions
-• Project Success Rate: 100%
-• Client Satisfaction: 90%
-• Skills Growth: From Frontend to Full-stack expertise
-• Industry Exposure: E-commerce, Laundry Management, Education, Laboratory
+• Total Experience: 1+ years across 4 positions
+• Success Rate: 100% project completion
+• Client Satisfaction: 90% retention rate
+• Growth: From Frontend to Full-stack expertise
 
-**💻 Core Competencies:**
-• Full-stack Development
-• Team Leadership
-• Client Communication
-• Performance Optimization
-
-📧 **Contact:** azrlwebdev@gmail.com`;
+**💬 Ready for collaboration?**
+📧 Email: azrlwebdev@gmail.com`;
       }
 
       if (message.includes("skill") || message.includes("teknologi")) {
-        return `💻 **Tech Stack & Skills Azriel Rosadi:**
+        return `💻 **Tech Stack & Skills Azriel Rosadi**
 
-**• Frontend Technologies:**
+**• Frontend Technologies**
   - Core: HTML5, CSS3, JavaScript (ES6+)
-  - Frameworks/Libraries: React, Next.js, TypeScript
+  - Frameworks: React, Next.js, TypeScript
   - Styling: TailwindCSS, SASS, PostCSS
   - UI Libraries: Lucide React, Framer Motion
-  - Tools: Vite, Figma to Code
 
-**• Backend Technologies:**
-  - Runtime: Node.js
-  - Frameworks: Express.js, Laravel 11
-  - Languages: PHP, JavaScript, Python
-  - API Development: RESTful APIs, JSON handling
-  - Authentication: Laravel Sanctum, Laravel Breeze
+**• Backend Technologies**
+  - Runtime: Node.js, Express.js
+  - Frameworks: Laravel 11, PHP
+  - Languages: Python, JavaScript
+  - API: RESTful APIs, Authentication systems
 
-**• Database & Storage:**
+**• Database & Storage**
   - Relational: MySQL, PostgreSQL
   - NoSQL: MongoDB
-  - ORM/Query Builder: Drizzle ORM, Eloquent ORM
-  - Cloud Storage: Cloudinary
-  - Database Design: Schema optimization, Indexing
+  - ORM: Drizzle ORM, Eloquent ORM
+  - Cloud: Cloudinary integration
 
-**• Game Development:**
-  - Engine: Unity (2D & 3D)
-  - Programming: C#
-  - 3D Modeling: Blender (Basic)
-  - Game Physics: Unity Physics System
-  - Asset Management: Free & custom assets
-
-**• Development Tools & Workflow:**
+**• Development Tools**
   - Version Control: Git, GitHub
   - Deployment: Vercel, Netlify
   - Package Managers: npm, Composer
   - Project Management: ClickUp
-  - Code Editor: VS Code
 
-**• Payment & Integration:**
-  - Payment Gateway: Stripe
-  - Authentication: Clerk
-  - API Integration: Third-party services
-  - Real-time Features: WebSocket, React Query
-
-**• Python & Automation:**
-  - Desktop Apps: GUI Development
-  - Web Scraping: Automated data extraction
-  - Data Processing: File handling, CSV processing
-  - Automation Tools: Custom scripts
-
-**• Additional Skills:**
-  - Cloud Platforms: Vercel deployment
-  - Performance Optimization: Code splitting, Lazy loading
-  - Responsive Design: Mobile-first approach
-  - SEO: Basic optimization techniques
-  - Testing: Manual testing, Debugging
+**• Specialized Skills**
+  - Game Development: Unity, C#, Blender basics
+  - Payment Integration: Stripe
+  - Automation: Python scripting, Web scraping
+  - Performance: Code optimization, Responsive design
 
 **📊 Proficiency Levels:**
 • Expert: React, JavaScript, Laravel, HTML/CSS
 • Advanced: Node.js, MySQL, Unity, Python
 • Intermediate: TypeScript, MongoDB, PostgreSQL
-• Learning: Next.js advanced features, Cloud services
 
-**🚀 Specialization Areas:**
-• Full-stack Web Applications
-• E-commerce Platforms
-• Management Systems
-• Game Development
-• API Development & Integration
-
-📧 **Contact:** azrlwebdev@gmail.com`;
+**💬 Need technical consultation?**
+📧 Email: azrlwebdev@gmail.com`;
       }
 
       if (
