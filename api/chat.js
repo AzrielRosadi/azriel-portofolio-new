@@ -1,4 +1,4 @@
-// /api/chat.js - Vercel Serverless Function (FIXED)
+// /api/chat.js - Vercel Serverless Function (ENHANCED VERSION)
 import axios from "axios";
 import * as cheerio from "cheerio";
 
@@ -395,6 +395,13 @@ function isPortfolioRelated(message) {
     "cost",
     "layanan",
     "service",
+    "sosial",
+    "social",
+    "media",
+    "follow",
+    "hubungi",
+    "reach",
+    "account",
   ];
 
   const messageLower = message.toLowerCase();
@@ -687,14 +694,199 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
 📧 **Diskusi proyek:** azrlwebdev@gmail.com`;
       }
 
-      if (message.includes("kontak") || message.includes("contact")) {
-        return `📞 **Kontak Azriel Rosadi:**
+      // ENHANCED CONTACT & SOCIAL MEDIA RESPONSES
+      if (
+        message.includes("kontak") ||
+        message.includes("contact") ||
+        message.includes("email") ||
+        message.includes("hubungi") ||
+        message.includes("reach") ||
+        message.includes("get in touch")
+      ) {
+        return `📞 **Kontak & Media Sosial Azriel Rosadi:**
 
-✉️ **Email:** azrlwebdev@gmail.com
-🌐 **Portfolio:** https://azrl-webdev.vercel.app
+**📧 KONTAK UTAMA:**
+✉️ **Email Bisnis:** azrlwebdev@gmail.com
+🌐 **Portfolio Website:** https://azrl-webdev.vercel.app
 
-⚡ **Response Time:** < 24 jam
-💬 **Available for:** Freelance projects, collaboration, consultation`;
+**🌟 MEDIA SOSIAL:**
+💼 **LinkedIn:** Professional networking & career updates
+🐙 **GitHub:** Code repository & open source projects  
+📸 **Instagram:** @azrlrsdi_ - Behind the scenes & personal updates
+
+**⚡ RESPONSE TIME:**
+• Email: < 24 jam (hari kerja)
+• Available: Senin - Jumat (09:00 - 17:00 WIB)
+
+**💬 AVAILABLE FOR:**
+• Freelance projects & collaboration
+• Technical consultation
+• Code review & mentoring
+• Web development services
+
+**💡 TIP:** Untuk respons tercepat, kirim email dengan detail proyek yang jelas!`;
+      }
+
+      // NEW: SPECIFIC SOCIAL MEDIA RESPONSE
+      if (
+        message.includes("sosial") ||
+        message.includes("social") ||
+        message.includes("media") ||
+        message.includes("instagram") ||
+        message.includes("linkedin") ||
+        message.includes("github") ||
+        message.includes("follow") ||
+        message.includes("account")
+      ) {
+        return `🌟 **Media Sosial Azriel Rosadi:**
+
+**💼 PROFESSIONAL PLATFORMS:**
+🔗 **LinkedIn:** Connect untuk networking profesional
+• Career updates & achievements
+• Tech industry insights
+• Professional connections
+
+🐙 **GitHub:** Follow untuk lihat code & projects  
+• 25+ repositories aktif
+• Open source contributions  
+• Latest development work
+
+**📱 PERSONAL SOCIAL:**
+📸 **Instagram:** @azrlrsdi_
+• Behind the scenes development
+• Tech setup & workspace
+• Personal coding journey
+
+**🚀 FOLLOW UNTUK:**
+• Latest project updates
+• Tech tips & tutorials
+• Development insights
+• Collaboration opportunities
+
+**📧 KONTAK BISNIS:** azrlwebdev@gmail.com
+
+💡 **Pro tip:** Connect di LinkedIn untuk networking profesional, follow GitHub untuk lihat latest projects!`;
+      }
+
+      // NEW: SPECIFIC LINKEDIN RESPONSE
+      if (
+        message.includes("linkedin") &&
+        !message.includes("github") &&
+        !message.includes("instagram")
+      ) {
+        return `💼 **LinkedIn Azriel Rosadi:**
+
+🔗 **Profile:** Professional Fullstack Developer
+📍 **Connect untuk:**
+• Networking profesional
+• Career opportunities  
+• Industry insights
+• Collaboration discussions
+
+**📈 RECENT UPDATES:**
+• Frontend Developer Intern di Starspace Studio (June 2025 - Present)
+• 25+ completed projects showcase
+• Client testimonials & recommendations
+• Tech industry engagement
+
+**💬 ACTIVE IN:**
+• Tech industry discussions
+• Development best practices
+• Career growth insights
+• Professional networking events
+
+**🤝 NETWORKING BENEFITS:**
+• Direct access to project updates
+• Professional recommendations
+• Industry connections
+• Collaboration opportunities
+
+📧 **Atau hubungi langsung:** azrlwebdev@gmail.com`;
+      }
+
+      // NEW: SPECIFIC GITHUB RESPONSE
+      if (
+        message.includes("github") &&
+        !message.includes("linkedin") &&
+        !message.includes("instagram")
+      ) {
+        return `🐙 **GitHub Azriel Rosadi:**
+
+👨‍💻 **Repository Highlights:**
+• Platform top-up game (React + Node.js + PostgreSQL)
+• System Laundry (Laravel 11 + MySQL)
+• DOML AI Marketing (React + TailwindCSS)
+• Unity game development projects
+• Python automation tools
+
+**📊 GITHUB STATS:**
+• 25+ public repositories
+• Active contributions & commits
+• Open source projects
+• Clean, documented code
+
+**🛠️ TECH SHOWCASE:**
+• Full-stack web applications
+• Game development (Unity + C#)
+• API integrations & databases
+• Modern JavaScript frameworks
+
+**⭐ REPOSITORY CATEGORIES:**
+• Web Development (React, Laravel, Node.js)
+• Game Development (Unity, C#)
+• Tools & Automation (Python)
+• Learning projects & experiments
+
+**📝 CODE QUALITY:**
+• Clean, maintainable code
+• Proper documentation
+• Best practices implementation
+• Version control expertise
+
+💡 **Follow untuk update terbaru tentang projects & contributions!**
+📧 **Kolaborasi:** azrlwebdev@gmail.com`;
+      }
+
+      // NEW: SPECIFIC INSTAGRAM RESPONSE
+      if (
+        message.includes("instagram") &&
+        !message.includes("linkedin") &&
+        !message.includes("github")
+      ) {
+        return `📸 **Instagram Azriel Rosadi (@azrlrsdi_):**
+
+**🎯 CONTENT FOCUS:**
+• Behind-the-scenes development process
+• Workspace setup & coding environment
+• Tech stack tutorials & tips
+• Personal coding journey
+
+**📱 WHAT YOU'LL SEE:**
+• Daily development activities
+• Project progress updates
+• Tech gear & setup reviews
+• Coding lifestyle content
+
+**💻 DEVELOPMENT CONTENT:**
+• Code snippets & quick tips
+• Problem-solving processes
+• Tech stack discussions
+• Learning resources sharing
+
+**🚀 PERSONAL INSIGHTS:**
+• Fresh graduate developer journey
+• Freelancing experiences
+• Client project highlights
+• Career development tips
+
+**📈 FOLLOW FOR:**
+• Inspiration untuk aspiring developers
+• Real-world development insights
+• Personal branding in tech
+• Networking dalam komunitas developer
+
+💡 **Connect di Instagram untuk sisi personal dari developer journey!**
+📧 **Business inquiries:** azrlwebdev@gmail.com`;
       }
 
       if (message.includes("pengalaman") || message.includes("experience")) {
@@ -735,13 +927,136 @@ Lihat semua proyek dan pengalaman lengkap di: https://azrl-webdev.vercel.app
 💼 **Ready for collaboration!**`;
       }
 
+      // NEW: PRICING & SERVICES RESPONSE
+      if (
+        message.includes("harga") ||
+        message.includes("price") ||
+        message.includes("biaya") ||
+        message.includes("cost") ||
+        message.includes("layanan") ||
+        message.includes("service")
+      ) {
+        return `💰 **Layanan & Konsultasi Azriel:**
+
+**🚀 LAYANAN TERSEDIA:**
+• Website Development (Landing page, Company profile)
+• Web Application (Full-stack development)
+• System Development (Admin panel, Dashboard)
+• Game Development (Unity 2D/3D)
+• API Integration & Development
+• Database Design & Optimization
+
+**💼 PAKET LAYANAN:**
+• **Basic Website:** Landing page responsif
+• **Business Website:** Multi-page + CMS
+• **Web Application:** Custom functionality
+• **Enterprise Solution:** Complex system development
+
+**⚡ KEUNGGULAN:**
+• 90% Client satisfaction rate
+• On-time delivery guarantee
+• Post-launch support included
+• Modern tech stack implementation
+
+**📋 PROSES KERJA:**
+1. Konsultasi & requirement analysis
+2. Design mockup & technical planning
+3. Development & testing
+4. Deployment & training
+5. Maintenance & support
+
+💡 **Untuk pricing detail & custom quote:**
+📧 **Email:** azrlwebdev@gmail.com
+*(Include: project scope, timeline, budget range)*`;
+      }
+
+      // NEW: TESTIMONIAL & CLIENT RESPONSE
+      if (
+        message.includes("testimoni") ||
+        message.includes("testimonial") ||
+        message.includes("client") ||
+        message.includes("review")
+      ) {
+        return `⭐ **Testimoni Client Azriel:**
+
+**🏪 Liboyy Store (@liboyystore_26):**
+*"Saya sangat puas bekerja sama dengan Azriel WebDev, seorang fullstack developer yang memiliki kemampuan teknis luar biasa. Ia berhasil membangun website top up games yang responsif, cepat, dan user-friendly!"*
+
+**🧺 Mbuutt Company (@mbuuttcorp):**
+*"Bekerja sama dalam pengembangan website sistem laundry ini merupakan pengalaman yang sangat profesional. Komitmen terhadap ketepatan waktu, kualitas hasil, serta perhatian terhadap setiap detail proyek sangat terlihat jelas."*
+
+**🏢 PT. Spektrum Kreasi Pratama (@spektrumkp):**
+*"Azriel membawa kreativitas dan keahlian ke dalam tim, sehingga meningkatkan kinerja frontend dan entry data kami secara signifikan. Dedikasinya terhadap detail dan kolaborasi yang efektif membuat proyek berjalan lancar."*
+
+**📊 CLIENT SATISFACTION:**
+• 90% Client retention rate
+• 25+ Completed projects
+• 3+ Happy clients
+• On-time delivery record
+
+💼 **Ready to be the next satisfied client?**
+📧 **Start your project:** azrlwebdev@gmail.com`;
+      }
+
+      // NEW: HIRING & COLLABORATION RESPONSE
+      if (
+        message.includes("hire") ||
+        message.includes("freelance") ||
+        message.includes("kolaborasi") ||
+        message.includes("collaboration")
+      ) {
+        return `🤝 **Hire Azriel Rosadi - Fullstack Developer:**
+
+**💼 AVAILABLE FOR:**
+• Full-time remote opportunities
+• Part-time & freelance projects
+• Project-based collaborations
+• Technical consulting & mentoring
+
+**🎯 SPECIALIZATION:**
+• React & Node.js full-stack development
+• Laravel web applications
+• Unity game development
+• Database design & optimization
+• API development & integration
+
+**⚡ WORKING STYLE:**
+• **Quality Focus:** High-standard deliverables
+• **Reliable Communication:** Regular updates & transparency
+• **On-Time Delivery:** Deadline commitment
+• **Collaborative Approach:** Team-oriented mindset
+
+**📈 TRACK RECORD:**
+• 25+ successful projects delivered
+• 90% client retention rate
+• Fresh graduate with practical experience
+• Strong portfolio across multiple technologies
+
+**🚀 CURRENT AVAILABILITY:**
+• Open for new projects
+• Flexible working hours
+• Remote collaboration ready
+• Competitive rates
+
+**📋 NEXT STEPS:**
+1. Email your project requirements
+2. Schedule consultation call
+3. Receive custom proposal
+4. Start collaboration
+
+💡 **Let's build something amazing together!**
+📧 **Contact:** azrlwebdev@gmail.com`;
+      }
+
       return `😅 **Server sedang maintenance.** Coba lagi sebentar!
 
 🤖 **Sementara itu, Anda bisa bertanya tentang:**
 • **Proyek & Portfolio** (25+ completed)
 • **Pengalaman Kerja** (4 posisi berbeda)
 • **Tech Stack & Skills** 
-• **Kontak & Kolaborasi**
+• **Kontak & Media Sosial**
+• **Layanan & Pricing**
+• **Testimoni Client**
 
 📧 **Email langsung:** azrlwebdev@gmail.com`;
     }
