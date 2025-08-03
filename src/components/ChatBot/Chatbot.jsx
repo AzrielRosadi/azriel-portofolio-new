@@ -6,13 +6,18 @@ import {
   User,
   Globe,
   Zap,
-  ArrowUp,
-  ArrowDown,
   Mail,
+  Trash2,
+  MessageSquare,
+  RotateCcw,
 } from "lucide-react";
 
-// Enhanced ChatMessage Component - Render text with formatting
-const ChatMessage = ({ message, index }) => {
+// Enhanced ChatMessage Component with typing animation
+const ChatMessage = ({ message, index, onDeleteMessage }) => {
+  const [displayedText, setDisplayedText] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
+  const typingTimeoutRef = useRef(null);
+
   const formatTime = (date) => {
     return date.toLocaleTimeString("id-ID", {
       hour: "2-digit",
@@ -20,14 +25,48 @@ const ChatMessage = ({ message, index }) => {
     });
   };
 
+  // Typing animation effect for bot messages
+  useEffect(() => {
+    if (message.sender === "bot" && message.text && !message.isTypingComplete) {
+      setIsTyping(true);
+      setDisplayedText("");
+
+      const text = message.text;
+      let currentIndex = 0;
+
+      const typeNextChar = () => {
+        if (currentIndex < text.length) {
+          setDisplayedText(text.substring(0, currentIndex + 1));
+          currentIndex++;
+
+          // Variable typing speed for more natural feel
+          const delay = Math.random() * 30 + 20; // 20-50ms
+          typingTimeoutRef.current = setTimeout(typeNextChar, delay);
+        } else {
+          setIsTyping(false);
+          message.isTypingComplete = true;
+        }
+      };
+
+      // Start typing after a small delay
+      typingTimeoutRef.current = setTimeout(typeNextChar, 300);
+
+      return () => {
+        if (typingTimeoutRef.current) {
+          clearTimeout(typingTimeoutRef.current);
+        }
+      };
+    } else {
+      setDisplayedText(message.text);
+      setIsTyping(false);
+    }
+  }, [message.text, message.sender]);
+
   // Function untuk parse text dengan bold, email, dan links
   const parseText = (text) => {
     if (!text) return [];
 
-    // Clean up mailto: prefix dari text
     let cleanText = text.replace(/mailto:/g, "");
-
-    // Regex untuk menangkap **bold**, email, dan URL
     const regex =
       /(\*\*[^*]+\*\*|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}|https?:\/\/[^\s]+)/g;
 
@@ -36,7 +75,6 @@ const ChatMessage = ({ message, index }) => {
     let match;
 
     while ((match = regex.exec(cleanText)) !== null) {
-      // Add text before match
       if (match.index > lastIndex) {
         parts.push({
           type: "text",
@@ -47,25 +85,21 @@ const ChatMessage = ({ message, index }) => {
       const matched = match[0];
 
       if (matched.startsWith("**") && matched.endsWith("**")) {
-        // Bold text
         parts.push({
           type: "bold",
           content: matched.slice(2, -2),
         });
       } else if (matched.includes("@") && matched.includes(".")) {
-        // Email
         parts.push({
           type: "email",
           content: matched,
         });
       } else if (matched.startsWith("http")) {
-        // URL
         parts.push({
           type: "url",
           content: matched,
         });
       } else {
-        // Regular text
         parts.push({
           type: "text",
           content: matched,
@@ -75,7 +109,6 @@ const ChatMessage = ({ message, index }) => {
       lastIndex = match.index + matched.length;
     }
 
-    // Add remaining text
     if (lastIndex < cleanText.length) {
       parts.push({
         type: "text",
@@ -86,7 +119,6 @@ const ChatMessage = ({ message, index }) => {
     return parts;
   };
 
-  // Render parsed parts
   const renderParsedText = (parts) => {
     return parts.map((part, index) => {
       switch (part.type) {
@@ -140,7 +172,6 @@ const ChatMessage = ({ message, index }) => {
     });
   };
 
-  // Parse text menjadi lines dan handle setiap line
   const renderFormattedText = (text) => {
     const lines = text.split("\n");
     return lines.map((line, lineIndex) => {
@@ -155,7 +186,7 @@ const ChatMessage = ({ message, index }) => {
 
   return (
     <div
-      className={`flex ${
+      className={`group flex ${
         message.sender === "user" ? "justify-end" : "justify-start"
       } mb-4 px-2 sm:px-0`}
       style={{
@@ -167,16 +198,36 @@ const ChatMessage = ({ message, index }) => {
       }}
     >
       <div
-        className={`max-w-[85%] sm:max-w-xs px-3 sm:px-4 py-3 rounded-2xl shadow-lg transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${
+        className={`relative max-w-[85%] sm:max-w-xs px-3 sm:px-4 py-3 rounded-2xl shadow-lg transform transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${
           message.sender === "user"
             ? "bg-gradient-to-br from-gray-600 via-gray-700 to-gray-800 text-white border border-gray-500/30"
             : "bg-gradient-to-br from-white/90 via-gray-50/90 to-gray-100/90 text-gray-800 border border-white/50 backdrop-blur-sm"
         }`}
       >
+        {/* Delete button for user messages */}
+        {message.sender === "user" && onDeleteMessage && (
+          <button
+            onClick={() => onDeleteMessage(message.id)}
+            className="absolute -top-2 -right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 bg-red-500 hover:bg-red-600 text-white p-1 rounded-full shadow-lg hover:scale-110 transform"
+            aria-label="Hapus pesan"
+          >
+            <X size={12} />
+          </button>
+        )}
+
         <div className="flex items-start gap-2 sm:gap-3">
           {message.sender === "bot" && (
-            <div className="flex-shrink-0 p-1.5 bg-gradient-to-br from-gray-100 to-gray-300 rounded-full shadow-sm animate-pulse">
-              <Bot size={12} className="sm:w-3.5 sm:h-3.5 text-gray-600" />
+            <div
+              className={`flex-shrink-0 p-1.5 bg-gradient-to-br from-gray-100 to-gray-300 rounded-full shadow-sm ${
+                isTyping ? "animate-pulse" : ""
+              }`}
+            >
+              <Bot
+                size={12}
+                className={`sm:w-3.5 sm:h-3.5 text-gray-600 ${
+                  isTyping ? "animate-bounce" : ""
+                }`}
+              />
             </div>
           )}
           {message.sender === "user" && (
@@ -186,7 +237,10 @@ const ChatMessage = ({ message, index }) => {
           )}
           <div className="flex-1 min-w-0">
             <div className="text-xs sm:text-sm leading-relaxed font-medium break-words">
-              {renderFormattedText(message.text)}
+              {renderFormattedText(displayedText)}
+              {isTyping && (
+                <span className="inline-block w-2 h-4 ml-1 bg-gray-600 animate-pulse rounded-sm"></span>
+              )}
             </div>
             <p
               className={`text-xs mt-2 font-light transition-opacity duration-300 ${
@@ -194,7 +248,41 @@ const ChatMessage = ({ message, index }) => {
               }`}
             >
               {formatTime(message.timestamp)}
+              {isTyping && (
+                <span className="ml-2 text-blue-500">typing...</span>
+              )}
             </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// NEW: Thinking Animation Component
+const ThinkingMessage = () => {
+  return (
+    <div className="flex justify-start mb-4 px-2 sm:px-0">
+      <div className="bg-gradient-to-br from-white/90 via-gray-50/90 to-gray-100/90 backdrop-blur-sm px-3 sm:px-4 py-3 rounded-2xl border border-white/50 shadow-lg animate-pulse">
+        <div className="flex items-center gap-3">
+          <div className="flex-shrink-0 p-1.5 bg-gradient-to-br from-gray-100 to-gray-300 rounded-full shadow-sm animate-pulse">
+            <Bot size={12} className="sm:w-3.5 sm:h-3.5 text-gray-600" />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs sm:text-sm text-gray-600 font-medium">
+              Thinking
+            </span>
+            <div className="flex space-x-1">
+              <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full animate-bounce" />
+              <div
+                className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full animate-bounce"
+                style={{ animationDelay: "0.2s" }}
+              />
+              <div
+                className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full animate-bounce"
+                style={{ animationDelay: "0.4s" }}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -210,15 +298,16 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "👋 **Halo! Saya AI Assistant untuk portfolio Azriel Rosadi!**\n\n✨ Saya menggunakan **data real-time** dari website dan siap membantu Anda:\n\n🚀 **Pengalaman & Proyek** (25+ completed)\n💻 **Tech Stack & Skills**\n💼 **Info Layanan & Pricing**\n📞 **Kontak & Kolaborasi**\n\nAda yang ingin Anda ketahui? Silakan bertanya! 🎯",
+      text: "👋 **Halo! Saya AI Assistant untuk portfolio Azriel Rosadi!**\n\n✨ Saya menggunakan **data real-time** dari website dan siap membantu Anda:\n\n🚀 **Pengalaman & Proyek**\n💻 **Tech Stack & Skills**\n💼 **Info Layanan & Pricing**\n📞 **Kontak & Kolaborasi**\n\nAda yang ingin Anda ketahui? Silakan bertanya! 🎯",
       sender: "bot",
       timestamp: new Date(),
+      isTypingComplete: true,
     },
   ]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isThinking, setIsThinking] = useState(false); // NEW: Thinking state
   const [isOnline, setIsOnline] = useState(true);
-  const [scrollPosition, setScrollPosition] = useState("bottom");
   const messagesEndRef = useRef(null);
   const messagesStartRef = useRef(null);
   const messagesContainerRef = useRef(null);
@@ -238,24 +327,33 @@ const Chatbot = () => {
     });
   };
 
-  // Check scroll position to determine which arrow to show
-  const handleScroll = () => {
-    if (messagesContainerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } =
-        messagesContainerRef.current;
-      const scrollPercentage = scrollTop / (scrollHeight - clientHeight);
-
-      if (scrollPercentage < 0.1) {
-        setScrollPosition("top");
-      } else if (scrollPercentage > 0.9) {
-        setScrollPosition("bottom");
-      } else {
-        setScrollPosition("middle");
-      }
-    }
+  // Clear all messages completely
+  const clearAllMessages = () => {
+    setMessages([]);
   };
 
-  // Prevent scroll propagation to parent elements
+  // Delete specific message and its response
+  const deleteMessage = (messageId) => {
+    setMessages((prev) => {
+      const messageIndex = prev.findIndex((msg) => msg.id === messageId);
+      if (messageIndex === -1) return prev;
+
+      const newMessages = [...prev];
+      // Remove the message and the bot response that follows (if any)
+      if (
+        messageIndex < newMessages.length - 1 &&
+        newMessages[messageIndex + 1].sender === "bot"
+      ) {
+        newMessages.splice(messageIndex, 2); // Remove both user message and bot response
+      } else {
+        newMessages.splice(messageIndex, 1); // Remove only the message
+      }
+
+      return newMessages;
+    });
+  };
+
+  // Prevent scroll propagation
   const handleWheel = (e) => {
     if (!messagesContainerRef.current) return;
 
@@ -270,10 +368,6 @@ const Chatbot = () => {
     }
   };
 
-  const handleTouchMove = (e) => {
-    e.stopPropagation();
-  };
-
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -282,11 +376,9 @@ const Chatbot = () => {
     const initialTimer = setTimeout(() => {
       setIsVisible(true);
       setHasAnimatedIn(true);
-    }, 2800);
+    }, 1000);
 
-    return () => {
-      clearTimeout(initialTimer);
-    };
+    return () => clearTimeout(initialTimer);
   }, []);
 
   useEffect(() => {
@@ -319,11 +411,11 @@ const Chatbot = () => {
     }
   };
 
-  // Enhanced API call with better error handling
+  // Enhanced API call
   const sendToAPI = async (message, retryCount = 0) => {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // Increased timeout
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
 
       console.log(
         "🚀 Sending message to API:",
@@ -358,13 +450,9 @@ const Chatbot = () => {
     } catch (error) {
       console.error("❌ API Error:", error);
 
-      // Retry logic for network errors
       if (
         retryCount < 2 &&
-        (error.name === "AbortError" ||
-          error.message.includes("fetch") ||
-          error.message.includes("network") ||
-          error.message.includes("Failed to fetch"))
+        (error.name === "AbortError" || error.message.includes("fetch"))
       ) {
         console.log(`🔄 Retrying API call... (${retryCount + 1}/3)`);
         await new Promise((resolve) => setTimeout(resolve, 2000));
@@ -382,61 +470,62 @@ const Chatbot = () => {
         return "🚀 **Portfolio Azriel - 25+ Projects Completed!**\n\n• **Platform Top-up Game & Social Media** - React, TypeScript, Node.js\n• **System Laundry Website** - Laravel 11, MySQL\n• **DOML AI Marketing Platform** - React, AI Integration\n• **Mechstrom: War Zone Game** - Unity, C#\n\n🌐 **Detail lengkap:** https://azrl-webdev.vercel.app/\n📧 **Diskusi proyek:** azrlwebdev@gmail.com";
       }
 
-      if (msg.includes("kontak") || msg.includes("contact")) {
-        return "📞 **Kontak Azriel Rosadi:**\n\n✉️ **Email:** azrlwebdev@gmail.com\n🌐 **Portfolio:** https://azrl-webdev.vercel.app/\n💼 **GitHub:** https://github.com/AzrielRosadi\n\n⚡ **Response Time:** < 24 jam";
-      }
-
-      if (msg.includes("pengalaman") || msg.includes("experience")) {
-        return "💼 **Pengalaman Kerja Azriel:**\n\n🏢 **Frontend Developer & Data Entry** - PT. Spektrum Kreasi Pratama\n🏢 **Fullstack Laravel Developer** - Mbuutt Laundry\n🏢 **Fullstack JavaScript Developer** - Liboyy Store\n🏢 **Frontend Developer Intern** - Starspace Studio (Current)\n\n📈 **Achievement:** 25+ completed projects, 90% client retention rate";
-      }
-
-      if (msg.includes("skill") || msg.includes("teknologi")) {
-        return "💻 **Tech Stack Azriel:**\n\n**Frontend:** React, TypeScript, TailwindCSS, Next.js\n**Backend:** Node.js, Laravel, Express.js\n**Database:** PostgreSQL, MySQL, MongoDB\n**Others:** Unity, Python, Git, Vercel\n\n🚀 **Spesialisasi:** Fullstack Development, API Integration, Real-time Applications";
-      }
-
-      return "😅 **Server sedang maintenance.** Coba lagi sebentar!\n\n🤖 **Sementara itu, Anda bisa:**\n• Bertanya tentang **proyek** Azriel\n• Info **kontak** dan kolaborasi\n• Detail **pengalaman** kerja\n• **Tech stack** yang dikuasai\n\n📧 **Email langsung:** azrlwebdev@gmail.com\n🌐 **Portfolio:** https://azrl-webdev.vercel.app/";
+      return "😅 **Server sedang maintenance.** Coba lagi sebentar!\n\n📧 **Email langsung:** azrlwebdev@gmail.com\n\n📧 **Portfolio:** https://azrl-webdev.vercel.app/";
     }
   };
 
   const handleSendMessage = async () => {
-    if (!inputMessage.trim() || isLoading) return;
+    if (!inputMessage.trim() || isLoading || isThinking) return;
 
     const userMessage = {
       id: Date.now(),
       text: inputMessage,
       sender: "user",
       timestamp: new Date(),
+      isTypingComplete: true,
     };
 
     setMessages((prev) => [...prev, userMessage]);
     setInputMessage("");
-    setIsLoading(true);
 
-    try {
-      console.log("📤 Sending message:", inputMessage);
-      const botResponse = await sendToAPI(inputMessage);
+    // NEW: Show thinking animation first
+    setIsThinking(true);
 
-      const botMessage = {
-        id: Date.now() + 1,
-        text: botResponse,
-        sender: "bot",
-        timestamp: new Date(),
-      };
+    // Simulate thinking time (1-3 seconds)
+    const thinkingTime = Math.random() * 2000 + 1000; // 1-3 seconds
 
-      setMessages((prev) => [...prev, botMessage]);
-      console.log("✅ Message sent successfully");
-    } catch (error) {
-      console.error("❌ Error in handleSendMessage:", error);
-      const errorMessage = {
-        id: Date.now() + 1,
-        text: "🚨 **Terjadi kesalahan teknis.**\n\nSilakan coba lagi atau hubungi langsung:\n📧 **azrlwebdev@gmail.com**\n🌐 **https://azrl-webdev.vercel.app/**",
-        sender: "bot",
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
+    setTimeout(async () => {
+      setIsThinking(false);
+      setIsLoading(true);
+
+      try {
+        console.log("📤 Sending message:", inputMessage);
+        const botResponse = await sendToAPI(inputMessage);
+
+        const botMessage = {
+          id: Date.now() + 1,
+          text: botResponse,
+          sender: "bot",
+          timestamp: new Date(),
+          isTypingComplete: false,
+        };
+
+        setMessages((prev) => [...prev, botMessage]);
+        console.log("✅ Message sent successfully");
+      } catch (error) {
+        console.error("❌ Error in handleSendMessage:", error);
+        const errorMessage = {
+          id: Date.now() + 1,
+          text: "🚨 **Terjadi kesalahan teknis.**\n\nSilakan coba lagi atau hubungi langsung:\n📧 **azrlwebdev@gmail.com**\n🌐 **https://azrl-webdev.vercel.app/**",
+          sender: "bot",
+          timestamp: new Date(),
+          isTypingComplete: false,
+        };
+        setMessages((prev) => [...prev, errorMessage]);
+      } finally {
+        setIsLoading(false);
+      }
+    }, thinkingTime);
   };
 
   const handleKeyPress = (e) => {
@@ -446,34 +535,23 @@ const Chatbot = () => {
     }
   };
 
-  const handleScrollNavigation = () => {
-    if (scrollPosition === "top") {
-      scrollToBottom();
-    } else {
-      scrollToTop();
-    }
-  };
-
   if (!isVisible) return null;
 
   return (
     <>
       <style jsx>{`
-        @keyframes chatbotEntranceDirect {
+        @keyframes smoothBounceIn {
           0% {
             opacity: 0;
-            transform: scale(0.3) translateY(100px);
-          }
-          40% {
-            opacity: 0.8;
-            transform: scale(1.2) translateY(-20px);
+            transform: scale(0.3) translateY(50px);
           }
           60% {
-            opacity: 1;
-            transform: scale(0.9) translateY(10px);
+            opacity: 0.9;
+            transform: scale(1.1) translateY(-5px);
           }
           80% {
-            transform: scale(1.05) translateY(-5px);
+            opacity: 1;
+            transform: scale(0.95) translateY(2px);
           }
           100% {
             opacity: 1;
@@ -481,68 +559,76 @@ const Chatbot = () => {
           }
         }
 
-        @keyframes chatWindowOpen {
-          0% {
-            opacity: 0;
-            transform: scale(0.7) translateY(80px) rotateX(15deg);
-            filter: blur(15px);
-          }
-          20% {
-            opacity: 0.4;
-            transform: scale(0.9) translateY(40px) rotateX(8deg);
-            filter: blur(10px);
-          }
-          40% {
-            opacity: 0.7;
-            transform: scale(1.08) translateY(-15px) rotateX(-3deg);
-            filter: blur(5px);
-          }
-          60% {
-            opacity: 0.9;
-            transform: scale(0.96) translateY(8px) rotateX(1deg);
-            filter: blur(2px);
-          }
-          80% {
-            opacity: 1;
-            transform: scale(1.02) translateY(-3px) rotateX(0deg);
-            filter: blur(1px);
-          }
-          90% {
-            transform: scale(0.99) translateY(1px) rotateX(0deg);
-            filter: blur(0px);
-          }
+        @keyframes gentleFloat {
+          0%,
           100% {
-            opacity: 1;
-            transform: scale(1) translateY(0) rotateX(0deg);
-            filter: blur(0px);
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-6px);
           }
         }
 
-        @keyframes chatWindowClose {
+        @keyframes botIconFloat {
+          0%,
+          100% {
+            transform: translateY(0px) scale(1);
+          }
+          50% {
+            transform: translateY(-4px) scale(1.05);
+          }
+        }
+
+        @keyframes globeIconFloat {
+          0%,
+          100% {
+            transform: translateY(0px) translateX(0px) scale(1);
+          }
+          33% {
+            transform: translateY(-2px) translateX(1px) scale(1.1);
+          }
+          66% {
+            transform: translateY(-4px) translateX(-1px) scale(1.2);
+          }
+        }
+
+        @keyframes chatWindowExpandFromIcon {
+          0% {
+            opacity: 0;
+            transform: scale(0.1) translate(20px, 20px);
+            transform-origin: bottom right;
+          }
+          30% {
+            opacity: 0.7;
+            transform: scale(0.4) translate(15px, 15px);
+          }
+          70% {
+            opacity: 0.95;
+            transform: scale(1.05) translate(-2px, -2px);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1) translate(0, 0);
+          }
+        }
+
+        @keyframes chatWindowShrinkToIcon {
           0% {
             opacity: 1;
-            transform: scale(1) translateY(0) rotateX(0deg);
-            filter: blur(0px);
+            transform: scale(1) translate(0, 0);
+            transform-origin: bottom right;
           }
-          20% {
-            opacity: 0.9;
-            transform: scale(1.03) translateY(-5px) rotateX(-2deg);
-            filter: blur(1px);
-          }
-          40% {
-            opacity: 0.7;
-            transform: scale(0.95) translateY(10px) rotateX(3deg);
-            filter: blur(3px);
+          30% {
+            opacity: 0.8;
+            transform: scale(0.8) translate(5px, 5px);
           }
           70% {
             opacity: 0.4;
-            transform: scale(0.8) translateY(30px) rotateX(8deg);
-            filter: blur(8px);
+            transform: scale(0.3) translate(15px, 15px);
           }
           100% {
             opacity: 0;
-            transform: scale(0.6) translateY(60px) rotateX(15deg);
-            filter: blur(15px);
+            transform: scale(0.05) translate(25px, 25px);
           }
         }
 
@@ -563,27 +649,13 @@ const Chatbot = () => {
           }
         }
 
-        @keyframes buttonBounce {
+        @keyframes pulseGlow {
           0%,
           100% {
-            transform: scale(1) translateY(0px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
           }
-          20% {
-            transform: scale(1.1) translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-          }
-          40% {
-            transform: scale(0.95) translateY(3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-          }
-          60% {
-            transform: scale(1.05) translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
-          }
-          80% {
-            transform: scale(0.98) translateY(2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+          50% {
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.8);
           }
         }
 
@@ -628,17 +700,13 @@ const Chatbot = () => {
 
       <div className="fixed bottom-0 right-0 z-[9999] pointer-events-none">
         <div className="pointer-events-auto">
+          {/* Floating Chat Button */}
           <div
             className={`transition-all duration-700 ease-out ${
               isOpen
                 ? "opacity-0 scale-0 translate-y-8 rotate-180 pointer-events-none"
                 : "opacity-100 scale-100 translate-y-0 rotate-0"
             }`}
-            style={{
-              animation: hasAnimatedIn
-                ? "chatbotEntranceDirect 1.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards"
-                : "none",
-            }}
           >
             <div className="p-4 sm:p-6">
               <button
@@ -646,43 +714,64 @@ const Chatbot = () => {
                 disabled={isTransitioning}
                 className="relative group bg-gradient-to-br from-white via-gray-100 to-gray-300 hover:from-gray-100 hover:via-gray-200 hover:to-gray-400 text-gray-800 p-3 sm:p-4 rounded-full shadow-2xl transition-all duration-500 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-white/50 overflow-hidden"
                 style={{
-                  animation:
-                    hasAnimatedIn && !isTransitioning
-                      ? "buttonBounce 4s ease-in-out infinite"
-                      : "none",
+                  animation: hasAnimatedIn
+                    ? "smoothBounceIn 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards, gentleFloat 3s ease-in-out infinite 1.2s"
+                    : "smoothBounceIn 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards",
                 }}
                 aria-label="Buka chat"
               >
+                {/* Online indicator */}
                 <div
                   className={`absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-white transition-all duration-300 ${
-                    isOnline ? "bg-green-500" : "bg-red-500"
+                    isOnline ? "bg-green-500 animate-pulse" : "bg-red-500"
                   }`}
                 />
 
+                {/* Shine effect */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1200" />
 
+                {/* Icon container */}
                 <div className="relative z-10">
                   <div
                     className={`transition-all duration-700 ease-out ${
-                      isTransitioning
-                        ? "rotate-180 scale-125"
-                        : "rotate-0 scale-100"
+                      isTransitioning ? "animate-spin scale-125" : "scale-100"
                     }`}
                   >
                     <Bot
                       size={20}
                       className="w-5 h-5 sm:w-6 sm:h-6 drop-shadow-sm"
+                      style={{
+                        animation:
+                          hasAnimatedIn && !isTransitioning
+                            ? "botIconFloat 2s ease-in-out infinite"
+                            : "none",
+                      }}
                     />
                     <Globe
                       size={10}
-                      className="w-2.5 h-2.5 sm:w-3 sm:h-3 absolute -top-1 -right-1 text-blue-600"
+                      className={`w-2.5 h-2.5 sm:w-3 sm:h-3 absolute -top-1 -right-1 text-blue-600`}
+                      style={{
+                        animation:
+                          hasAnimatedIn && !isTransitioning && isOnline
+                            ? "globeIconFloat 2.5s ease-in-out infinite"
+                            : "none",
+                      }}
                     />
                   </div>
                 </div>
+
+                {/* Pulse effect when online */}
+                {isOnline && (
+                  <div
+                    className="absolute inset-0 rounded-full"
+                    style={{ animation: "pulseGlow 2s ease-in-out infinite" }}
+                  />
+                )}
               </button>
             </div>
           </div>
 
+          {/* Chat Window */}
           <div
             className={`fixed inset-0 sm:absolute sm:bottom-0 sm:right-0 sm:top-auto sm:left-auto w-full h-full sm:w-96 sm:h-[36rem] sm:max-h-[calc(100vh-100px)] transition-all duration-600 ease-out ${
               isOpen
@@ -691,10 +780,10 @@ const Chatbot = () => {
             }`}
             style={{
               animation: isOpen
-                ? "chatWindowOpen 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards"
+                ? "chatWindowExpandFromIcon 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards"
                 : !isTransitioning
                 ? "none"
-                : "chatWindowClose 0.8s cubic-bezier(0.55, 0.06, 0.68, 0.19) forwards",
+                : "chatWindowShrinkToIcon 0.6s cubic-bezier(0.55, 0.06, 0.68, 0.19) forwards",
             }}
           >
             <div
@@ -702,6 +791,7 @@ const Chatbot = () => {
               onWheel={(e) => e.stopPropagation()}
               onTouchMove={(e) => e.stopPropagation()}
             >
+              {/* Header */}
               <div className="relative bg-gradient-to-r from-white via-gray-100 to-gray-200 text-gray-800 p-4 sm:p-6 flex items-center gap-3 border-b border-white/30 overflow-hidden">
                 <div className="relative z-10 p-2 bg-gradient-to-br from-gray-100 to-gray-300 rounded-full animate-pulse">
                   <Bot size={16} className="sm:w-5 sm:h-5 text-gray-700" />
@@ -709,7 +799,7 @@ const Chatbot = () => {
 
                 <div className="relative z-10 flex-1 min-w-0">
                   <h3 className="font-bold text-sm sm:text-lg text-gray-800 drop-shadow-sm flex items-center gap-2">
-                    AI Assistant
+                    azrlwebdev
                     <Zap
                       size={12}
                       className="sm:w-4 sm:h-4 text-yellow-600 animate-pulse"
@@ -725,24 +815,28 @@ const Chatbot = () => {
                   </p>
                 </div>
 
-                <button
-                  onClick={toggleChat}
-                  disabled={isTransitioning}
-                  className="relative z-10 p-2 bg-gradient-to-br from-red-100 via-red-200 to-red-300 hover:from-red-200 hover:via-red-300 hover:to-red-400 text-red-700 rounded-full transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-300 shadow-lg group overflow-hidden"
-                  aria-label="Tutup chat"
-                >
-                  <X
-                    size={16}
-                    className="sm:w-5 sm:h-5 relative z-10 drop-shadow-sm"
-                  />
-                </button>
+                {/* Header controls */}
+                <div className="relative z-10 flex items-center gap-2">
+                  {/* Close button */}
+                  <button
+                    onClick={toggleChat}
+                    disabled={isTransitioning}
+                    className="p-2 bg-gradient-to-br from-red-100 via-red-200 to-red-300 hover:from-red-200 hover:via-red-300 hover:to-red-400 text-red-700 rounded-full transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-300 shadow-lg group overflow-hidden"
+                    aria-label="Tutup chat"
+                  >
+                    <X
+                      size={16}
+                      className="sm:w-5 sm:h-5 relative z-10 drop-shadow-sm group-hover:rotate-90 transition-transform duration-300"
+                    />
+                  </button>
+                </div>
               </div>
 
+              {/* Messages Container */}
               <div
                 ref={messagesContainerRef}
-                onScroll={handleScroll}
                 onWheel={handleWheel}
-                onTouchMove={handleTouchMove}
+                onTouchMove={(e) => e.stopPropagation()}
                 className="flex-1 overflow-y-auto bg-gradient-to-br from-gray-50/50 via-white/30 to-gray-100/50 backdrop-blur-sm relative touch-pan-y custom-scrollbar"
                 style={{
                   scrollBehavior: "smooth",
@@ -758,8 +852,12 @@ const Chatbot = () => {
                       key={message.id}
                       message={message}
                       index={index}
+                      onDeleteMessage={deleteMessage}
                     />
                   ))}
+
+                  {/* NEW: Show thinking animation */}
+                  {isThinking && <ThinkingMessage />}
 
                   {isLoading && (
                     <div className="flex justify-start mb-4 px-2 sm:px-0">
@@ -792,49 +890,43 @@ const Chatbot = () => {
 
                   <div ref={messagesEndRef} />
                 </div>
-
-                {messages.length > 3 && scrollPosition !== "bottom" && (
-                  <button
-                    onClick={handleScrollNavigation}
-                    className="absolute bottom-4 right-4 p-2 sm:p-3 bg-gradient-to-br from-white via-gray-100 to-gray-300 hover:from-gray-100 hover:via-gray-200 hover:to-gray-400 text-gray-700 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10 group overflow-hidden"
-                    aria-label={
-                      scrollPosition === "top"
-                        ? "Scroll ke bawah"
-                        : "Scroll ke atas"
-                    }
-                  >
-                    {scrollPosition === "top" ? (
-                      <ArrowDown
-                        size={14}
-                        className="sm:w-4 sm:h-4 relative z-10 drop-shadow-sm"
-                      />
-                    ) : (
-                      <ArrowUp
-                        size={14}
-                        className="sm:w-4 sm:h-4 relative z-10 drop-shadow-sm"
-                      />
-                    )}
-                  </button>
-                )}
               </div>
 
+              {/* Input Area */}
               <div className="p-3 sm:p-6 border-t border-white/30 bg-gradient-to-r from-white/80 to-gray-100/80 backdrop-blur-sm sm:rounded-b-2xl">
-                <div className="flex gap-2 sm:gap-3 items-end">
+                <div className="flex gap-2 sm:gap-3 items-center">
+                  {/* Clear all chat button */}
+                  {messages.length > 0 && (
+                    <div className="flex-shrink-0">
+                      <button
+                        onClick={clearAllMessages}
+                        className="p-2.5 sm:p-3 bg-gradient-to-br from-red-100 via-red-200 to-red-300 hover:from-red-200 hover:via-red-300 hover:to-red-400 text-red-700 rounded-xl transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-300 shadow-lg group overflow-hidden"
+                        aria-label="Hapus semua chat"
+                        title="Hapus semua percakapan"
+                      >
+                        <Trash2
+                          size={14}
+                          className="sm:w-4 sm:h-4 relative z-10 drop-shadow-sm group-hover:animate-bounce"
+                        />
+                      </button>
+                    </div>
+                  )}
+
                   <div className="flex-1 relative">
-                    <textarea
+                    <input
+                      type="text"
                       value={inputMessage}
                       onChange={(e) => setInputMessage(e.target.value)}
                       onKeyPress={handleKeyPress}
                       placeholder={
                         isOnline
-                          ? "Tanya tentang portfolio Azriel..."
+                          ? "Silahkan bertanya..."
                           : "Offline - coba lagi nanti"
                       }
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/70 backdrop-blur-sm border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent text-gray-800 placeholder-gray-500 shadow-inner resize-none transition-all duration-300 text-sm hover:shadow-md focus:shadow-lg"
-                      disabled={isLoading || !isOnline}
+                      className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/70 backdrop-blur-sm border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent text-gray-800 placeholder-gray-500 shadow-inner transition-all duration-300 text-sm hover:shadow-md focus:shadow-lg"
+                      disabled={isLoading || isThinking || !isOnline}
                       maxLength={1000}
-                      rows={1}
-                      style={{ minHeight: "36px", maxHeight: "120px" }}
+                      style={{ minHeight: "44px" }}
                     />
 
                     {inputMessage.length > 800 && (
@@ -844,35 +936,49 @@ const Chatbot = () => {
                     )}
                   </div>
 
-                  <button
-                    onClick={handleSendMessage}
-                    disabled={!inputMessage.trim() || isLoading || !isOnline}
-                    className="relative group bg-gradient-to-br from-white via-gray-100 to-gray-300 hover:from-gray-100 hover:via-gray-200 hover:to-gray-400 disabled:from-gray-200 disabled:to-gray-300 disabled:cursor-not-allowed text-gray-700 p-2 sm:p-3 rounded-xl transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-gray-300 shadow-lg hover:shadow-xl overflow-hidden hover:scale-105 active:scale-95"
-                    style={{
-                      animation:
-                        !inputMessage.trim() || isLoading || !isOnline
-                          ? "none"
-                          : "buttonBounce 3s ease-in-out infinite",
-                    }}
-                    aria-label="Kirim pesan"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                  <div className="flex-shrink-0">
+                    <button
+                      onClick={handleSendMessage}
+                      disabled={
+                        !inputMessage.trim() ||
+                        isLoading ||
+                        isThinking ||
+                        !isOnline
+                      }
+                      className="relative group bg-gradient-to-br from-white via-gray-100 to-gray-300 hover:from-gray-100 hover:via-gray-200 hover:to-gray-400 disabled:from-gray-200 disabled:to-gray-300 disabled:cursor-not-allowed text-gray-700 p-2.5 sm:p-3 rounded-xl transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-gray-300 shadow-lg hover:shadow-xl overflow-hidden hover:scale-105 active:scale-95"
+                      style={{
+                        animation:
+                          !inputMessage.trim() ||
+                          isLoading ||
+                          isThinking ||
+                          !isOnline
+                            ? "none"
+                            : "pulseGlow 3s ease-in-out infinite",
+                      }}
+                      aria-label="Kirim pesan"
+                    >
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
 
-                    <Send
-                      size={14}
-                      className={`sm:w-4 sm:h-4 relative z-10 drop-shadow-sm transition-transform duration-300 ${
-                        isLoading
-                          ? "animate-spin"
-                          : "group-hover:translate-x-0.5"
-                      }`}
-                    />
+                      <Send
+                        size={14}
+                        className={`sm:w-4 sm:h-4 relative z-10 drop-shadow-sm transition-transform duration-300 ${
+                          isLoading || isThinking
+                            ? "animate-spin"
+                            : "group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                        }`}
+                      />
 
-                    {inputMessage.trim() && !isLoading && isOnline && (
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-300/20 to-green-300/20 rounded-xl animate-pulse" />
-                    )}
-                  </button>
+                      {inputMessage.trim() &&
+                        !isLoading &&
+                        !isThinking &&
+                        isOnline && (
+                          <div className="absolute inset-0 bg-gradient-to-r from-blue-300/20 to-green-300/20 rounded-xl animate-pulse" />
+                        )}
+                    </button>
+                  </div>
                 </div>
 
+                {/* Status Bar */}
                 <div className="flex justify-between items-center mt-2 text-xs text-gray-500">
                   <span className="flex items-center gap-1">
                     <span
@@ -890,22 +996,33 @@ const Chatbot = () => {
                     </span>
                   </span>
 
-                  {isLoading && (
-                    <span className="flex items-center gap-1 animate-pulse">
-                      <span className="text-xs text-blue-600">AI typing</span>
-                      <div className="flex space-x-0.5">
-                        <div className="w-1 h-1 bg-blue-600 rounded-full animate-bounce" />
-                        <div
-                          className="w-1 h-1 bg-blue-600 rounded-full animate-bounce"
-                          style={{ animationDelay: "0.1s" }}
-                        />
-                        <div
-                          className="w-1 h-1 bg-blue-600 rounded-full animate-bounce"
-                          style={{ animationDelay: "0.2s" }}
-                        />
-                      </div>
-                    </span>
-                  )}
+                  <div className="flex items-center gap-2">
+                    {(isLoading || isThinking) && (
+                      <span className="flex items-center gap-1 animate-pulse">
+                        <span className="text-xs text-blue-600">
+                          {isThinking ? "AI thinking" : "AI typing"}
+                        </span>
+                        <div className="flex space-x-0.5">
+                          <div className="w-1 h-1 bg-blue-600 rounded-full animate-bounce" />
+                          <div
+                            className="w-1 h-1 bg-blue-600 rounded-full animate-bounce"
+                            style={{ animationDelay: "0.1s" }}
+                          />
+                          <div
+                            className="w-1 h-1 bg-blue-600 rounded-full animate-bounce"
+                            style={{ animationDelay: "0.2s" }}
+                          />
+                        </div>
+                      </span>
+                    )}
+
+                    {messages.length > 1 && (
+                      <span className="flex items-center gap-1 text-gray-400">
+                        <MessageSquare size={10} />
+                        <span>{messages.length}</span>
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
