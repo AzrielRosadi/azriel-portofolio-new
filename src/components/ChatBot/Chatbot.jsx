@@ -10,13 +10,29 @@ import {
   ArrowDown,
 } from "lucide-react";
 
-// ChatMessage Component with enhanced animations
+// FIXED: Enhanced ChatMessage Component - Render HTML properly
 const ChatMessage = ({ message, index }) => {
   const formatTime = (date) => {
     return date.toLocaleTimeString("id-ID", {
       hour: "2-digit",
       minute: "2-digit",
     });
+  };
+
+  // FIXED: Function to clean and format text properly
+  const formatMessageText = (text) => {
+    if (typeof text !== "string") return text;
+
+    // Remove HTML tags that came from server formatting
+    let cleanText = text
+      .replace(/<[^>]*>/g, "") // Remove all HTML tags
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&amp;/g, "&")
+      .replace(/&quot;/g, '"')
+      .replace(/&#x27;/g, "'");
+
+    return cleanText;
   };
 
   return (
@@ -51,9 +67,19 @@ const ChatMessage = ({ message, index }) => {
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <p className="text-xs sm:text-sm whitespace-pre-wrap leading-relaxed font-medium break-words">
-              {message.text}
-            </p>
+            {/* FIXED: Properly formatted text display */}
+            <div className="text-xs sm:text-sm leading-relaxed font-medium break-words">
+              {formatMessageText(message.text)
+                .split("\n")
+                .map((line, i) => (
+                  <React.Fragment key={i}>
+                    {line}
+                    {i <
+                      formatMessageText(message.text).split("\n").length -
+                        1 && <br />}
+                  </React.Fragment>
+                ))}
+            </div>
             <p
               className={`text-xs mt-2 font-light transition-opacity duration-300 ${
                 message.sender === "user" ? "text-gray-300" : "text-gray-500"
@@ -84,7 +110,7 @@ const Chatbot = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
-  const [scrollPosition, setScrollPosition] = useState("bottom"); // "top", "middle", "bottom"
+  const [scrollPosition, setScrollPosition] = useState("bottom");
   const messagesEndRef = useRef(null);
   const messagesStartRef = useRef(null);
   const messagesContainerRef = useRef(null);
@@ -130,14 +156,12 @@ const Chatbot = () => {
     const isAtTop = scrollTop === 0;
     const isAtBottom = scrollTop + clientHeight >= scrollHeight - 1;
 
-    // Prevent scroll propagation when at boundaries
     if ((isAtTop && e.deltaY < 0) || (isAtBottom && e.deltaY > 0)) {
       e.preventDefault();
       e.stopPropagation();
     }
   };
 
-  // Additional touch event handling for mobile
   const handleTouchMove = (e) => {
     e.stopPropagation();
   };
@@ -146,13 +170,11 @@ const Chatbot = () => {
     scrollToBottom();
   }, [messages]);
 
-  // FIXED: Enhanced initial animation sequence - langsung bounce tanpa delay berlebihan
   useEffect(() => {
-    // Langsung tampil dan bounce setelah splash screen selesai
     const initialTimer = setTimeout(() => {
       setIsVisible(true);
-      setHasAnimatedIn(true); // Langsung set animated untuk bounce effect
-    }, 2800); // Setelah splash screen
+      setHasAnimatedIn(true);
+    }, 2800);
 
     return () => {
       clearTimeout(initialTimer);
@@ -169,38 +191,34 @@ const Chatbot = () => {
     };
   }, []);
 
-  // Enhanced smooth toggle with better animation
   const toggleChat = () => {
     if (isTransitioning) return;
 
     setIsTransitioning(true);
 
     if (isOpen) {
-      // Closing animation
       document.body.classList.remove("chat-open");
-
       setTimeout(() => {
         setIsOpen(false);
         setIsTransitioning(false);
       }, 500);
     } else {
-      // Opening animation
       setIsOpen(true);
       document.body.classList.add("chat-open");
-
       setTimeout(() => {
         setIsTransitioning(false);
       }, 600);
     }
   };
 
-  // Enhanced API call with better error handling
+  // Change API endpoint to Vercel functions
   const sendToAPI = async (message, retryCount = 0) => {
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 15000);
 
-      const response = await fetch("http://localhost:5000/api/chat", {
+      // Updated to use Vercel serverless function
+      const response = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message }),
@@ -213,9 +231,10 @@ const Chatbot = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
 
       const data = await response.json();
-      if (data.metadata) console.log("🔍 Website data:", data.metadata);
 
-      return data.response;
+      return (
+        data.response || data.text || "Maaf, tidak ada respons dari server."
+      );
     } catch (error) {
       console.error("API Error:", error);
 
@@ -227,7 +246,7 @@ const Chatbot = () => {
         return sendToAPI(message, retryCount + 1);
       }
 
-      // Smart fallback responses
+      // Simple fallback responses
       if (!isOnline) {
         return "🔌 Koneksi terputus. Silakan periksa internet Anda.\n\n📧 Kontak langsung: azrlwebdev@gmail.com\n🌐 Portfolio: https://azrl-webdev.vercel.app/";
       }
@@ -288,7 +307,6 @@ const Chatbot = () => {
     }
   };
 
-  // Handle scroll navigation
   const handleScrollNavigation = () => {
     if (scrollPosition === "top") {
       scrollToBottom();
@@ -297,12 +315,10 @@ const Chatbot = () => {
     }
   };
 
-  // Don't render if not visible
   if (!isVisible) return null;
 
   return (
     <>
-      {/* Enhanced CSS Animations */}
       <style jsx>{`
         @keyframes chatbotEntranceDirect {
           0% {
@@ -391,34 +407,20 @@ const Chatbot = () => {
           }
         }
 
-        @keyframes closeButtonClick {
+        @keyframes messageSlideIn {
           0% {
-            transform: scale(1) rotate(0deg);
-            background: linear-gradient(135deg, #fecaca, #fca5a5, #f87171);
-          }
-          15% {
-            transform: scale(1.2) rotate(90deg);
-            background: linear-gradient(135deg, #f87171, #ef4444, #dc2626);
-          }
-          30% {
-            transform: scale(0.9) rotate(180deg);
-            background: linear-gradient(135deg, #dc2626, #b91c1c, #991b1b);
+            opacity: 0;
+            transform: translateX(var(--slide-direction, -50px))
+              translateY(20px) scale(0.9);
           }
           50% {
-            transform: scale(1.15) rotate(270deg);
-            background: linear-gradient(135deg, #991b1b, #7f1d1d, #dc2626);
-          }
-          70% {
-            transform: scale(0.95) rotate(360deg);
-            background: linear-gradient(135deg, #dc2626, #ef4444, #f87171);
-          }
-          85% {
-            transform: scale(1.05) rotate(360deg);
-            background: linear-gradient(135deg, #f87171, #fca5a5, #fecaca);
+            opacity: 0.7;
+            transform: translateX(calc(var(--slide-direction, -50px) * 0.3))
+              translateY(-5px) scale(1.02);
           }
           100% {
-            transform: scale(1) rotate(360deg);
-            background: linear-gradient(135deg, #fecaca, #fca5a5, #f87171);
+            opacity: 1;
+            transform: translateX(0) translateY(0) scale(1);
           }
         }
 
@@ -446,76 +448,6 @@ const Chatbot = () => {
           }
         }
 
-        @keyframes messageSlideIn {
-          0% {
-            opacity: 0;
-            transform: translateX(var(--slide-direction, -50px))
-              translateY(20px) scale(0.9);
-          }
-          50% {
-            opacity: 0.7;
-            transform: translateX(calc(var(--slide-direction, -50px) * 0.3))
-              translateY(-5px) scale(1.02);
-          }
-          100% {
-            opacity: 1;
-            transform: translateX(0) translateY(0) scale(1);
-          }
-        }
-
-        @keyframes buttonPulse {
-          0%,
-          100% {
-            transform: scale(1);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-          }
-          50% {
-            transform: scale(1.05);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-          }
-        }
-
-        @keyframes sparkle {
-          0%,
-          100% {
-            opacity: 0;
-            transform: scale(0) rotate(0deg);
-          }
-          25% {
-            opacity: 1;
-            transform: scale(1) rotate(90deg);
-          }
-          50% {
-            opacity: 0.8;
-            transform: scale(1.2) rotate(180deg);
-          }
-          75% {
-            opacity: 1;
-            transform: scale(0.8) rotate(270deg);
-          }
-        }
-
-        @keyframes headerShimmer {
-          0% {
-            transform: translateX(-100%) skewX(-15deg);
-          }
-          100% {
-            transform: translateX(300%) skewX(-15deg);
-          }
-        }
-
-        @keyframes scrollButtonSlide {
-          0% {
-            opacity: 0;
-            transform: translateY(20px) scale(0.8);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-
-        /* Enhanced scrollbar */
         .custom-scrollbar::-webkit-scrollbar {
           width: 6px;
         }
@@ -536,7 +468,6 @@ const Chatbot = () => {
           background: linear-gradient(to bottom, #6b7280, #4b5563);
         }
 
-        /* Body scroll prevention */
         body.chat-open {
           overflow: hidden !important;
           position: fixed !important;
@@ -556,10 +487,8 @@ const Chatbot = () => {
         }
       `}</style>
 
-      {/* Fixed positioning dengan enhanced animations */}
       <div className="fixed bottom-0 right-0 z-[9999] pointer-events-none">
         <div className="pointer-events-auto">
-          {/* FIXED: Enhanced Floating Action Button - langsung bounce */}
           <div
             className={`transition-all duration-700 ease-out ${
               isOpen
@@ -576,9 +505,7 @@ const Chatbot = () => {
               <button
                 onClick={toggleChat}
                 disabled={isTransitioning}
-                className={`relative group bg-gradient-to-br from-white via-gray-100 to-gray-300 hover:from-gray-100 hover:via-gray-200 hover:to-gray-400 text-gray-800 p-3 sm:p-4 rounded-full shadow-2xl transition-all duration-500 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-white/50 overflow-hidden ${
-                  isTransitioning ? "animate-pulse" : ""
-                }`}
+                className="relative group bg-gradient-to-br from-white via-gray-100 to-gray-300 hover:from-gray-100 hover:via-gray-200 hover:to-gray-400 text-gray-800 p-3 sm:p-4 rounded-full shadow-2xl transition-all duration-500 hover:scale-110 focus:outline-none focus:ring-4 focus:ring-white/50 overflow-hidden"
                 style={{
                   animation:
                     hasAnimatedIn && !isTransitioning
@@ -587,29 +514,14 @@ const Chatbot = () => {
                 }}
                 aria-label="Buka chat"
               >
-                {/* Enhanced online/offline indicator */}
                 <div
                   className={`absolute -top-1 -right-1 w-3 h-3 sm:w-4 sm:h-4 rounded-full border-2 border-white transition-all duration-300 ${
                     isOnline ? "bg-green-500" : "bg-red-500"
                   }`}
-                  style={{
-                    animation: isOnline
-                      ? "buttonPulse 2s ease-in-out infinite"
-                      : "none",
-                  }}
                 />
 
-                {/* Enhanced shimmer effect */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1200" />
 
-                {/* Multiple pulsing rings */}
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/30 to-gray-300/30 animate-ping" />
-                <div
-                  className="absolute inset-0 rounded-full bg-gradient-to-br from-white/20 to-gray-300/20 animate-pulse"
-                  style={{ animationDelay: "0.5s" }}
-                />
-
-                {/* Enhanced Bot Icon */}
                 <div className="relative z-10">
                   <div
                     className={`transition-all duration-700 ease-out ${
@@ -621,47 +533,17 @@ const Chatbot = () => {
                     <Bot
                       size={20}
                       className="w-5 h-5 sm:w-6 sm:h-6 drop-shadow-sm"
-                      style={{
-                        animation: hasAnimatedIn
-                          ? "bounce 2s ease-in-out infinite"
-                          : "none",
-                      }}
                     />
-                    {/* Enhanced real-time indicator */}
                     <Globe
                       size={10}
                       className="w-2.5 h-2.5 sm:w-3 sm:h-3 absolute -top-1 -right-1 text-blue-600"
-                      style={{
-                        animation: "sparkle 3s ease-in-out infinite",
-                      }}
                     />
                   </div>
                 </div>
-
-                {/* Enhanced sparkle effects */}
-                <div
-                  className="absolute -top-1 -left-1 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-gradient-to-r from-white to-gray-300 rounded-full"
-                  style={{ animation: "sparkle 2s ease-in-out infinite" }}
-                />
-                <div
-                  className="absolute -bottom-1 -right-1 w-1 h-1 sm:w-1.5 sm:h-1.5 bg-gradient-to-r from-gray-200 to-gray-400 rounded-full"
-                  style={{
-                    animation: "sparkle 2.5s ease-in-out infinite",
-                    animationDelay: "0.8s",
-                  }}
-                />
-                <div
-                  className="absolute top-1/2 -left-2 w-1 h-1 bg-white rounded-full"
-                  style={{
-                    animation: "sparkle 3s ease-in-out infinite",
-                    animationDelay: "1.2s",
-                  }}
-                />
               </button>
             </div>
           </div>
 
-          {/* Enhanced Chat Window */}
           <div
             className={`fixed inset-0 sm:absolute sm:bottom-0 sm:right-0 sm:top-auto sm:left-auto w-full h-full sm:w-96 sm:h-[36rem] sm:max-h-[calc(100vh-100px)] transition-all duration-600 ease-out ${
               isOpen
@@ -681,16 +563,7 @@ const Chatbot = () => {
               onWheel={(e) => e.stopPropagation()}
               onTouchMove={(e) => e.stopPropagation()}
             >
-              {/* Enhanced Header */}
               <div className="relative bg-gradient-to-r from-white via-gray-100 to-gray-200 text-gray-800 p-4 sm:p-6 flex items-center gap-3 border-b border-white/30 overflow-hidden">
-                {/* Enhanced header shimmer */}
-                <div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/80 to-transparent transform -skew-x-12 -translate-x-full"
-                  style={{
-                    animation: "headerShimmer 3s ease-in-out infinite",
-                  }}
-                />
-
                 <div className="relative z-10 p-2 bg-gradient-to-br from-gray-100 to-gray-300 rounded-full animate-pulse">
                   <Bot size={16} className="sm:w-5 sm:h-5 text-gray-700" />
                 </div>
@@ -713,56 +586,19 @@ const Chatbot = () => {
                   </p>
                 </div>
 
-                {/* Enhanced close button */}
                 <button
                   onClick={toggleChat}
                   disabled={isTransitioning}
-                  className={`relative z-10 p-2 bg-gradient-to-br from-red-100 via-red-200 to-red-300 hover:from-red-200 hover:via-red-300 hover:to-red-400 text-red-700 rounded-full transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-300 shadow-lg group overflow-hidden ${
-                    isTransitioning ? "animate-closeButtonClick" : ""
-                  }`}
-                  style={{
-                    animation: isTransitioning
-                      ? "closeButtonClick 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards"
-                      : "none",
-                  }}
+                  className="relative z-10 p-2 bg-gradient-to-br from-red-100 via-red-200 to-red-300 hover:from-red-200 hover:via-red-300 hover:to-red-400 text-red-700 rounded-full transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-red-300 shadow-lg group overflow-hidden"
                   aria-label="Tutup chat"
                 >
-                  {/* Enhanced button shimmer */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-800 rounded-full" />
-
                   <X
                     size={16}
-                    className={`sm:w-5 sm:h-5 relative z-10 drop-shadow-sm transition-all duration-500 ${
-                      isTransitioning
-                        ? "rotate-[720deg] scale-150"
-                        : "rotate-0 scale-100"
-                    }`}
+                    className="sm:w-5 sm:h-5 relative z-10 drop-shadow-sm"
                   />
-
-                  {/* Enhanced glow effect dengan pulsing saat diklik */}
-                  <div
-                    className={`absolute inset-0 bg-red-300/30 rounded-full ${
-                      isTransitioning ? "animate-ping" : "animate-pulse"
-                    }`}
-                  />
-
-                  {/* Additional glow layers saat transitioning */}
-                  {isTransitioning && (
-                    <>
-                      <div
-                        className="absolute inset-0 bg-red-400/40 rounded-full animate-ping"
-                        style={{ animationDelay: "0.1s" }}
-                      />
-                      <div
-                        className="absolute inset-0 bg-red-500/30 rounded-full animate-ping"
-                        style={{ animationDelay: "0.2s" }}
-                      />
-                    </>
-                  )}
                 </button>
               </div>
 
-              {/* Enhanced Messages Container */}
               <div
                 ref={messagesContainerRef}
                 onScroll={handleScroll}
@@ -776,7 +612,6 @@ const Chatbot = () => {
                 }}
               >
                 <div className="p-3 sm:p-6 space-y-2 sm:space-y-3 min-h-full">
-                  {/* FIXED: Scroll reference for top */}
                   <div ref={messagesStartRef} />
 
                   {messages.map((message, index) => (
@@ -787,16 +622,9 @@ const Chatbot = () => {
                     />
                   ))}
 
-                  {/* Enhanced Loading Animation */}
                   {isLoading && (
-                    <div
-                      className="flex justify-start mb-4 px-2 sm:px-0"
-                      style={{
-                        animation:
-                          "messageSlideIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
-                      }}
-                    >
-                      <div className="bg-gradient-to-br from-white/90 via-gray-50/90 to-gray-100/90 backdrop-blur-sm px-3 sm:px-4 py-3 rounded-2xl border border-white/50 shadow-lg transform hover:scale-105 transition-all duration-300">
+                    <div className="flex justify-start mb-4 px-2 sm:px-0">
+                      <div className="bg-gradient-to-br from-white/90 via-gray-50/90 to-gray-100/90 backdrop-blur-sm px-3 sm:px-4 py-3 rounded-2xl border border-white/50 shadow-lg">
                         <div className="flex items-center gap-3">
                           <Bot
                             size={14}
@@ -826,24 +654,16 @@ const Chatbot = () => {
                   <div ref={messagesEndRef} />
                 </div>
 
-                {/* FIXED: Enhanced smart scroll navigation button */}
                 {messages.length > 3 && scrollPosition !== "bottom" && (
                   <button
                     onClick={handleScrollNavigation}
                     className="absolute bottom-4 right-4 p-2 sm:p-3 bg-gradient-to-br from-white via-gray-100 to-gray-300 hover:from-gray-100 hover:via-gray-200 hover:to-gray-400 text-gray-700 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10 group overflow-hidden"
-                    style={{
-                      animation:
-                        "scrollButtonSlide 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, buttonBounce 2.5s ease-in-out infinite 0.5s",
-                    }}
                     aria-label={
                       scrollPosition === "top"
                         ? "Scroll ke bawah"
                         : "Scroll ke atas"
                     }
                   >
-                    {/* Enhanced button shimmer */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-800 rounded-full" />
-
                     {scrollPosition === "top" ? (
                       <ArrowDown
                         size={14}
@@ -855,14 +675,10 @@ const Chatbot = () => {
                         className="sm:w-4 sm:h-4 relative z-10 drop-shadow-sm"
                       />
                     )}
-
-                    {/* Enhanced glow effect */}
-                    <div className="absolute inset-0 bg-blue-300/20 rounded-full animate-pulse" />
                   </button>
                 )}
               </div>
 
-              {/* Enhanced Input Area */}
               <div className="p-3 sm:p-6 border-t border-white/30 bg-gradient-to-r from-white/80 to-gray-100/80 backdrop-blur-sm sm:rounded-b-2xl">
                 <div className="flex gap-2 sm:gap-3 items-end">
                   <div className="flex-1 relative">
@@ -882,7 +698,6 @@ const Chatbot = () => {
                       style={{ minHeight: "36px", maxHeight: "120px" }}
                     />
 
-                    {/* Enhanced character counter */}
                     {inputMessage.length > 400 && (
                       <div className="absolute bottom-1 right-10 sm:right-12 text-xs text-gray-400 bg-white/90 px-2 py-1 rounded-lg shadow-sm animate-pulse">
                         {500 - inputMessage.length}
@@ -902,7 +717,6 @@ const Chatbot = () => {
                     }}
                     aria-label="Kirim pesan"
                   >
-                    {/* Enhanced button shimmer */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
 
                     <Send
@@ -914,14 +728,12 @@ const Chatbot = () => {
                       }`}
                     />
 
-                    {/* Send button glow */}
                     {inputMessage.trim() && !isLoading && isOnline && (
                       <div className="absolute inset-0 bg-gradient-to-r from-blue-300/20 to-green-300/20 rounded-xl animate-pulse" />
                     )}
                   </button>
                 </div>
 
-                {/* Enhanced status bar */}
                 <div className="flex justify-between items-center mt-2 text-xs text-gray-500">
                   <span className="flex items-center gap-1">
                     <span
@@ -937,7 +749,6 @@ const Chatbot = () => {
                     </span>
                   </span>
 
-                  {/* Enhanced typing indicator */}
                   {isLoading && (
                     <span className="flex items-center gap-1 animate-pulse">
                       <span className="text-xs text-blue-600">AI typing</span>
