@@ -338,6 +338,69 @@ async function getPortfolioData() {
   return portfolioCache;
 }
 
+// Function untuk mengecek apakah pertanyaan terkait portfolio
+function isPortfolioRelated(message) {
+  const portfolioKeywords = [
+    "proyek",
+    "project",
+    "portfolio",
+    "azriel",
+    "rosadi",
+    "webdev",
+    "pengalaman",
+    "experience",
+    "skill",
+    "teknologi",
+    "tech",
+    "stack",
+    "kontak",
+    "contact",
+    "email",
+    "github",
+    "linkedin",
+    "instagram",
+    "fullstack",
+    "developer",
+    "javascript",
+    "react",
+    "laravel",
+    "node",
+    "unity",
+    "game",
+    "website",
+    "aplikasi",
+    "system",
+    "platform",
+    "frontend",
+    "backend",
+    "database",
+    "mysql",
+    "postgresql",
+    "mongodb",
+    "testimoni",
+    "testimonial",
+    "client",
+    "laundry",
+    "liboyy",
+    "starspace",
+    "spektrum",
+    "mbuutt",
+    "hire",
+    "freelance",
+    "kolaborasi",
+    "collaboration",
+    "harga",
+    "price",
+    "biaya",
+    "cost",
+    "layanan",
+    "service",
+  ];
+
+  const messageLower = message.toLowerCase();
+  return portfolioKeywords.some((keyword) => messageLower.includes(keyword));
+}
+
 // Function untuk generate response menggunakan Gemini 2.0 Flash
 async function generateGeminiResponse(userMessage, portfolioData) {
   try {
@@ -349,8 +412,12 @@ async function generateGeminiResponse(userMessage, portfolioData) {
       );
     }
 
-    // Create context dari portfolio data yang sudah diperbaiki
-    const portfolioContext = `
+    // Check if question is portfolio-related
+    const isPortfolioQuestion = isPortfolioRelated(userMessage);
+
+    // Create context dari portfolio data yang sudah diperbaiki (hanya jika pertanyaan terkait portfolio)
+    const portfolioContext = isPortfolioQuestion
+      ? `
 INFORMASI PORTFOLIO AZRIEL ROSADI:
 =================================
 
@@ -407,34 +474,35 @@ ${
 
 ACHIEVEMENT:
 - ${
-      portfolioData.counterItems?.find(
-        (item) => item.label === "Completed Projects"
-      )?.value || 25
-    }+ Completed Projects
+          portfolioData.counterItems?.find(
+            (item) => item.label === "Completed Projects"
+          )?.value || 25
+        }+ Completed Projects
 - ${
-      portfolioData.counterItems?.find(
-        (item) => item.label === "Client Retention Rate"
-      )?.value || 90
-    }% Client Retention Rate
+          portfolioData.counterItems?.find(
+            (item) => item.label === "Client Retention Rate"
+          )?.value || 90
+        }% Client Retention Rate
 - ${
-      portfolioData.counterItems?.find((item) => item.label === "Client")
-        ?.value || 3
-    }+ Happy Clients
+          portfolioData.counterItems?.find((item) => item.label === "Client")
+            ?.value || 3
+        }+ Happy Clients
 - Fresh Graduate dengan pengalaman praktis
 
 KONTAK & PORTFOLIO:
 - Email: ${portfolioData.contact?.email || "azrlwebdev@gmail.com"}
 - GitHub: ${portfolioData.contact?.github || "https://github.com/AzrielRosadi"}
 - LinkedIn: ${
-      portfolioData.contact?.linkedin ||
-      "https://www.linkedin.com/in/azriel-rosadi-aa2859343/"
-    }
+          portfolioData.contact?.linkedin ||
+          "https://www.linkedin.com/in/azriel-rosadi-aa2859343/"
+        }
 - Instagram: ${
-      portfolioData.contact?.instagram || "https://www.instagram.com/azrlrsdi_/"
-    }
+          portfolioData.contact?.instagram ||
+          "https://www.instagram.com/azrlrsdi_/"
+        }
 - Portfolio Website: ${
-      portfolioData.contact?.portfolio || "https://azrl-webdev.vercel.app"
-    }
+          portfolioData.contact?.portfolio || "https://azrl-webdev.vercel.app"
+        }
 
 KEUNGGULAN:
 ${
@@ -442,22 +510,24 @@ ${
     ?.map((a, i) => `${i + 1}. ${a.title}: ${a.description}`)
     .join("\n") || "Quality Focus, Reliable Communication, On-Time Delivery"
 }
-`;
+`
+      : "";
 
-    const systemPrompt = `Anda adalah AI Assistant untuk portfolio Azriel Rosadi, seorang Fresh Graduate Fullstack Developer yang berpengalaman. 
+    const systemPrompt = isPortfolioQuestion
+      ? `Anda adalah AI Assistant untuk portfolio Azriel Rosadi, seorang Fresh Graduate Fullstack Developer yang berpengalaman. 
 
 TUGAS UTAMA:
 1. Jawab pertanyaan tentang portfolio, proyek, pengalaman, dan layanan Azriel
 2. Gunakan data akurat dan lengkap dari portfolio yang telah disediakan
 3. Berikan informasi yang spesifik dan helpful tentang Azriel
-4. Jika ditanya di luar portfolio, tetap jawab dengan ramah namun arahkan kembali ke topik portfolio
+4. Fokus pada detail teknis, achievement, dan pengalaman yang relevan
 
 GAYA KOMUNIKASI:
 - Gunakan bahasa Indonesia yang natural dan ramah, namun jika user menanyakan dalam bahasa Inggris atau bahasa lainnya, balas sesuai bahasa yang digunakan user
 - Sertakan emoji yang relevan untuk membuat percakapan lebih menarik
 - Berikan informasi yang spesifik dan actionable
-- Selalu sertakan kontak atau link portfolio jika relevan
-- Hindari pengulangan URL/link yang sama dalam satu respons
+- PENTING: Hanya sertakan satu link/URL per respons untuk menghindari duplikasi
+- Prioritaskan link yang paling relevan dengan pertanyaan
 
 DATA PORTFOLIO TERKINI:
 ${portfolioContext}
@@ -465,18 +535,40 @@ ${portfolioContext}
 PANDUAN RESPONS:
 - Untuk pertanyaan tentang proyek: Jelaskan detail teknis, tech stack, tahun pembuatan, dan hasil
 - Untuk pertanyaan tentang pengalaman: Fokus pada achievement, tanggal, dan kontribusi spesifik
-- Untuk pertanyaan kontak/kolaborasi: Berikan informasi kontak yang jelas tanpa duplikasi
-- Untuk pertanyaan umum: Jawab singkat lalu kaitkan dengan expertise Azriel
+- Untuk pertanyaan kontak/kolaborasi: Berikan HANYA satu kontak yang paling relevan
 - Untuk pertanyaan pricing/layanan: Arahkan untuk diskusi detail via email
-- Pastikan tidak ada URL/link yang duplikat dalam satu respons
+- TIDAK BOLEH ada URL/link yang duplikat dalam satu respons
+- Maksimal satu link per respons
 
 PENTING: 
 - Gunakan informasi yang akurat sesuai data portfolio
 - Sebutkan tanggal/periode yang spesifik untuk pengalaman kerja
 - Jelaskan tech stack yang digunakan untuk setiap proyek
-- Hindari memberikan link yang sama berulang kali
+- HINDARI memberikan link yang sama berulang kali atau lebih dari satu link
+- Prioritaskan kualitas informasi daripada kuantitas link
 
-Selalu prioritaskan informasi dari data portfolio yang fresh dan akurat.`;
+Selalu prioritaskan informasi dari data portfolio yang fresh dan akurat.`
+      : `Anda adalah AI Assistant yang ramah dan helpful. Anda dapat menjawab berbagai pertanyaan umum dengan baik.
+
+TUGAS UTAMA:
+1. Jawab pertanyaan umum dengan informatif dan akurat
+2. Berikan respons yang helpful dan engaging
+3. Jika memungkinkan, kaitkan dengan expertise dalam bidang teknologi atau development
+4. Tetap ramah dan profesional dalam berkomunikasi
+
+GAYA KOMUNIKASI:
+- Gunakan bahasa Indonesia yang natural dan ramah, namun jika user menanyakan dalam bahasa Inggris atau bahasa lainnya, balas sesuai bahasa yang digunakan user
+- Sertakan emoji yang relevan untuk membuat percakapan lebih menarik
+- Berikan informasi yang berguna dan mudah dipahami
+- Jika relevan, sebutkan bahwa Anda juga dapat membantu dengan pertanyaan tentang portfolio Azriel Rosadi (Fullstack Developer)
+
+PANDUAN RESPONS:
+- Jawab pertanyaan sesuai dengan pengetahuan umum
+- Berikan penjelasan yang clear dan helpful
+- Jika pertanyaan teknis (programming, web development, dll), berikan insight yang mendalam
+- Tetap engaging dan informatif
+
+CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio.`;
 
     const response = await axios.post(
       "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
@@ -530,8 +622,10 @@ Selalu prioritaskan informasi dari data portfolio yang fresh dan akurat.`;
     // Enhanced fallback responses berdasarkan kata kunci
     const message = userMessage.toLowerCase();
 
-    if (message.includes("proyek") || message.includes("project")) {
-      return `🚀 **Portfolio Azriel - 25+ Projects Completed!**
+    // Check if it's a portfolio-related question for fallback
+    if (isPortfolioRelated(userMessage)) {
+      if (message.includes("proyek") || message.includes("project")) {
+        return `🚀 **Portfolio Azriel - 25+ Projects Completed!**
 
 **Proyek Unggulan:**
 • **Platform Top-up Game & Social Media (2025)** - React, TypeScript, Node.js, PostgreSQL
@@ -539,26 +633,23 @@ Selalu prioritaskan informasi dari data portfolio yang fresh dan akurat.`;
 • **DOML AI Marketing Platform (2025)** - React, AI Integration
 • **Mechstrom: War Zone Game (2024)** - Unity, C#
 • **Tools Scraper GUI Application (2024)** - Python
-• **Search Film IMDb API (2023)** - JavaScript, HTML5
 
 💻 **Tech Stack Expertise:** React, Laravel, Node.js, Python, Unity
 📧 **Diskusi proyek:** azrlwebdev@gmail.com`;
-    }
+      }
 
-    if (message.includes("kontak") || message.includes("contact")) {
-      return `📞 **Kontak Azriel Rosadi:**
+      if (message.includes("kontak") || message.includes("contact")) {
+        return `📞 **Kontak Azriel Rosadi:**
 
 ✉️ **Email:** azrlwebdev@gmail.com
 🌐 **Portfolio:** https://azrl-webdev.vercel.app
-💼 **GitHub:** https://github.com/AzrielRosadi
-🔗 **LinkedIn:** https://www.linkedin.com/in/azriel-rosadi-aa2859343/
 
 ⚡ **Response Time:** < 24 jam
 💬 **Available for:** Freelance projects, collaboration, consultation`;
-    }
+      }
 
-    if (message.includes("pengalaman") || message.includes("experience")) {
-      return `💼 **Pengalaman Kerja Azriel:**
+      if (message.includes("pengalaman") || message.includes("experience")) {
+        return `💼 **Pengalaman Kerja Azriel:**
 
 🏢 **Frontend Developer Intern** - Starspace Studio (June 2025 - Present)
 🏢 **Fullstack JavaScript Developer** - Liboyy Store (March - May 2025)  
@@ -567,10 +658,10 @@ Selalu prioritaskan informasi dari data portfolio yang fresh dan akurat.`;
 
 📈 **Achievement:** 25+ completed projects, 90% client retention rate
 💻 **Expertise:** Fullstack Development, UI/UX Implementation, System Integration`;
-    }
+      }
 
-    if (message.includes("skill") || message.includes("teknologi")) {
-      return `💻 **Tech Stack Azriel:**
+      if (message.includes("skill") || message.includes("teknologi")) {
+        return `💻 **Tech Stack Azriel:**
 
 **Frontend:** React, TypeScript, TailwindCSS, Next.js, JavaScript
 **Backend:** Node.js, Laravel, PHP, Express.js
@@ -579,9 +670,9 @@ Selalu prioritaskan informasi dari data portfolio yang fresh dan akurat.`;
 **Others:** Python, Git, Vercel, Drizzle ORM, React Query
 
 🚀 **Spesialisasi:** Fullstack Development, API Integration, Real-time Applications`;
-    }
+      }
 
-    return `😅 **Server sedang maintenance.** Coba lagi sebentar!
+      return `😅 **Server sedang maintenance.** Coba lagi sebentar!
 
 🤖 **Sementara itu, Anda bisa bertanya tentang:**
 • **Proyek & Portfolio** (25+ completed)
@@ -590,6 +681,17 @@ Selalu prioritaskan informasi dari data portfolio yang fresh dan akurat.`;
 • **Kontak & Kolaborasi**
 
 📧 **Email langsung:** azrlwebdev@gmail.com`;
+    }
+
+    // Fallback for general questions
+    return `🤖 **Maaf, server sedang maintenance!**
+
+Saya bisa membantu Anda dengan berbagai pertanyaan, termasuk:
+• Pertanyaan umum dan diskusi
+• Teknologi dan programming
+• Portfolio Azriel Rosadi (Fullstack Developer)
+
+⚡ Coba lagi dalam beberapa saat atau ajukan pertanyaan lain!`;
   }
 }
 
@@ -645,8 +747,10 @@ export default async function handler(req, res) {
 
     console.log("📨 Incoming message:", message.substring(0, 100) + "...");
 
-    // Get portfolio data (static + scraped)
-    const portfolioData = await getPortfolioData();
+    // Get portfolio data (hanya jika pertanyaan terkait portfolio)
+    const portfolioData = isPortfolioRelated(message)
+      ? await getPortfolioData()
+      : null;
 
     // Generate AI response
     const aiResponse = await generateGeminiResponse(message, portfolioData);
@@ -657,8 +761,9 @@ export default async function handler(req, res) {
       response: aiResponse,
       timestamp: new Date().toISOString(),
       source: "gemini-2.0-flash",
-      portfolioLastUpdated: portfolioData.lastUpdated,
-      dataSource: portfolioData.dataSource || "static",
+      portfolioLastUpdated: portfolioData?.lastUpdated || null,
+      dataSource: portfolioData?.dataSource || "general",
+      isPortfolioRelated: isPortfolioRelated(message),
     });
   } catch (error) {
     console.error("❌ API Error:", error);
