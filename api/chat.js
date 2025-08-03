@@ -755,9 +755,9 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
 🌐 **Portfolio Website:** https://azrl-webdev.vercel.app
 
 **🌟 MEDIA SOSIAL:**
-💼 **LinkedIn:** https://www.linkedin.com/in/azriel-rosadi-aa2859343/
-🐙 **GitHub:** https://github.com/AzrielRosadi
-📸 **Instagram:** https://www.instagram.com/azrlrsdi_/
+💼 **LinkedIn:** Professional networking & career updates
+🐙 **GitHub:** Code repository & open source projects  
+📸 **Instagram:** @azrlrsdi_ - Behind the scenes & personal updates
 
 **⚡ RESPONSE TIME:**
 • Email: < 24 jam (hari kerja)
@@ -787,7 +787,6 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
 
 **💼 Professional Platforms:**
 • **LinkedIn - Professional Networking**
-  - Link: https://www.linkedin.com/in/azriel-rosadi-aa2859343/
   - Profile: Fullstack Developer & Fresh Graduate
   - Content: Career updates, tech industry insights, achievements
   - Networking: Professional connections, collaboration opportunities
@@ -795,7 +794,6 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
   - Engagement: Industry discussions, best practices sharing
 
 • **GitHub - Code Repository & Open Source**
-  - Link: https://github.com/AzrielRosadi
   - Repositories: 25+ active public repositories
   - Code Quality: Clean, documented, maintainable code
   - Projects: Full-stack applications, games, tools, experiments
@@ -805,7 +803,6 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
 
 **📱 Personal Social Media:**
 • **Instagram (@azrlrsdi_) - Behind The Scenes**
-  - Link: https://www.instagram.com/azrlrsdi_/
   - Content Focus: Development process, workspace setup, coding lifestyle
   - Stories: Daily development activities, problem-solving sessions
   - Posts: Tech gear reviews, setup tours, project highlights
@@ -845,8 +842,7 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
       ) {
         return `💼 **LinkedIn Azriel Rosadi:**
 
-🔗 **Profile Link:** https://www.linkedin.com/in/azriel-rosadi-aa2859343/
-
+🔗 **Profile:** Professional Fullstack Developer
 📍 **Connect untuk:**
 • Networking profesional
 • Career opportunities  
@@ -881,8 +877,6 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
         !message.includes("instagram")
       ) {
         return `🐙 **GitHub Azriel Rosadi:**
-
-🔗 **Repository Link:** https://github.com/AzrielRosadi
 
 👨‍💻 **Repository Highlights:**
 • Platform top-up game (React + Node.js + PostgreSQL)
