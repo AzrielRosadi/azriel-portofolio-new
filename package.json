@@ -4,14 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "client": "vite",
-    "server": "node server.js",
+    "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server:dev": "nodemon server.js",
-    "install:server": "npm install axios cheerio"
+    "dev:api": "node --watch api/chat.js"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -29,10 +26,8 @@
     "cheerio": "^1.0.0-rc.12",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "dotted-map": "^2.2.3",
-    "express": "^4.21.2",
     "framer-motion": "^12.23.12",
     "gsap": "^3.13.0",
     "locomotive-scroll": "^4.1.4",
@@ -60,12 +55,10 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
-    "concurrently": "^8.2.2",
     "eslint": "^9.22.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
-    "nodemon": "^3.0.2",
     "tw-animate-css": "^1.3.4",
     "vite": "^6.3.1"
   }

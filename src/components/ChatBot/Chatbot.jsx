@@ -8,9 +8,10 @@ import {
   Zap,
   ArrowUp,
   ArrowDown,
+  Mail,
 } from "lucide-react";
 
-// FIXED: Enhanced ChatMessage Component - Render HTML properly
+// Enhanced ChatMessage Component - Render text with formatting
 const ChatMessage = ({ message, index }) => {
   const formatTime = (date) => {
     return date.toLocaleTimeString("id-ID", {
@@ -19,20 +20,137 @@ const ChatMessage = ({ message, index }) => {
     });
   };
 
-  // FIXED: Function to clean and format text properly
-  const formatMessageText = (text) => {
-    if (typeof text !== "string") return text;
+  // Function untuk parse text dengan bold, email, dan links
+  const parseText = (text) => {
+    if (!text) return [];
 
-    // Remove HTML tags that came from server formatting
-    let cleanText = text
-      .replace(/<[^>]*>/g, "") // Remove all HTML tags
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">")
-      .replace(/&amp;/g, "&")
-      .replace(/&quot;/g, '"')
-      .replace(/&#x27;/g, "'");
+    // Clean up mailto: prefix dari text
+    let cleanText = text.replace(/mailto:/g, "");
 
-    return cleanText;
+    // Regex untuk menangkap **bold**, email, dan URL
+    const regex =
+      /(\*\*[^*]+\*\*|[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}|https?:\/\/[^\s]+)/g;
+
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+
+    while ((match = regex.exec(cleanText)) !== null) {
+      // Add text before match
+      if (match.index > lastIndex) {
+        parts.push({
+          type: "text",
+          content: cleanText.slice(lastIndex, match.index),
+        });
+      }
+
+      const matched = match[0];
+
+      if (matched.startsWith("**") && matched.endsWith("**")) {
+        // Bold text
+        parts.push({
+          type: "bold",
+          content: matched.slice(2, -2),
+        });
+      } else if (matched.includes("@") && matched.includes(".")) {
+        // Email
+        parts.push({
+          type: "email",
+          content: matched,
+        });
+      } else if (matched.startsWith("http")) {
+        // URL
+        parts.push({
+          type: "url",
+          content: matched,
+        });
+      } else {
+        // Regular text
+        parts.push({
+          type: "text",
+          content: matched,
+        });
+      }
+
+      lastIndex = match.index + matched.length;
+    }
+
+    // Add remaining text
+    if (lastIndex < cleanText.length) {
+      parts.push({
+        type: "text",
+        content: cleanText.slice(lastIndex),
+      });
+    }
+
+    return parts;
+  };
+
+  // Render parsed parts
+  const renderParsedText = (parts) => {
+    return parts.map((part, index) => {
+      switch (part.type) {
+        case "bold":
+          return (
+            <strong
+              key={index}
+              className={`font-bold ${
+                message.sender === "user" ? "text-white" : "text-gray-900"
+              }`}
+              style={{ fontWeight: 700 }}
+            >
+              {part.content}
+            </strong>
+          );
+        case "email":
+          return (
+            <a
+              key={index}
+              href={`mailto:${part.content}`}
+              className={`inline-flex items-center gap-1 no-underline hover:underline transition-colors ${
+                message.sender === "user"
+                  ? "text-blue-300 hover:text-blue-200"
+                  : "text-blue-600 hover:text-blue-700"
+              }`}
+            >
+              <Mail size={12} />
+              {part.content}
+            </a>
+          );
+        case "url":
+          return (
+            <a
+              key={index}
+              href={part.content}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`inline-flex items-center gap-1 no-underline hover:underline transition-colors ${
+                message.sender === "user"
+                  ? "text-blue-300 hover:text-blue-200"
+                  : "text-blue-600 hover:text-blue-700"
+              }`}
+            >
+              <Globe size={12} />
+              {part.content}
+            </a>
+          );
+        default:
+          return <span key={index}>{part.content}</span>;
+      }
+    });
+  };
+
+  // Parse text menjadi lines dan handle setiap line
+  const renderFormattedText = (text) => {
+    const lines = text.split("\n");
+    return lines.map((line, lineIndex) => {
+      const parsedParts = parseText(line);
+      return (
+        <div key={lineIndex} className={lineIndex > 0 ? "mt-2" : ""}>
+          {renderParsedText(parsedParts)}
+        </div>
+      );
+    });
   };
 
   return (
@@ -67,18 +185,8 @@ const ChatMessage = ({ message, index }) => {
             </div>
           )}
           <div className="flex-1 min-w-0">
-            {/* FIXED: Properly formatted text display */}
             <div className="text-xs sm:text-sm leading-relaxed font-medium break-words">
-              {formatMessageText(message.text)
-                .split("\n")
-                .map((line, i) => (
-                  <React.Fragment key={i}>
-                    {line}
-                    {i <
-                      formatMessageText(message.text).split("\n").length -
-                        1 && <br />}
-                  </React.Fragment>
-                ))}
+              {renderFormattedText(message.text)}
             </div>
             <p
               className={`text-xs mt-2 font-light transition-opacity duration-300 ${
@@ -102,7 +210,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "👋 Halo! Saya AI Assistant untuk portfolio Azriel Rosadi!\n\n✨ Saya menggunakan data real-time dan siap membantu Anda:\n\n🚀 Pengalaman & Proyek (25+ completed)\n💻 Tech Stack & Skills\n💼 Info Layanan & Pricing\n📞 Kontak & Kolaborasi\n\nAda yang ingin Anda ketahui? Silakan bertanya! 🎯",
+      text: "👋 **Halo! Saya AI Assistant untuk portfolio Azriel Rosadi!**\n\n✨ Saya menggunakan **data real-time** dari website dan siap membantu Anda:\n\n🚀 **Pengalaman & Proyek** (25+ completed)\n💻 **Tech Stack & Skills**\n💼 **Info Layanan & Pricing**\n📞 **Kontak & Kolaborasi**\n\nAda yang ingin Anda ketahui? Silakan bertanya! 🎯",
       sender: "bot",
       timestamp: new Date(),
     },
@@ -211,56 +319,82 @@ const Chatbot = () => {
     }
   };
 
-  // FIXED: Simplified API call without HTML formatting
+  // Enhanced API call with better error handling
   const sendToAPI = async (message, retryCount = 0) => {
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 15000);
+      const timeoutId = setTimeout(() => controller.abort(), 30000); // Increased timeout
 
-      const response = await fetch("http://localhost:5000/api/chat", {
+      console.log(
+        "🚀 Sending message to API:",
+        message.substring(0, 50) + "..."
+      );
+
+      const response = await fetch("/api/chat", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify({ message }),
         signal: controller.signal,
       });
 
       clearTimeout(timeoutId);
 
-      if (!response.ok)
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.message || `HTTP error! status: ${response.status}`
+        );
+      }
 
       const data = await response.json();
+      console.log("✅ API response received");
 
-      // FIXED: Return clean text response, not HTML
       return (
         data.response || data.text || "Maaf, tidak ada respons dari server."
       );
     } catch (error) {
-      console.error("API Error:", error);
+      console.error("❌ API Error:", error);
 
+      // Retry logic for network errors
       if (
         retryCount < 2 &&
-        (error.message.includes("fetch") || error.message.includes("network"))
+        (error.name === "AbortError" ||
+          error.message.includes("fetch") ||
+          error.message.includes("network") ||
+          error.message.includes("Failed to fetch"))
       ) {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        console.log(`🔄 Retrying API call... (${retryCount + 1}/3)`);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
         return sendToAPI(message, retryCount + 1);
       }
 
-      // Simple fallback responses
+      // Enhanced fallback responses
       if (!isOnline) {
-        return "🔌 Koneksi terputus. Silakan periksa internet Anda.\n\n📧 Kontak langsung: azrlwebdev@gmail.com\n🌐 Portfolio: https://azrl-webdev.vercel.app/";
+        return "🔌 **Koneksi terputus.** Silakan periksa internet Anda.\n\n📧 **Kontak langsung:** azrlwebdev@gmail.com\n🌐 **Portfolio:** https://azrl-webdev.vercel.app/";
       }
 
       const msg = message.toLowerCase();
+
       if (msg.includes("proyek") || msg.includes("project")) {
-        return "🚀 Portfolio Azriel: 25+ projects completed!\n\n• Gaming platforms & E-commerce\n• 3D Interactive websites\n• Management systems\n\n🔗 Detail: https://azrl-webdev.vercel.app/";
+        return "🚀 **Portfolio Azriel - 25+ Projects Completed!**\n\n• **Platform Top-up Game & Social Media** - React, TypeScript, Node.js\n• **System Laundry Website** - Laravel 11, MySQL\n• **DOML AI Marketing Platform** - React, AI Integration\n• **Mechstrom: War Zone Game** - Unity, C#\n\n🌐 **Detail lengkap:** https://azrl-webdev.vercel.app/\n📧 **Diskusi proyek:** azrlwebdev@gmail.com";
       }
 
       if (msg.includes("kontak") || msg.includes("contact")) {
-        return "📞 Kontak Azriel:\n\n✉️ azrlwebdev@gmail.com\n🌐 https://azrl-webdev.vercel.app/\n⚡ Response: < 24 jam";
+        return "📞 **Kontak Azriel Rosadi:**\n\n✉️ **Email:** azrlwebdev@gmail.com\n🌐 **Portfolio:** https://azrl-webdev.vercel.app/\n💼 **GitHub:** https://github.com/AzrielRosadi\n\n⚡ **Response Time:** < 24 jam";
       }
 
-      return "😅 Server sedang maintenance. Coba lagi sebentar!\n\n📧 Email: azrlwebdev@gmail.com\n🌐 Portfolio: https://azrl-webdev.vercel.app/";
+      if (msg.includes("pengalaman") || msg.includes("experience")) {
+        return "💼 **Pengalaman Kerja Azriel:**\n\n🏢 **Frontend Developer & Data Entry** - PT. Spektrum Kreasi Pratama\n🏢 **Fullstack Laravel Developer** - Mbuutt Laundry\n🏢 **Fullstack JavaScript Developer** - Liboyy Store\n🏢 **Frontend Developer Intern** - Starspace Studio (Current)\n\n📈 **Achievement:** 25+ completed projects, 90% client retention rate";
+      }
+
+      if (msg.includes("skill") || msg.includes("teknologi")) {
+        return "💻 **Tech Stack Azriel:**\n\n**Frontend:** React, TypeScript, TailwindCSS, Next.js\n**Backend:** Node.js, Laravel, Express.js\n**Database:** PostgreSQL, MySQL, MongoDB\n**Others:** Unity, Python, Git, Vercel\n\n🚀 **Spesialisasi:** Fullstack Development, API Integration, Real-time Applications";
+      }
+
+      return "😅 **Server sedang maintenance.** Coba lagi sebentar!\n\n🤖 **Sementara itu, Anda bisa:**\n• Bertanya tentang **proyek** Azriel\n• Info **kontak** dan kolaborasi\n• Detail **pengalaman** kerja\n• **Tech stack** yang dikuasai\n\n📧 **Email langsung:** azrlwebdev@gmail.com\n🌐 **Portfolio:** https://azrl-webdev.vercel.app/";
     }
   };
 
@@ -279,18 +413,23 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
+      console.log("📤 Sending message:", inputMessage);
       const botResponse = await sendToAPI(inputMessage);
+
       const botMessage = {
         id: Date.now() + 1,
         text: botResponse,
         sender: "bot",
         timestamp: new Date(),
       };
+
       setMessages((prev) => [...prev, botMessage]);
+      console.log("✅ Message sent successfully");
     } catch (error) {
+      console.error("❌ Error in handleSendMessage:", error);
       const errorMessage = {
         id: Date.now() + 1,
-        text: "🚨 Terjadi kesalahan. Silakan coba lagi atau hubungi: azrlwebdev@gmail.com",
+        text: "🚨 **Terjadi kesalahan teknis.**\n\nSilakan coba lagi atau hubungi langsung:\n📧 **azrlwebdev@gmail.com**\n🌐 **https://azrl-webdev.vercel.app/**",
         sender: "bot",
         timestamp: new Date(),
       };
@@ -632,7 +771,7 @@ const Chatbot = () => {
                           />
                           <div className="flex items-center gap-1">
                             <span className="text-xs text-gray-500 animate-pulse">
-                              Analyzing
+                              AI sedang menganalisis
                             </span>
                             <div className="flex space-x-1">
                               <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-gradient-to-r from-gray-400 to-gray-600 rounded-full animate-bounce" />
@@ -688,19 +827,19 @@ const Chatbot = () => {
                       onKeyPress={handleKeyPress}
                       placeholder={
                         isOnline
-                          ? "Ketik pesan Anda..."
+                          ? "Tanya tentang portfolio Azriel..."
                           : "Offline - coba lagi nanti"
                       }
                       className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-white/70 backdrop-blur-sm border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-300 focus:border-transparent text-gray-800 placeholder-gray-500 shadow-inner resize-none transition-all duration-300 text-sm hover:shadow-md focus:shadow-lg"
                       disabled={isLoading || !isOnline}
-                      maxLength={500}
+                      maxLength={1000}
                       rows={1}
                       style={{ minHeight: "36px", maxHeight: "120px" }}
                     />
 
-                    {inputMessage.length > 400 && (
+                    {inputMessage.length > 800 && (
                       <div className="absolute bottom-1 right-10 sm:right-12 text-xs text-gray-400 bg-white/90 px-2 py-1 rounded-lg shadow-sm animate-pulse">
-                        {500 - inputMessage.length}
+                        {1000 - inputMessage.length}
                       </div>
                     )}
                   </div>
@@ -742,7 +881,9 @@ const Chatbot = () => {
                       }`}
                     />
                     <span className="hidden sm:inline">
-                      {isOnline ? "Real-time data active" : "Working offline"}
+                      {isOnline
+                        ? "Real-time portfolio data"
+                        : "Working offline"}
                     </span>
                     <span className="sm:hidden">
                       {isOnline ? "Live" : "Offline"}
