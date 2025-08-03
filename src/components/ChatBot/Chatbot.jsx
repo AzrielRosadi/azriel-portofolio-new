@@ -39,8 +39,21 @@ const ChatMessage = ({ message, index, onDeleteMessage }) => {
           setDisplayedText(text.substring(0, currentIndex + 1));
           currentIndex++;
 
-          // Variable typing speed for more natural feel
-          const delay = Math.random() * 30 + 20; // 20-50ms
+          // Faster typing speed - adaptive based on text length
+          const textLength = text.length;
+          let baseDelay;
+
+          if (textLength < 100) {
+            baseDelay = 15; // Very fast for short text
+          } else if (textLength < 300) {
+            baseDelay = 8; // Fast for medium text
+          } else if (textLength < 500) {
+            baseDelay = 5; // Very fast for long text
+          } else {
+            baseDelay = 3; // Ultra fast for very long text
+          }
+
+          const delay = Math.random() * baseDelay + baseDelay; // baseDelay to baseDelay*2
           typingTimeoutRef.current = setTimeout(typeNextChar, delay);
         } else {
           setIsTyping(false);
@@ -48,8 +61,8 @@ const ChatMessage = ({ message, index, onDeleteMessage }) => {
         }
       };
 
-      // Start typing after a small delay
-      typingTimeoutRef.current = setTimeout(typeNextChar, 300);
+      // Start typing after a smaller delay
+      typingTimeoutRef.current = setTimeout(typeNextChar, 200);
 
       return () => {
         if (typingTimeoutRef.current) {
@@ -298,7 +311,7 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([
     {
       id: 1,
-      text: "👋 **Halo! Saya AI Assistant untuk portfolio Azriel Rosadi!**\n\n✨ Saya menggunakan **data real-time** dari website dan siap membantu Anda:\n\n🚀 **Pengalaman & Proyek**\n💻 **Tech Stack & Skills**\n💼 **Info Layanan & Pricing**\n📞 **Kontak & Kolaborasi**\n\nAda yang ingin Anda ketahui? Silakan bertanya! 🎯",
+      text: "👋 **Halo! Saya AI Assistant untuk portfolio Azriel Rosadi!**\n\n✨ Saya menggunakan **data real-time** dari website dan siap membantu Anda:\n\n🚀 **Pengalaman & Proyek** (25+ completed)\n💻 **Tech Stack & Skills**\n💼 **Info Layanan & Pricing**\n📞 **Kontak & Kolaborasi**\n\nAda yang ingin Anda ketahui? Silakan bertanya! 🎯",
       sender: "bot",
       timestamp: new Date(),
       isTypingComplete: true,
@@ -401,13 +414,13 @@ const Chatbot = () => {
       setTimeout(() => {
         setIsOpen(false);
         setIsTransitioning(false);
-      }, 500);
+      }, 1000); // Increased to match the suction animation duration
     } else {
       setIsOpen(true);
       document.body.classList.add("chat-open");
       setTimeout(() => {
         setIsTransitioning(false);
-      }, 600);
+      }, 800);
     }
   };
 
@@ -470,7 +483,7 @@ const Chatbot = () => {
         return "🚀 **Portfolio Azriel - 25+ Projects Completed!**\n\n• **Platform Top-up Game & Social Media** - React, TypeScript, Node.js\n• **System Laundry Website** - Laravel 11, MySQL\n• **DOML AI Marketing Platform** - React, AI Integration\n• **Mechstrom: War Zone Game** - Unity, C#\n\n🌐 **Detail lengkap:** https://azrl-webdev.vercel.app/\n📧 **Diskusi proyek:** azrlwebdev@gmail.com";
       }
 
-      return "😅 **Server sedang maintenance.** Coba lagi sebentar!\n\n📧 **Email langsung:** azrlwebdev@gmail.com\n\n📧 **Portfolio:** https://azrl-webdev.vercel.app/";
+      return "😅 **Server sedang maintenance.** Coba lagi sebentar!\n\n📧 **Email langsung:** azrlwebdev@gmail.com";
     }
   };
 
@@ -597,18 +610,27 @@ const Chatbot = () => {
             opacity: 0;
             transform: scale(0.1) translate(20px, 20px);
             transform-origin: bottom right;
+            filter: blur(8px);
           }
-          30% {
-            opacity: 0.7;
-            transform: scale(0.4) translate(15px, 15px);
+          20% {
+            opacity: 0.3;
+            transform: scale(0.25) translate(18px, 18px);
+            filter: blur(6px);
+          }
+          40% {
+            opacity: 0.6;
+            transform: scale(0.5) translate(12px, 12px);
+            filter: blur(3px);
           }
           70% {
-            opacity: 0.95;
-            transform: scale(1.05) translate(-2px, -2px);
+            opacity: 0.9;
+            transform: scale(0.9) translate(3px, 3px);
+            filter: blur(1px);
           }
           100% {
             opacity: 1;
             transform: scale(1) translate(0, 0);
+            filter: blur(0px);
           }
         }
 
@@ -617,18 +639,57 @@ const Chatbot = () => {
             opacity: 1;
             transform: scale(1) translate(0, 0);
             transform-origin: bottom right;
+            filter: blur(0px) brightness(1);
+            border-radius: 16px;
           }
-          30% {
-            opacity: 0.8;
-            transform: scale(0.8) translate(5px, 5px);
+          10% {
+            opacity: 0.95;
+            transform: scale(0.98) translate(1px, 1px);
+            filter: blur(0.5px) brightness(1.05);
+            border-radius: 18px;
+          }
+          25% {
+            opacity: 0.85;
+            transform: scale(0.9) translate(3px, 3px);
+            filter: blur(1px) brightness(1.1);
+            border-radius: 22px;
+          }
+          40% {
+            opacity: 0.7;
+            transform: scale(0.75) translate(6px, 6px);
+            filter: blur(2px) brightness(1.2);
+            border-radius: 28px;
+          }
+          55% {
+            opacity: 0.55;
+            transform: scale(0.6) translate(9px, 9px);
+            filter: blur(3px) brightness(1.3);
+            border-radius: 35px;
           }
           70% {
             opacity: 0.4;
-            transform: scale(0.3) translate(15px, 15px);
+            transform: scale(0.45) translate(13px, 13px);
+            filter: blur(4px) brightness(1.4);
+            border-radius: 45px;
+          }
+          85% {
+            opacity: 0.25;
+            transform: scale(0.3) translate(17px, 17px);
+            filter: blur(6px) brightness(1.5);
+            border-radius: 60px;
+          }
+          95% {
+            opacity: 0.1;
+            transform: scale(0.15) translate(22px, 22px);
+            filter: blur(8px) brightness(1.8);
+            border-radius: 80px;
           }
           100% {
             opacity: 0;
-            transform: scale(0.05) translate(25px, 25px);
+            transform: scale(0.05) translate(28px, 28px);
+            transform-origin: bottom right;
+            filter: blur(12px) brightness(2);
+            border-radius: 100px;
           }
         }
 
@@ -656,6 +717,39 @@ const Chatbot = () => {
           }
           50% {
             box-shadow: 0 0 40px rgba(59, 130, 246, 0.8);
+          }
+        }
+
+        @keyframes suctionEffect {
+          0% {
+            opacity: 1;
+            transform: scale(1) translate(0, 0);
+            filter: blur(0px);
+          }
+          20% {
+            opacity: 0.9;
+            transform: scale(0.95) translate(2px, 2px);
+            filter: blur(0.5px);
+          }
+          40% {
+            opacity: 0.7;
+            transform: scale(0.8) translate(5px, 5px);
+            filter: blur(1px);
+          }
+          60% {
+            opacity: 0.5;
+            transform: scale(0.6) translate(8px, 8px);
+            filter: blur(2px);
+          }
+          80% {
+            opacity: 0.2;
+            transform: scale(0.3) translate(15px, 15px);
+            filter: blur(4px);
+          }
+          100% {
+            opacity: 0;
+            transform: scale(0.05) translate(25px, 25px);
+            filter: blur(8px);
           }
         }
 
@@ -695,6 +789,43 @@ const Chatbot = () => {
             bottom: 0 !important;
             overflow: hidden !important;
           }
+        }
+
+        /* Enhanced suction animation for closing */
+        .chat-closing {
+          animation: chatWindowShrinkToIcon 1s
+            cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+        }
+
+        /* Message suction effect during closing */
+        .messages-closing .group {
+          animation: suctionEffect 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53)
+            forwards;
+        }
+
+        .messages-closing .group:nth-child(1) {
+          animation-delay: 0.1s;
+        }
+        .messages-closing .group:nth-child(2) {
+          animation-delay: 0.15s;
+        }
+        .messages-closing .group:nth-child(3) {
+          animation-delay: 0.2s;
+        }
+        .messages-closing .group:nth-child(4) {
+          animation-delay: 0.25s;
+        }
+        .messages-closing .group:nth-child(5) {
+          animation-delay: 0.3s;
+        }
+        .messages-closing .group:nth-child(6) {
+          animation-delay: 0.35s;
+        }
+        .messages-closing .group:nth-child(7) {
+          animation-delay: 0.4s;
+        }
+        .messages-closing .group:nth-child(8) {
+          animation-delay: 0.45s;
         }
       `}</style>
 
@@ -777,13 +908,13 @@ const Chatbot = () => {
               isOpen
                 ? "opacity-100 scale-100 translate-y-0 pointer-events-auto"
                 : "opacity-0 scale-90 translate-y-8 pointer-events-none"
-            }`}
+            } ${isTransitioning && !isOpen ? "chat-closing" : ""}`}
             style={{
               animation: isOpen
                 ? "chatWindowExpandFromIcon 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards"
                 : !isTransitioning
                 ? "none"
-                : "chatWindowShrinkToIcon 0.6s cubic-bezier(0.55, 0.06, 0.68, 0.19) forwards",
+                : "chatWindowShrinkToIcon 1s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards",
             }}
           >
             <div
@@ -799,7 +930,7 @@ const Chatbot = () => {
 
                 <div className="relative z-10 flex-1 min-w-0">
                   <h3 className="font-bold text-sm sm:text-lg text-gray-800 drop-shadow-sm flex items-center gap-2">
-                    azrlwebdev
+                    AI Assistant
                     <Zap
                       size={12}
                       className="sm:w-4 sm:h-4 text-yellow-600 animate-pulse"
@@ -837,7 +968,9 @@ const Chatbot = () => {
                 ref={messagesContainerRef}
                 onWheel={handleWheel}
                 onTouchMove={(e) => e.stopPropagation()}
-                className="flex-1 overflow-y-auto bg-gradient-to-br from-gray-50/50 via-white/30 to-gray-100/50 backdrop-blur-sm relative touch-pan-y custom-scrollbar"
+                className={`flex-1 overflow-y-auto bg-gradient-to-br from-gray-50/50 via-white/30 to-gray-100/50 backdrop-blur-sm relative touch-pan-y custom-scrollbar ${
+                  isTransitioning && !isOpen ? "messages-closing" : ""
+                }`}
                 style={{
                   scrollBehavior: "smooth",
                   overscrollBehavior: "contain",
@@ -869,7 +1002,7 @@ const Chatbot = () => {
                           />
                           <div className="flex items-center gap-1">
                             <span className="text-xs text-gray-500 animate-pulse">
-                              AI sedang menganalisis
+                              Processing
                             </span>
                             <div className="flex space-x-1">
                               <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 bg-gradient-to-r from-gray-400 to-gray-600 rounded-full animate-bounce" />
@@ -1000,7 +1133,7 @@ const Chatbot = () => {
                     {(isLoading || isThinking) && (
                       <span className="flex items-center gap-1 animate-pulse">
                         <span className="text-xs text-blue-600">
-                          {isThinking ? "AI thinking" : "AI typing"}
+                          {isThinking ? "Thinking" : "Typing"}
                         </span>
                         <div className="flex space-x-0.5">
                           <div className="w-1 h-1 bg-blue-600 rounded-full animate-bounce" />
