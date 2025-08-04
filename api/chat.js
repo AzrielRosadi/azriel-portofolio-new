@@ -584,7 +584,7 @@ ATURAN FORMATTING YANG WAJIB DIIKUTI:
 - HINDARI: Text wall yang sulit dibaca
 
 TEMPLATE STRUKTUR RESPONSE:
-```
+``
 🔥 **[JUDUL UTAMA]**
 
 **📋 [Sub Heading 1]:**
@@ -601,7 +601,7 @@ TEMPLATE STRUKTUR RESPONSE:
 Paragraf penutup yang informatif
 
 📧 **[Kontak jika diperlukan]:** info kontak
-```
+``
 
 ATURAN PENTING UNTUK LINK/URL:
 - WAJIB: Hanya sertakan MAKSIMAL 1 (SATU) link/URL per respons
@@ -668,7 +668,7 @@ ATURAN FORMATTING YANG WAJIB DIIKUTI:
 - HINDARI: Text wall yang sulit dibaca
 
 TEMPLATE STRUKTUR RESPONSE:
-```
+``
 🤖 **[JUDUL RESPONS]**
 
 **📝 [Penjelasan Utama]:**
@@ -683,7 +683,7 @@ TEMPLATE STRUKTUR RESPONSE:
 
 **🎯 [Kesimpulan]:**
 Paragraf penutup yang helpful
-```
+``
 
 PANDUAN RESPONS:
 - Jawab pertanyaan sesuai dengan pengetahuan umum
