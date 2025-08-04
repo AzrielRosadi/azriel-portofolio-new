@@ -568,34 +568,59 @@ TUGAS UTAMA:
 3. Berikan informasi yang spesifik dan helpful tentang Azriel
 4. Fokus pada detail teknis, achievement, dan pengalaman yang relevan
 
+ATURAN FORMATTING YANG SANGAT PENTING:
+========================================
+
+1. **STRUKTUR RESPON YANG TERORGANISIR:**
+   - SELALU gunakan header dengan emoji dan **bold text**
+   - Pisahkan setiap section dengan line break
+   - Gunakan bullet points (•) untuk list items
+   - Gunakan dash (-) untuk sub-items
+   - Format seperti ini:
+
+   💼 **Header Section:**
+   
+   **🏢 Sub-header:**
+   • **Item Bold:** Detail explanation
+   • **Item Bold:** Detail explanation
+   
+   **🏪 Sub-header Lain:**
+   • **Item Bold:** Detail explanation
+   • **Item Bold:** Detail explanation
+
+2. **CONTOH FORMAT YANG BENAR:**
+   
+   💼 **Pengalaman Kerja Azriel:**
+   
+   **🏢 Starspace Studio - Frontend Developer Intern**
+   • **Periode:** June 2025 - Present
+   • **Fokus:** React development & Figma to Code
+   • **Achievement:** Sukses handle multiple projects
+   
+   **🏪 Liboyy Store - Fullstack JavaScript Developer**
+   • **Periode:** March 2025 - May 2025
+   • **Tech Stack:** React, Node.js, PostgreSQL
+   • **Result:** Platform top-up game berhasil deployed
+
+3. **YANG HARUS DIHINDARI:**
+   ❌ JANGAN PERNAH tulis dalam 1 baris panjang seperti ini:
+   "Azriel memiliki pengalaman di Starspace Studio sebagai Frontend Developer Intern dari June 2025 sampai sekarang dan juga pernah bekerja di Liboyy Store..."
+   
+   ✅ SELALU format dengan structure yang rapi seperti contoh di atas
+
+4. **ATURAN KHUSUS:**
+   - Setiap company/project = section terpisah dengan **bold company name**
+   - Periode selalu di **bold** dengan label "Periode:"
+   - Tech stack selalu di **bold** dengan label "Tech Stack:"
+   - Achievement/Result selalu di **bold** dengan label sesuai konteks
+   - Gunakan emoji yang relevan untuk setiap section
+   - Maksimal 1 line break antar section, 2 line breaks antar major sections
+
 GAYA KOMUNIKASI:
 - Gunakan bahasa Indonesia yang natural dan ramah, namun jika user menanyakan dalam bahasa Inggris atau bahasa lainnya, balas sesuai bahasa yang digunakan user
 - Sertakan emoji yang relevan untuk membuat percakapan lebih menarik
 - Berikan informasi yang spesifik dan actionable
-
-ATURAN PENTING UNTUK FORMATTING & STRUKTUR:
-- **WAJIB**: Selalu format response dengan struktur yang rapi dan mudah dibaca
-- **GUNAKAN**: Kombinasi emoji, bold (**text**), bullet points (•), dan line breaks
-- **HINDARI**: Text yang terlalu panjang dalam satu baris tanpa struktur
-- **FORMAT PREFERRED**:
-  • Gunakan emoji untuk section headers (💼 🚀 💻 📊)
-  • Gunakan **bold** untuk judul dan highlights
-  • Gunakan bullet points (•) atau dash (-) untuk list items
-  • Berikan line breaks yang cukup antar section
-  • Buat response yang scannable dan easy to read
-
-CONTOH FORMAT YANG BENAR:
-💼 **Pengalaman Kerja Azriel:**
-
-**🏢 Starspace Studio - Frontend Developer Intern**
-• **Periode:** June 2025 - Present
-• **Fokus:** React development & Figma to Code
-• **Achievement:** Sukses handle multiple projects
-
-**🏪 Liboyy Store - Fullstack JavaScript Developer**
-• **Periode:** March 2025 - May 2025
-• **Tech Stack:** React, Node.js, PostgreSQL
-• **Result:** Platform top-up game berhasil deployed
+- WAJIB ikuti aturan formatting di atas
 
 ATURAN PENTING UNTUK LINK/URL:
 - WAJIB: Hanya sertakan MAKSIMAL 1 (SATU) link/URL per respons
@@ -608,35 +633,15 @@ DATA PORTFOLIO TERKINI:
 ${portfolioContext}
 
 PANDUAN RESPONS:
-- Untuk pertanyaan tentang proyek: Jelaskan detail teknis, tech stack, tahun pembuatan, dan hasil dengan format yang rapi
-- Untuk pertanyaan tentang pengalaman: Fokus pada achievement, tanggal, dan kontribusi spesifik dengan struktur yang jelas
+- Untuk pertanyaan tentang proyek: Jelaskan detail teknis, tech stack, tahun pembuatan, dan hasil
+- Untuk pertanyaan tentang pengalaman: Fokus pada achievement, tanggal, dan kontribusi spesifik
 - Untuk pertanyaan kontak/kolaborasi: Berikan HANYA satu kontak yang paling relevan (email ATAU portfolio website)
 - Untuk pertanyaan pricing/layanan: Arahkan untuk diskusi detail via email
-- PRIORITASKAN kualitas informasi dan readability daripada kuantitas link
+- PRIORITASKAN kualitas informasi daripada kuantitas link
 
-CONTOH FORMATTING:
-❌ SALAH: "Azriel memiliki pengalaman di Starspace Studio sebagai Frontend Developer Intern dari June 2025 sampai sekarang dan juga pernah bekerja di Liboyy Store sebagai Fullstack JavaScript Developer dari March 2025 sampai May 2025..."
+CRITICAL: SELALU format response dengan struktur yang rapi, JANGAN PERNAH tulis dalam paragraph panjang tanpa formatting!
 
-✅ BENAR: 
-💼 **Pengalaman Kerja Azriel:**
-
-**🏢 Starspace Studio - Frontend Developer Intern**
-• **Periode:** June 2025 - Present
-• **Fokus:** React development & Figma to Code
-
-**🏪 Liboyy Store - Fullstack JavaScript Developer**  
-• **Periode:** March 2025 - May 2025
-• **Tech Stack:** React, Node.js, PostgreSQL
-
-PENTING: 
-- Selalu gunakan formatting yang rapi dan terstruktur
-- Hindari text wall atau response yang tidak teratur
-- Gunakan informasi yang akurat sesuai data portfolio
-- Sebutkan tanggal/periode yang spesifik untuk pengalaman kerja
-- Jelaskan tech stack yang digunakan untuk setiap proyek dengan format yang mudah dibaca
-- PRIORITASKAN: Readability & structure > Raw information dump
-
-Selalu prioritaskan informasi dari data portfolio yang fresh dan akurat dengan formatting yang professional dan mudah dibaca.`
+Selalu prioritaskan informasi dari data portfolio yang fresh dan akurat.`
       : `Anda adalah AI Assistant yang ramah dan helpful. Anda dapat menjawab berbagai pertanyaan umum dengan baik.
 
 TUGAS UTAMA:
@@ -645,33 +650,32 @@ TUGAS UTAMA:
 3. Jika memungkinkan, kaitkan dengan expertise dalam bidang teknologi atau development
 4. Tetap ramah dan profesional dalam berkomunikasi
 
-GAYA KOMUNIKASI & FORMATTING:
+ATURAN FORMATTING YANG SANGAT PENTING:
+========================================
+
+1. **STRUKTUR RESPON YANG TERORGANISIR:**
+   - SELALU gunakan header dengan emoji dan **bold text**
+   - Pisahkan setiap section dengan line break
+   - Gunakan bullet points (•) untuk list items
+   - Gunakan dash (-) untuk sub-items
+
+2. **YANG HARUS DIHINDARI:**
+   ❌ JANGAN PERNAH tulis dalam 1 baris panjang tanpa formatting
+   ✅ SELALU format dengan structure yang rapi dengan headers dan bullet points
+
+GAYA KOMUNIKASI:
 - Gunakan bahasa Indonesia yang natural dan ramah, namun jika user menanyakan dalam bahasa Inggris atau bahasa lainnya, balas sesuai bahasa yang digunakan user
-- **WAJIB**: Selalu format response dengan struktur yang rapi dan mudah dibaca
-- **GUNAKAN**: Kombinasi emoji, bold (**text**), bullet points (•), dan line breaks
-- **HINDARI**: Text yang terlalu panjang dalam satu baris tanpa struktur
+- Sertakan emoji yang relevan untuk membuat percakapan lebih menarik
 - Berikan informasi yang berguna dan mudah dipahami
 - Jika relevan, sebutkan bahwa Anda juga dapat membantu dengan pertanyaan tentang portfolio Azriel Rosadi (Fullstack Developer)
 
 PANDUAN RESPONS:
-- Jawab pertanyaan sesuai dengan pengetahuan umum dengan format yang rapi
-- Berikan penjelasan yang clear dan helpful dengan struktur yang baik
-- Jika pertanyaan teknis (programming, web development, dll), berikan insight yang mendalam dengan formatting yang professional
-- Tetap engaging dan informatif
-- Gunakan formatting yang konsisten dan mudah dibaca
+- Jawab pertanyaan sesuai dengan pengetahuan umum
+- Berikan penjelasan yang clear dan helpful
+- Jika pertanyaan teknis (programming, web development, dll), berikan insight yang mendalam
+- Tetap engaging dan informatif dengan formatting yang rapi
 
-CONTOH FORMAT:
-💡 **Tentang [Topik]:**
-
-**🔹 Poin Utama:**
-• Penjelasan pertama
-• Penjelasan kedua
-
-**📊 Detail:**
-• Informasi spesifik
-• Data pendukung
-
-CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio, namun selalu dengan formatting yang rapi dan profesional.`;
+CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio.`;
 
     const response = await axios.post(
       "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
@@ -680,7 +684,7 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
           {
             parts: [
               {
-                text: `${systemPrompt}\n\nPertanyaan User: ${userMessage}\n\nBerikan respons yang informatif, engaging, dan TERSTRUKTUR dengan formatting yang rapi (INGAT: maksimal 1 URL per respons dan wajib gunakan struktur yang mudah dibaca):`,
+                text: `${systemPrompt}\n\nPertanyaan User: ${userMessage}\n\nBerikan respons yang informatif dan engaging dengan formatting yang TERSTRUKTUR dan RAPI (INGAT: maksimal 1 URL per respons dan WAJIB menggunakan formatting structure yang benar):`,
               },
             ],
           },
@@ -689,7 +693,7 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
           temperature: 0.7,
           topK: 40,
           topP: 0.95,
-          maxOutputTokens: 1000,
+          maxOutputTokens: 1200,
         },
         safetySettings: [
           {
@@ -725,7 +729,7 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
   } catch (error) {
     console.error("❌ Error generating Gemini response:", error.message);
 
-    // Enhanced fallback responses berdasarkan kata kunci (DENGAN FORMAT YANG RAPI)
+    // Enhanced fallback responses berdasarkan kata kunci (DENGAN FORMATTING YANG BENAR)
     const message = userMessage.toLowerCase();
 
     // Check if it's a portfolio-related question for fallback
@@ -733,60 +737,63 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
       if (message.includes("proyek") || message.includes("project")) {
         return `🚀 **Portfolio Azriel - 25+ Projects Completed!**
 
-**💻 PROYEK UNGGULAN:**
+**💻 Platform Development:**
+• **Platform Top-up Game & Social Media (2025)**
+  - **Tech Stack:** React, TypeScript, TailwindCSS, Node.js, Express.js, PostgreSQL
+  - **Features:** Sistem pembayaran terintegrasi, Multi-platform support
+  - **Status:** Successfully deployed & maintained
 
-**🛒 Platform Top-up Game & Social Media (2025)**
-• **Tech Stack:** React, TypeScript, TailwindCSS, Node.js, Express.js, PostgreSQL, Drizzle ORM, React Query
-• **Fitur:** Sistem pembayaran terintegrasi, Multi-platform support
-• **Status:** Successfully deployed & maintained
+• **System Laundry Website (2025)**
+  - **Tech Stack:** Laravel 11, MySQL, TailwindCSS, Blade Template
+  - **Features:** Admin dashboard, Owner panel, Customer interface
+  - **Status:** Complete full-stack solution
 
-**🧺 System Laundry Website (2025)**
-• **Tech Stack:** Laravel 11, MySQL, TailwindCSS, Blade Template, Laravel Breeze, Laravel Sanctum
-• **Fitur:** Admin dashboard, Owner panel, Customer interface
-• **Status:** Complete full-stack solution
+**🤖 AI & Modern Projects:**
+• **DOML AI Marketing Platform (2025)**
+  - **Tech Stack:** React, TailwindCSS, Lucide React, PostCSS
+  - **Features:** AI-powered marketing optimization, Modern interactive design
+  - **Status:** Prototype completed
 
-**🤖 DOML AI Marketing Platform (2025)**
-• **Tech Stack:** React, TailwindCSS, Lucide React, PostCSS
-• **Fitur:** AI-powered marketing optimization, Modern interactive design
-• **Status:** Prototype completed
+• **Imaginify AI SaaS Platform (2025)**
+  - **Tech Stack:** Next.js, MongoDB, Stripe, Cloudinary, Clerk
+  - **Features:** AI features, Credit-based payment system
+  - **Status:** In development
 
-**⚡ Imaginify AI SaaS Platform (2025)**
-• **Tech Stack:** Next.js, MongoDB, Stripe, Cloudinary, Clerk
-• **Fitur:** AI features, Credit-based payment system
-• **Status:** In development
+**🎮 Game Development:**
+• **Mechstrom: War Zone (2024)**
+  - **Tech Stack:** Unity Engine, C#, Blender
+  - **Features:** 3D gameplay, Free assets integration
+  - **Status:** Completed game prototype
 
-**🎮 Mechstrom: War Zone Game (2024)**
-• **Tech Stack:** Unity Engine, C#, Blender
-• **Fitur:** 3D gameplay, Free assets integration
-• **Status:** Completed game prototype
+• **Classic Games Collection (2023)**
+  - **Pacman:** JavaScript, HTML5 Canvas
+  - **Tetris:** JavaScript, HTML5
+  - **Status:** Fully playable web games
 
-**🐍 Tools Scraper GUI Application (2024)**
-• **Tech Stack:** Python
-• **Fitur:** Automated Shopee product data scraping
-• **Status:** Desktop application completed
+**🔧 Tools & Applications:**
+• **Tools Scraper GUI Application (2024)**
+  - **Tech Stack:** Python
+  - **Features:** Automated Shopee product data scraping
+  - **Status:** Desktop application completed
 
-**🕹️ Classic Games Collection (2023)**
-• **Pacman:** JavaScript, HTML5 Canvas
-• **Tetris:** JavaScript, HTML5
-• **Status:** Fully playable web games
+• **Search Film Platform (2023)**
+  - **Tech Stack:** JavaScript, HTML5, CSS3, IMDb API
+  - **Features:** Comprehensive movie & TV series search
+  - **Status:** Fully functional web application
 
-**🎬 Search Film Platform (2023)**
-• **Tech Stack:** JavaScript, HTML5, CSS3, IMDb API
-• **Fitur:** Comprehensive movie & TV series search
-• **Status:** Fully functional web application
+**🏢 Enterprise Projects:**
+• **Citra Negara School Website (2024)**
+  - **Tech Stack:** Go, JavaScript, SASS, CSS3, HTML5
+  - **Features:** Modern school website with backend
+  - **Status:** Successfully deployed
 
-**🏫 Citra Negara School Website (2024)**
-• **Tech Stack:** Go, JavaScript, SASS, CSS3, HTML5
-• **Fitur:** Modern school website with backend
-• **Status:** Successfully deployed
-
-**📊 PROJECT STATISTICS:**
+**📊 Project Statistics:**
 • **Total Projects:** 25+
 • **Success Rate:** 100%
 • **Client Satisfaction:** 90%
 • **On-time Delivery:** 100%
 
-**💻 EXPERTISE AREAS:**
+**💻 Expertise Areas:**
 • Web Development
 • Game Development  
 • Desktop Applications
@@ -811,9 +818,9 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
 • **Portfolio Website:** https://azrl-webdev.vercel.app
 
 **🌟 MEDIA SOSIAL:**
-• **💼 LinkedIn:** Professional networking & career updates
-• **🐙 GitHub:** Code repository & open source projects  
-• **📸 Instagram:** @azrlrsdi_ - Behind the scenes & personal updates
+• **LinkedIn:** Professional networking & career updates
+• **GitHub:** Code repository & open source projects  
+• **Instagram:** @azrlrsdi_ - Behind the scenes & personal updates
 
 **⚡ RESPONSE TIME:**
 • **Email:** < 24 jam (hari kerja)
@@ -841,16 +848,16 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
       ) {
         return `🌟 **Media Sosial Azriel Rosadi:**
 
-**💼 PROFESSIONAL PLATFORMS:**
+**💼 Professional Platforms:**
 
-**🔹 LinkedIn - Professional Networking**
+**🔗 LinkedIn - Professional Networking**
 • **Profile:** Fullstack Developer & Fresh Graduate
 • **Content:** Career updates, tech industry insights, achievements
 • **Networking:** Professional connections, collaboration opportunities
 • **Updates:** Weekly posts about projects and learning journey
 • **Engagement:** Industry discussions, best practices sharing
 
-**🔹 GitHub - Code Repository & Open Source**
+**🐙 GitHub - Code Repository & Open Source**
 • **Repositories:** 25+ active public repositories
 • **Code Quality:** Clean, documented, maintainable code
 • **Projects:** Full-stack applications, games, tools, experiments
@@ -858,16 +865,16 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
 • **Showcase:** Live demos and project documentation
 • **Tech Stack:** React, Laravel, Unity, Python projects
 
-**📱 PERSONAL SOCIAL MEDIA:**
+**📱 Personal Social Media:**
 
-**🔹 Instagram (@azrlrsdi_) - Behind The Scenes**
+**📸 Instagram (@azrlrsdi_) - Behind The Scenes**
 • **Content Focus:** Development process, workspace setup, coding lifestyle
 • **Stories:** Daily development activities, problem-solving sessions
 • **Posts:** Tech gear reviews, setup tours, project highlights
 • **Community:** Developer networking, inspiration sharing
 • **Personal Touch:** Coding journey as fresh graduate
 
-**🚀 FOLLOW UNTUK MENDAPATKAN:**
+**🚀 Follow untuk mendapatkan:**
 • **Latest Project Updates:** Real-time development progress
 • **Tech Tips & Tutorials:** Practical coding insights
 • **Development Insights:** Problem-solving approaches
@@ -875,282 +882,142 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
 • **Collaboration Opportunities:** Project partnerships
 • **Community Engagement:** Developer networking events
 
-**📊 SOCIAL MEDIA STATS:**
+**📊 Social Media Stats:**
 • **GitHub:** 25+ repositories, active contributions
 • **LinkedIn:** Professional network, industry engagement
 • **Instagram:** Behind-the-scenes content, personal branding
 
-**💬 PLATFORM RECOMMENDATIONS:**
+**💬 Platform Recommendations:**
 • **For Professional Networking:** Connect on LinkedIn
 • **For Code & Projects:** Follow on GitHub
 • **For Personal Insights:** Follow on Instagram
 • **For Business Inquiries:** Email azrlwebdev@gmail.com
 
-**💡 PRO TIPS:**
+**💡 Pro Tips:**
 • **LinkedIn:** Best for professional discussions and opportunities
 • **GitHub:** Perfect for viewing code quality and project scope
 • **Instagram:** Great for seeing the person behind the code`;
       }
 
-      // NEW: SPECIFIC LINKEDIN RESPONSE
-      if (
-        message.includes("linkedin") &&
-        !message.includes("github") &&
-        !message.includes("instagram")
-      ) {
-        return `💼 **LinkedIn Azriel Rosadi:**
-
-**🔗 PROFILE OVERVIEW:**
-• **Position:** Professional Fullstack Developer
-• **Status:** Fresh Graduate with Practical Experience
-• **Focus:** Web Development & Technology Innovation
-
-**📍 CONNECT UNTUK:**
-• Networking profesional
-• Career opportunities  
-• Industry insights
-• Collaboration discussions
-
-**📈 RECENT UPDATES:**
-• Frontend Developer Intern di Starspace Studio (June 2025 - Present)
-• 25+ completed projects showcase
-• Client testimonials & recommendations
-• Tech industry engagement
-
-**💬 ACTIVE IN:**
-• Tech industry discussions
-• Development best practices
-• Career growth insights
-• Professional networking events
-
-**🤝 NETWORKING BENEFITS:**
-• Direct access to project updates
-• Professional recommendations
-• Industry connections
-• Collaboration opportunities
-
-📧 **Atau hubungi langsung:** azrlwebdev@gmail.com`;
-      }
-
-      // NEW: SPECIFIC GITHUB RESPONSE
-      if (
-        message.includes("github") &&
-        !message.includes("linkedin") &&
-        !message.includes("instagram")
-      ) {
-        return `🐙 **GitHub Azriel Rosadi:**
-
-**👨‍💻 REPOSITORY HIGHLIGHTS:**
-• Platform top-up game (React + Node.js + PostgreSQL)
-• System Laundry (Laravel 11 + MySQL)
-• DOML AI Marketing (React + TailwindCSS)
-• Unity game development projects
-• Python automation tools
-
-**📊 GITHUB STATS:**
-• **Repositories:** 25+ public repositories
-• **Activity:** Active contributions & commits
-• **Projects:** Open source projects
-• **Code Quality:** Clean, documented code
-
-**🛠️ TECH SHOWCASE:**
-• **Web Development:** Full-stack applications
-• **Game Development:** Unity + C#
-• **API Integration:** Databases & third-party services
-• **Modern Frameworks:** JavaScript frameworks
-
-**⭐ REPOSITORY CATEGORIES:**
-• **Web Development:** React, Laravel, Node.js
-• **Game Development:** Unity, C#
-• **Tools & Automation:** Python
-• **Learning Projects:** Experiments & tutorials
-
-**📝 CODE QUALITY FEATURES:**
-• Clean, maintainable code
-• Proper documentation
-• Best practices implementation
-• Version control expertise
-
-**💡 Follow untuk update terbaru tentang projects & contributions!**
-📧 **Kolaborasi:** azrlwebdev@gmail.com`;
-      }
-
-      // NEW: SPECIFIC INSTAGRAM RESPONSE
-      if (
-        message.includes("instagram") &&
-        !message.includes("linkedin") &&
-        !message.includes("github")
-      ) {
-        return `📸 **Instagram Azriel Rosadi (@azrlrsdi_):**
-
-**🎯 CONTENT FOCUS:**
-• Behind-the-scenes development process
-• Workspace setup & coding environment
-• Tech stack tutorials & tips
-• Personal coding journey
-
-**📱 WHAT YOU'LL SEE:**
-• **Daily Activities:** Development activities
-• **Project Updates:** Progress updates
-• **Tech Reviews:** Gear & setup reviews
-• **Lifestyle Content:** Coding lifestyle content
-
-**💻 DEVELOPMENT CONTENT:**
-• **Code Snippets:** Quick tips
-• **Problem Solving:** Processes
-• **Tech Discussions:** Stack discussions
-• **Resources:** Learning resources sharing
-
-**🚀 PERSONAL INSIGHTS:**
-• **Career Journey:** Fresh graduate developer journey
-• **Freelancing:** Experiences
-• **Client Projects:** Highlights
-• **Career Tips:** Development tips
-
-**📈 FOLLOW FOR:**
-• **Inspiration:** untuk aspiring developers
-• **Real-world Insights:** Development insights
-• **Personal Branding:** in tech
-• **Community:** Networking dalam komunitas developer
-
-**💡 Connect di Instagram untuk sisi personal dari developer journey!**
-📧 **Business inquiries:** azrlwebdev@gmail.com`;
-      }
-
+      // PENGALAMAN KERJA RESPONSE
       if (message.includes("pengalaman") || message.includes("experience")) {
         return `💼 **Pengalaman Kerja Azriel Rosadi:**
 
-**🏢 STARSPACE STUDIO - Frontend Developer Intern**
-• **Period:** June 2025 - Present (Current Position)
-• **Description:** Program internship intensif dengan fokus pengembangan teknis dan budaya kerja kolaboratif
+**🏢 Frontend Developer Intern - Starspace Studio**
+• **Periode:** June 2025 - Present (Current Position)
+• **Fokus:** React development & Figma to Code conversion
+• **Key Responsibilities:**
+  - Mengembangkan antarmuka web interaktif dan responsif
+  - Terlibat dalam proyek nyata Mission Possible
+  - Bekerja kolaboratif dalam tim lintas bidang
+  - Update progres harian menggunakan ClickUp
+• **Skills Developed:** React, Figma to Code, Team Collaboration, Project Management
 
-**📋 Key Responsibilities:**
-• Mengembangkan antarmuka web interaktif dan responsif berdasarkan desain Figma
-• Terlibat dalam proyek nyata sebagai bagian dari Mission Possible
-• Bekerja kolaboratif dalam tim lintas bidang
-• Update progres harian menggunakan ClickUp
-• Aktif dalam weekly meeting & coffee roulette
-• Berpartisipasi dalam sesi mentoring dan reverse mentorship
+**🏪 Fullstack JavaScript Developer - Liboyy Store**
+• **Periode:** March 2025 - May 2025 (3 months)
+• **Tech Stack:** React, Node.js, PostgreSQL, Express.js
+• **Key Responsibilities:**
+  - Membangun aplikasi web responsif menggunakan React
+  - Mengintegrasikan frontend dengan backend Node.js
+  - Meningkatkan performa aplikasi dan user experience
+• **Achievement:** Platform top-up game berhasil deployed
 
-**💻 Skills Developed:** React, Figma to Code, Team Collaboration, Project Management
+**🧺 Fullstack Laravel Developer - Mbuutt Laundry**
+• **Periode:** January 2025 - February 2025 (2 months)
+• **Tech Stack:** Laravel 11, MySQL, TailwindCSS, Blade Template
+• **Key Responsibilities:**
+  - Memimpin pengembangan platform web Mbuutt Laundry
+  - Secara mandiri membangun seluruh fitur frontend dan backend
+  - Berkontribusi pada pengembangan komponen reusable
+• **Achievement:** Complete laundry management system
 
----
+**🏢 Frontend Developer & Data Entry - PT. Spektrum Kreasi Pratama**
+• **Periode:** November 2023 - February 2024 (4 months)
+• **Tech Stack:** JavaScript, HTML5, CSS3, Microsoft Excel
+• **Key Responsibilities:**
+  - Mengembangkan fitur frontend untuk inventory sistem laboratorium
+  - Mengoptimalkan aplikasi web untuk performance maksimum
+  - Mengubah sertifikat fisik menjadi PDF dan input ke Excel
+• **Achievement:** Improved frontend performance significantly
 
-**🏪 LIBOYY STORE - Fullstack JavaScript Developer**
-• **Period:** March 2025 - May 2025 (3 months)
-• **Description:** Membangun platform web dengan stack React, Node.js, dan PostgreSQL
-
-**📋 Key Responsibilities:**
-• Membangun aplikasi web responsif menggunakan React
-• Mengintegrasikan frontend dengan backend Node.js
-• Meningkatkan performa aplikasi dan user experience
-• Mengimplementasikan fitur berdasarkan feedback client
-
-**💻 Tech Stack:** React, Node.js, PostgreSQL, Express.js
-**🏆 Achievement:** Platform top-up game berhasil deployed
-
----
-
-**🧺 MBUUTT LAUNDRY - Fullstack Laravel Developer**
-• **Period:** January 2025 - February 2025 (2 months)
-• **Description:** Membangun sistem Mbuutt Laundry secara penuh sebagai Fullstack Developer
-
-**📋 Key Responsibilities:**
-• Memimpin pengembangan platform web Mbuutt Laundry sebagai Fullstack Developer
-• Secara mandiri membangun seluruh fitur frontend dan backend
-• Berkontribusi pada pengembangan alat internal dan komponen reusable
-
-**💻 Tech Stack:** Laravel 11, MySQL, TailwindCSS, Blade Template
-**🏆 Achievement:** Complete laundry management system
-
----
-
-**🏢 PT. SPEKTRUM KREASI PRATAMA - Frontend Developer & Data Entry**
-• **Period:** November 2023 - February 2024 (4 months)
-• **Description:** Mengembangkan frontend dan mengelola data entry untuk sistem inventory laboratorium
-
-**📋 Key Responsibilities:**
-• Mengembangkan dan memelihara fitur frontend untuk inventory sistem laboratorium
-• Mengoptimalkan aplikasi web untuk kecepatan dan skalabilitas maksimum
-• Mengubah sertifikat fisik menjadi file PDF dan input ke Microsoft Excel
-
-**💻 Tech Stack:** JavaScript, HTML5, CSS3, Microsoft Excel
-**🏆 Achievement:** Improved frontend performance significantly
-
-**📈 CAREER HIGHLIGHTS:**
+**📈 Career Highlights:**
 • **Total Experience:** 1+ years across 4 different positions
 • **Project Success Rate:** 100%
 • **Client Satisfaction:** 90%
 • **Skills Growth:** From Frontend to Full-stack expertise
 • **Industry Exposure:** E-commerce, Laundry Management, Education, Laboratory
 
-**💻 CORE COMPETENCIES:** Full-stack Development, Team Leadership, Client Communication, Performance Optimization`;
+**💻 Core Competencies:**
+• Full-stack Development
+• Team Leadership
+• Client Communication
+• Performance Optimization`;
       }
 
       if (message.includes("skill") || message.includes("teknologi")) {
         return `💻 **Tech Stack & Skills Azriel Rosadi:**
 
-**🎨 FRONTEND TECHNOLOGIES:**
-• **Core:** HTML5, CSS3, JavaScript (ES6+)
+**🎨 Frontend Technologies:**
+• **Core Languages:** HTML5, CSS3, JavaScript (ES6+)
 • **Frameworks/Libraries:** React, Next.js, TypeScript
 • **Styling:** TailwindCSS, SASS, PostCSS
 • **UI Libraries:** Lucide React, Framer Motion
 • **Tools:** Vite, Figma to Code
 
-**⚙️ BACKEND TECHNOLOGIES:**
+**⚙️ Backend Technologies:**
 • **Runtime:** Node.js
 • **Frameworks:** Express.js, Laravel 11
 • **Languages:** PHP, JavaScript, Python
 • **API Development:** RESTful APIs, JSON handling
 • **Authentication:** Laravel Sanctum, Laravel Breeze
 
-**🗄️ DATABASE & STORAGE:**
+**🗄️ Database & Storage:**
 • **Relational:** MySQL, PostgreSQL
 • **NoSQL:** MongoDB
 • **ORM/Query Builder:** Drizzle ORM, Eloquent ORM
 • **Cloud Storage:** Cloudinary
 • **Database Design:** Schema optimization, Indexing
 
-**🎮 GAME DEVELOPMENT:**
+**🎮 Game Development:**
 • **Engine:** Unity (2D & 3D)
 • **Programming:** C#
 • **3D Modeling:** Blender (Basic)
 • **Game Physics:** Unity Physics System
 • **Asset Management:** Free & custom assets
 
-**🔧 DEVELOPMENT TOOLS & WORKFLOW:**
+**🔧 Development Tools & Workflow:**
 • **Version Control:** Git, GitHub
 • **Deployment:** Vercel, Netlify
 • **Package Managers:** npm, Composer
 • **Project Management:** ClickUp
 • **Code Editor:** VS Code
 
-**💳 PAYMENT & INTEGRATION:**
+**💳 Payment & Integration:**
 • **Payment Gateway:** Stripe
 • **Authentication:** Clerk
 • **API Integration:** Third-party services
 • **Real-time Features:** WebSocket, React Query
 
-**🐍 PYTHON & AUTOMATION:**
+**🐍 Python & Automation:**
 • **Desktop Apps:** GUI Development
 • **Web Scraping:** Automated data extraction
 • **Data Processing:** File handling, CSV processing
 • **Automation Tools:** Custom scripts
 
-**☁️ ADDITIONAL SKILLS:**
+**☁️ Additional Skills:**
 • **Cloud Platforms:** Vercel deployment
 • **Performance Optimization:** Code splitting, Lazy loading
 • **Responsive Design:** Mobile-first approach
 • **SEO:** Basic optimization techniques
 • **Testing:** Manual testing, Debugging
 
-**📊 PROFICIENCY LEVELS:**
+**📊 Proficiency Levels:**
 • **Expert:** React, JavaScript, Laravel, HTML/CSS
 • **Advanced:** Node.js, MySQL, Unity, Python
 • **Intermediate:** TypeScript, MongoDB, PostgreSQL
 • **Learning:** Next.js advanced features, Cloud services
 
-**🚀 SPECIALIZATION AREAS:**
+**🚀 Specialization Areas:**
 • Full-stack Web Applications
 • E-commerce Platforms
 • Management Systems
@@ -1161,14 +1028,31 @@ CATATAN: Anda dapat menjawab berbagai topik, tidak hanya terbatas pada portfolio
       if (message.includes("portfolio") || message.includes("website")) {
         return `🌟 **Portfolio Azriel Rosadi:**
 
-**🌐 LIHAT PORTFOLIO LENGKAP:**
-https://azrl-webdev.vercel.app
+**📊 Portfolio Highlights:**
+• **Total Projects:** 25+ Completed
+• **Client Retention Rate:** 90%
+• **Success Rate:** 100%
+• **Status:** Fresh Graduate dengan pengalaman praktis
 
-**✨ HIGHLIGHTS:**
-• **25+ Completed Projects**
-• **90% Client Retention Rate**  
-• **Fullstack Development Expertise**
-• **Fresh Graduate dengan pengalaman praktis**
+**💼 Expertise Areas:**
+• **Full-stack Development:** React, Laravel, Node.js
+• **Game Development:** Unity, C#
+• **API Integration:** Third-party services
+• **Database Design:** MySQL, PostgreSQL, MongoDB
+
+**🚀 Recent Projects:**
+• Platform top-up game & social media
+• System Laundry management
+• DOML AI Marketing platform
+• Unity 3D games
+
+**🌐 Portfolio Website:** https://azrl-webdev.vercel.app
+
+**✨ Features:**
+• Live project demos
+• Code repositories
+• Client testimonials
+• Technical documentation
 
 **💼 Ready for collaboration!**`;
       }
@@ -1189,8 +1073,8 @@ https://azrl-webdev.vercel.app
 • **Web Application:** Full-stack development
 • **System Development:** Admin panel, Dashboard
 • **Game Development:** Unity 2D/3D
-• **API Integration:** Development
-• **Database Design:** Optimization
+• **API Integration:** Third-party services development
+• **Database Design:** Schema optimization
 
 **💼 PAKET LAYANAN:**
 • **Basic Website:** Landing page responsif
@@ -1199,17 +1083,17 @@ https://azrl-webdev.vercel.app
 • **Enterprise Solution:** Complex system development
 
 **⚡ KEUNGGULAN:**
-• **90% Client satisfaction rate**
-• **On-time delivery guarantee**
-• **Post-launch support included**
-• **Modern tech stack implementation**
+• **Client Satisfaction:** 90% retention rate
+• **On-time Delivery:** Guarantee
+• **Post-launch Support:** Included
+• **Modern Tech Stack:** Latest technologies
 
 **📋 PROSES KERJA:**
-1. **Konsultasi:** Requirement analysis
-2. **Design:** Mockup & technical planning
-3. **Development:** Testing
-4. **Deployment:** Training
-5. **Maintenance:** Support
+• **Step 1:** Konsultasi & requirement analysis
+• **Step 2:** Design mockup & technical planning
+• **Step 3:** Development & testing
+• **Step 4:** Deployment & training
+• **Step 5:** Maintenance & support
 
 **💡 Untuk pricing detail & custom quote:**
 📧 **Email:** azrlwebdev@gmail.com
@@ -1225,20 +1109,20 @@ https://azrl-webdev.vercel.app
       ) {
         return `⭐ **Testimoni Client Azriel:**
 
-**🏪 LIBOYY STORE (@liboyystore_26):**
+**🏪 Liboyy Store (@liboyystore_26):**
 *"Saya sangat puas bekerja sama dengan Azriel WebDev, seorang fullstack developer yang memiliki kemampuan teknis luar biasa. Ia berhasil membangun website top up games yang responsif, cepat, dan user-friendly!"*
 
-**🧺 MBUUTT COMPANY (@mbuuttcorp):**
+**🧺 Mbuutt Company (@mbuuttcorp):**
 *"Bekerja sama dalam pengembangan website sistem laundry ini merupakan pengalaman yang sangat profesional. Komitmen terhadap ketepatan waktu, kualitas hasil, serta perhatian terhadap setiap detail proyek sangat terlihat jelas."*
 
-**🏢 PT. SPEKTRUM KREASI PRATAMA (@spektrumkp):**
+**🏢 PT. Spektrum Kreasi Pratama (@spektrumkp):**
 *"Azriel membawa kreativitas dan keahlian ke dalam tim, sehingga meningkatkan kinerja frontend dan entry data kami secara signifikan. Dedikasinya terhadap detail dan kolaborasi yang efektif membuat proyek berjalan lancar."*
 
 **📊 CLIENT SATISFACTION:**
-• **90% Client retention rate**
-• **25+ Completed projects**
-• **3+ Happy clients**
-• **On-time delivery record**
+• **Client Retention Rate:** 90%
+• **Completed Projects:** 25+
+• **Happy Clients:** 3+
+• **On-time Delivery:** 100% record
 
 **💼 Ready to be the next satisfied client?**
 📧 **Start your project:** azrlwebdev@gmail.com`;
@@ -1254,17 +1138,17 @@ https://azrl-webdev.vercel.app
         return `🤝 **Hire Azriel Rosadi - Fullstack Developer:**
 
 **💼 AVAILABLE FOR:**
-• Full-time remote opportunities
-• Part-time & freelance projects
-• Project-based collaborations
-• Technical consulting & mentoring
+• **Full-time Remote:** Opportunities
+• **Part-time Projects:** Flexible schedule
+• **Project-based:** Collaborations
+• **Technical Consulting:** & mentoring
 
 **🎯 SPECIALIZATION:**
-• React & Node.js full-stack development
-• Laravel web applications
-• Unity game development
-• Database design & optimization
-• API development & integration
+• **React & Node.js:** Full-stack development
+• **Laravel:** Web applications
+• **Unity:** Game development
+• **Database Design:** Optimization
+• **API Development:** Integration services
 
 **⚡ WORKING STYLE:**
 • **Quality Focus:** High-standard deliverables
@@ -1273,22 +1157,22 @@ https://azrl-webdev.vercel.app
 • **Collaborative Approach:** Team-oriented mindset
 
 **📈 TRACK RECORD:**
-• **25+ successful projects delivered**
-• **90% client retention rate**
-• **Fresh graduate with practical experience**
-• **Strong portfolio across multiple technologies**
+• **Projects Delivered:** 25+ successful
+• **Client Retention:** 90% rate
+• **Experience Level:** Fresh graduate with practical experience
+• **Portfolio Strength:** Multiple technologies
 
 **🚀 CURRENT AVAILABILITY:**
-• Open for new projects
-• Flexible working hours
-• Remote collaboration ready
-• Competitive rates
+• **Status:** Open for new projects
+• **Working Hours:** Flexible
+• **Collaboration:** Remote ready
+• **Rates:** Competitive
 
 **📋 NEXT STEPS:**
-1. **Email your project requirements**
-2. **Schedule consultation call**
-3. **Receive custom proposal**
-4. **Start collaboration**
+• **Step 1:** Email your project requirements
+• **Step 2:** Schedule consultation call
+• **Step 3:** Receive custom proposal
+• **Step 4:** Start collaboration
 
 **💡 Let's build something amazing together!**
 📧 **Contact:** azrlwebdev@gmail.com`;
@@ -1310,7 +1194,7 @@ https://azrl-webdev.vercel.app
     // Fallback for general questions
     return `🤖 **Maaf, server sedang maintenance!**
 
-**Saya bisa membantu Anda dengan berbagai pertanyaan, termasuk:**
+**💬 Saya bisa membantu Anda dengan:**
 • Pertanyaan umum dan diskusi
 • Teknologi dan programming
 • Portfolio Azriel Rosadi (Fullstack Developer)
