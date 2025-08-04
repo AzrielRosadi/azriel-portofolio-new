@@ -1,4 +1,4 @@
-// /api/chat.js - Enhanced Version with Smart Portfolio Integration
+// /api/chat.js - Vercel Serverless Function (ENHANCED VERSION - NATURAL RESPONSES)
 import axios from "axios";
 import * as cheerio from "cheerio";
 
@@ -11,11 +11,13 @@ const CACHE_DURATION = 30 * 60 * 1000; // 30 menit
 const staticPortfolioData = {
   name: "Azriel Rosadi",
   title: "Fullstack Developer",
+
   bio: [
     "Saya adalah seorang Fullstack Developer dengan pengalaman dalam mengembangkan aplikasi web modern menggunakan berbagai teknologi.",
     "Berpengalaman dalam membangun platform web end-to-end dengan fokus pada user experience dan performance optimization.",
     "Memiliki track record yang baik dalam menyelesaikan 25+ proyek dengan tingkat kepuasan client 90%.",
   ],
+
   skills: [
     "React",
     "TypeScript",
@@ -42,6 +44,7 @@ const staticPortfolioData = {
     "Vite",
     "PostCSS",
   ],
+
   projects: [
     {
       id: 1,
@@ -61,31 +64,282 @@ const staticPortfolioData = {
       year: 2025,
       category: "web",
     },
-    // ... other projects
+    {
+      id: 2,
+      title: "System Laundry berbasis Website",
+      description:
+        "Sistem manajemen laundry lengkap dengan fitur admin, owner, dan customer dashboard",
+      technologies: [
+        "Laravel 11",
+        "MySQL",
+        "TailwindCSS",
+        "Blade Template",
+        "Laravel Breeze",
+        "Laravel Sanctum",
+      ],
+      year: 2025,
+      category: "web",
+    },
+    {
+      id: 3,
+      title: "DOML | AI Marketing Optimized Reach",
+      description:
+        "Landing page prototype untuk platform marketing berbasis AI dengan design modern dan interactive",
+      technologies: ["React", "TailwindCSS", "Lucide React", "PostCSS"],
+      year: 2025,
+      category: "web",
+    },
+    {
+      id: 4,
+      title: "Imaginify | AI SaaS Platform",
+      description:
+        "Platform SaaS dengan fitur AI dan sistem pembayaran credits (dalam pengembangan)",
+      technologies: ["Next.js", "MongoDB", "Stripe", "Cloudinary", "Clerk"],
+      year: 2025,
+      category: "ai",
+    },
+    {
+      id: 5,
+      title: "Citra Negara Website",
+      description: "Website sekolah dengan backend Go dan frontend modern",
+      technologies: ["Go", "JavaScript", "SASS", "CSS3", "HTML5"],
+      year: 2024,
+      category: "web",
+    },
+    {
+      id: 6,
+      title: "Mechstrom: War Zone",
+      description:
+        "Game 3D sederhana menggunakan Unity Engine dengan gameplay dasar dan asset gratis",
+      technologies: ["Unity", "C#", "Blender"],
+      year: 2024,
+      category: "game",
+    },
+    {
+      id: 7,
+      title: "Tools Scraper - GUI Application",
+      description:
+        "Aplikasi desktop GUI untuk scraping data produk Shopee secara otomatis dan efisien",
+      technologies: ["Python"],
+      year: 2024,
+      category: "desktop",
+    },
+    {
+      id: 8,
+      title: "Games Pacman - Classic Arcade",
+      description:
+        "Implementasi game Pacman klasik menggunakan JavaScript dan HTML5 Canvas",
+      technologies: ["JavaScript", "HTML5"],
+      year: 2023,
+      category: "game",
+    },
+    {
+      id: 9,
+      title: "Games Tetris - Classic Puzzle",
+      description:
+        "Game Tetris klasik dengan implementasi JavaScript dan HTML5",
+      technologies: ["JavaScript", "HTML5"],
+      year: 2023,
+      category: "game",
+    },
+    {
+      id: 10,
+      title: "Search Film - IMDb API",
+      description:
+        "Platform pencarian film dan serial TV comprehensive dengan database IMDb melalui API integration",
+      technologies: ["JavaScript", "HTML5", "CSS3"],
+      year: 2023,
+      category: "web",
+    },
   ],
+
   experience: [
     {
       company: "Starspace Studio",
       position: "Front-End Developer Intern",
       period: "June 2025 - Present",
+      date: "June 2025 - Present",
       description:
         "Program internship intensif dengan fokus pengembangan teknis dan budaya kerja kolaboratif",
+      responsibilities: [
+        "Mengembangkan antarmuka web interaktif dan responsif berdasarkan desain Figma",
+        "Terlibat dalam proyek nyata sebagai bagian dari Mission Possible, bekerja kolaboratif dalam tim lintas bidang",
+        "Update progres harian menggunakan ClickUp dan aktif dalam weekly meeting & coffee roulette",
+        "Berpartisipasi dalam sesi mentoring dan reverse mentorship untuk berbagi insight",
+      ],
     },
-    // ... other experiences
+    {
+      company: "Liboyy Store",
+      position: "Fullstack JavaScript Developer",
+      period: "March 2025 - May 2025",
+      date: "March 2025 - May 2025",
+      description:
+        "Membangun platform web dengan stack React, Node.js, dan PostgreSQL",
+      responsibilities: [
+        "Membangun aplikasi web responsif menggunakan React dan mengintegrasikannya dengan backend Node.js",
+        "Meningkatkan performa aplikasi dan pengalaman pengguna melalui optimasi kode",
+        "Mengimplementasikan fitur-fitur berdasarkan masukan client untuk memenuhi kebutuhan pengguna",
+      ],
+    },
+    {
+      company: "Mbuutt Laundry",
+      position: "Full Stack Laravel Developer",
+      period: "Jan 2025 - Feb 2025",
+      date: "Jan 2025 - Feb 2025",
+      description:
+        "Membangun sistem Mbuutt Laundry secara penuh sebagai Fullstack Developer",
+      responsibilities: [
+        "Memimpin pengembangan platform web Mbuutt Laundry sebagai Fullstack Developer",
+        "Secara mandiri membangun seluruh fitur frontend dan backend",
+        "Berkontribusi pada pengembangan alat internal dan komponen yang dapat digunakan kembali",
+      ],
+    },
+    {
+      company: "PT. Spektrum Kreasi Pratama",
+      position: "Frontend Developer & Microsoft Excel data entry",
+      period: "November 2023 - Februari 2024",
+      date: "November 2023 - Februari 2024",
+      description:
+        "Mengembangkan frontend dan mengelola data entry untuk sistem inventory laboratorium",
+      responsibilities: [
+        "Mengembangkan dan memelihara fitur-fitur frontend untuk situs web inventory alat laboratorium",
+        "Mengoptimalkan aplikasi web untuk kecepatan dan skalabilitas maksimum",
+        "Mengubah sertifikat fisik menjadi file PDF dan menginputkannya ke Microsoft Excel",
+      ],
+    },
   ],
+
+  testimonials: [
+    {
+      name: "Liboyy Store",
+      mentions: "@liboyystore_26",
+      review:
+        "Saya sangat puas bekerja sama dengan Azriel WebDev, seorang fullstack developer yang memiliki kemampuan teknis luar biasa. Ia berhasil membangun website top up games yang responsif, cepat, dan user-friendly, sekaligus mengintegrasikan layanan sosial media dengan sangat baik!",
+    },
+    {
+      name: "Mbuutt Company",
+      mentions: "@mbuuttcorp",
+      review:
+        "Bekerja sama dalam pengembangan website sistem laundry ini merupakan pengalaman yang sangat profesional. Komitmen terhadap ketepatan waktu, kualitas hasil, serta perhatian terhadap setiap detail proyek sangat terlihat jelas.",
+    },
+    {
+      name: "PT. Spektrum Kreasi Pratama",
+      mentions: "@spektrumkp",
+      review:
+        "Azriel membawa kreativitas dan keahlian ke dalam tim, sehingga meningkatkan kinerja frontend dan entry data kami secara signifikan. Dedikasinya terhadap detail dan kolaborasi yang efektif membuat proyek berjalan lancar dan hasilnya sangat memuaskan.",
+    },
+  ],
+
+  abilities: [
+    {
+      title: "Quality Focus",
+      description:
+        "Memberikan hasil berkualitas tinggi dengan tetap memperhatikan setiap detail",
+    },
+    {
+      title: "Reliable Communication",
+      description:
+        "Menjaga Anda tetap mendapat informasi terkini pada setiap langkah untuk memastikan transparansi dan kejelasan",
+    },
+    {
+      title: "On-Time Delivery",
+      description:
+        "Memastikan proyek selesai sesuai jadwal, dengan kualitas & perhatian terhadap detail",
+    },
+  ],
+
+  counterItems: [
+    { value: 0, suffix: "+", label: "FreshGraduate" },
+    { value: 3, suffix: "+", label: "Client" },
+    { value: 25, suffix: "+", label: "Completed Projects" },
+    { value: 90, suffix: "%", label: "Client Retention Rate" },
+  ],
+
   contact: {
     email: "azrlwebdev@gmail.com",
     github: "https://github.com/AzrielRosadi",
     linkedin: "https://www.linkedin.com/in/azriel-rosadi-aa2859343/",
+    instagram: "https://www.instagram.com/azrlrsdi_/",
     portfolio: "https://azrl-webdev.vercel.app",
   },
 };
 
-// Enhanced function untuk mengecek kategori pertanyaan
-function categorizeQuestion(message) {
-  const messageLower = message.toLowerCase();
+// Function untuk scrape website portfolio
+async function scrapePortfolioWebsite() {
+  try {
+    console.log("🔍 Scraping portfolio website...");
+    const response = await axios.get("https://azrl-webdev.vercel.app", {
+      timeout: 10000,
+      headers: {
+        "User-Agent": "Mozilla/5.0 (compatible; Portfolio-Bot/1.0)",
+        Accept:
+          "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+      },
+    });
 
-  // Portfolio-related keywords
+    const $ = cheerio.load(response.data);
+
+    // Merge scraped data dengan static data
+    const scrapedData = {
+      ...staticPortfolioData,
+
+      // Override dengan data yang di-scrape jika ada
+      name:
+        $('h1, .hero-title, [class*="name"]').first().text()?.trim() ||
+        staticPortfolioData.name,
+      title:
+        $('h2, .hero-subtitle, [class*="title"]').first().text()?.trim() ||
+        staticPortfolioData.title,
+
+      // Extract additional bio jika ada
+      scrapedBio: $('p, .bio, .about, [class*="description"]')
+        .map((i, el) => $(el).text().trim())
+        .get()
+        .filter((text) => text.length > 50)
+        .slice(0, 2),
+
+      // Extract additional skills jika ada
+      scrapedSkills: $('[class*="skill"], [class*="tech"], .technology, .stack')
+        .map((i, el) => $(el).text().trim())
+        .get()
+        .filter((skill) => skill.length > 0 && skill.length < 50),
+
+      // Meta info
+      lastUpdated: new Date().toISOString(),
+      url: "https://azrl-webdev.vercel.app",
+      dataSource: "scraped",
+    };
+
+    console.log("✅ Portfolio data scraped successfully");
+    return scrapedData;
+  } catch (error) {
+    console.error("❌ Error scraping portfolio:", error.message);
+    // Return static data jika scraping gagal
+    return {
+      ...staticPortfolioData,
+      lastUpdated: new Date().toISOString(),
+      url: "https://azrl-webdev.vercel.app",
+      dataSource: "static",
+      error:
+        "Data portfolio menggunakan informasi static karena scraping gagal.",
+    };
+  }
+}
+
+// Function untuk mendapatkan data portfolio (dengan caching)
+async function getPortfolioData() {
+  const now = Date.now();
+
+  if (!portfolioCache || now - lastScrapeTime > CACHE_DURATION) {
+    portfolioCache = await scrapePortfolioWebsite();
+    lastScrapeTime = now;
+  }
+
+  return portfolioCache;
+}
+
+// Function untuk mengecek apakah pertanyaan terkait portfolio
+function isPortfolioRelated(message) {
   const portfolioKeywords = [
     "proyek",
     "project",
@@ -97,250 +351,311 @@ function categorizeQuestion(message) {
     "experience",
     "skill",
     "teknologi",
+    "tech",
+    "stack",
     "kontak",
     "contact",
+    "email",
+    "github",
+    "linkedin",
+    "instagram",
     "fullstack",
     "developer",
-    "hire",
-    "freelance",
-    "harga",
-    "price",
-  ];
-
-  // Tech-related keywords (relevan dengan portfolio tech)
-  const techKeywords = [
     "javascript",
     "react",
     "laravel",
     "node",
-    "database",
-    "mysql",
-    "programming",
-    "coding",
-    "web",
+    "unity",
+    "game",
     "website",
     "aplikasi",
     "system",
-    "framework",
-    "library",
-    "api",
+    "platform",
     "frontend",
     "backend",
-    "fullstack",
-  ];
-
-  // Business/Career keywords (relevan dengan services)
-  const businessKeywords = [
-    "bisnis",
-    "business",
-    "startup",
-    "company",
+    "database",
+    "mysql",
+    "postgresql",
+    "mongodb",
+    "testimoni",
+    "testimonial",
     "client",
-    "customer",
-    "project management",
-    "team",
-    "collaboration",
-    "remote work",
+    "laundry",
+    "liboyy",
+    "starspace",
+    "spektrum",
+    "mbuutt",
+    "hire",
     "freelance",
-    "consultant",
+    "kolaborasi",
+    "collaboration",
+    "harga",
+    "price",
+    "biaya",
+    "cost",
+    "layanan",
     "service",
-    "solution",
+    "sosial",
+    "social",
+    "media",
+    "follow",
+    "hubungi",
+    "reach",
+    "account",
   ];
 
-  // General tech topics (masih relevan tapi tidak langsung)
-  const generalTechKeywords = [
-    "artificial intelligence",
-    "ai",
-    "machine learning",
-    "blockchain",
-    "cloud",
-    "aws",
-    "docker",
-    "kubernetes",
-    "microservices",
-    "devops",
-  ];
-
-  const isPortfolio = portfolioKeywords.some((keyword) =>
-    messageLower.includes(keyword)
-  );
-  const isTechRelated = techKeywords.some((keyword) =>
-    messageLower.includes(keyword)
-  );
-  const isBusinessRelated = businessKeywords.some((keyword) =>
-    messageLower.includes(keyword)
-  );
-  const isGeneralTech = generalTechKeywords.some((keyword) =>
-    messageLower.includes(keyword)
-  );
-
-  return {
-    isPortfolio,
-    isTechRelated,
-    isBusinessRelated,
-    isGeneralTech,
-    category: isPortfolio
-      ? "portfolio"
-      : isTechRelated
-      ? "tech"
-      : isBusinessRelated
-      ? "business"
-      : isGeneralTech
-      ? "general-tech"
-      : "general",
-  };
+  const messageLower = message.toLowerCase();
+  return portfolioKeywords.some((keyword) => messageLower.includes(keyword));
 }
 
-// Function untuk generate portfolio snippet berdasarkan kategori
-function generateRelevantPortfolioSnippet(category, portfolioData) {
-  switch (category) {
-    case "tech":
-      return `**💻 TECH EXPERTISE AZRIEL:**
-• **Full-Stack Development:** React, Node.js, Laravel dengan 25+ completed projects
-• **Database Solutions:** MySQL, PostgreSQL, MongoDB - proven in production
-• **Modern Stack:** TypeScript, Next.js, Express.js dengan best practices
-• **Game Development:** Unity Engine, C# untuk interactive applications
+// Function untuk membersihkan response dari URL duplikat
+function cleanDuplicateUrls(text) {
+  // Regex untuk mendeteksi URL yang duplikat dalam format yang berbeda
+  const urlPattern = /(https?:\/\/[^\s\[\]()]+)/g;
+  const markdownLinkPattern = /\[([^\]]*)\]\((https?:\/\/[^\)]+)\)/g;
 
-**📧 TECHNICAL CONSULTATION:**
-Email: ${portfolioData.contact?.email || "azrlwebdev@gmail.com"}`;
+  let urls = new Set();
+  let cleanedText = text;
 
-    case "business":
-      return `**💼 BUSINESS COLLABORATION:**
-• **Azriel Rosadi** - Fresh Graduate Fullstack Developer
-• **Track Record:** 90% client satisfaction, 100% project success rate
-• **Services:** Web development, System solutions, Technical consultation
-• **Approach:** Quality focus, reliable communication, on-time delivery
+  // Extract semua URL dari text
+  const foundUrls = text.match(urlPattern) || [];
+  const foundMarkdownLinks = [...text.matchAll(markdownLinkPattern)];
 
-**📧 BUSINESS INQUIRY:**
-Email: ${portfolioData.contact?.email || "azrlwebdev@gmail.com"}`;
+  // Jika ada URL duplikat, hapus yang berlebihan
+  if (foundUrls.length > 1) {
+    // Ambil URL pertama saja
+    const firstUrl = foundUrls[0];
 
-    case "general-tech":
-      return `**🚀 MODERN DEVELOPMENT APPROACH:**
-• **Azriel Rosadi** applies cutting-edge technologies in real projects
-• **Current Focus:** React ecosystem, Laravel framework, Game development
-• **Innovation:** AI integration, modern UI/UX, scalable architectures
-• **Always Learning:** Staying updated with latest tech trends
+    // Hapus URL duplikat sisanya
+    for (let i = 1; i < foundUrls.length; i++) {
+      const duplicateUrl = foundUrls[i];
+      // Hapus URL duplikat dari text
+      cleanedText = cleanedText.replace(
+        new RegExp(duplicateUrl.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g"),
+        ""
+      );
+    }
 
-**📧 DISCUSS TECHNOLOGY:**
-Email: ${portfolioData.contact?.email || "azrlwebdev@gmail.com"}`;
-
-    default:
-      return `**💡 CONNECT WITH AZRIEL ROSADI:**
-• **Fresh Graduate Fullstack Developer** siap membantu proyek Anda
-• **Specialization:** Web development, Full-stack solutions, Game development
-• **Available for:** Freelance projects, Technical consultation, Collaboration
-
-**📧 GET IN TOUCH:**
-Email: ${portfolioData.contact?.email || "azrlwebdev@gmail.com"} | Portfolio: ${
-        portfolioData.contact?.portfolio || "https://azrl-webdev.vercel.app"
-      }`;
+    // Bersihkan format yang rusak akibat penghapusan
+    cleanedText = cleanedText
+      .replace(/\(\s*\)/g, "") // Hapus () kosong
+      .replace(/\[\s*\]/g, "") // Hapus [] kosong
+      .replace(/\s+/g, " ") // Normalize spaces
+      .trim();
   }
+
+  return cleanedText;
 }
 
-// Enhanced function untuk generate response menggunakan Gemini 2.0 Flash
+// Function untuk generate response menggunakan Gemini 2.0 Flash
 async function generateGeminiResponse(userMessage, portfolioData) {
   try {
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
     if (!GEMINI_API_KEY) {
       throw new Error(
         "GEMINI_API_KEY tidak ditemukan di environment variables"
       );
     }
 
-    // Categorize the question
-    const questionCategory = categorizeQuestion(userMessage);
+    // Check if question is portfolio-related
+    const isPortfolioQuestion = isPortfolioRelated(userMessage);
 
-    // Create portfolio context
+    // Create context dari portfolio data
     const portfolioContext = `
-PORTFOLIO AZRIEL ROSADI - FRESH GRADUATE FULLSTACK DEVELOPER:
-============================================================
+INFORMASI PORTFOLIO AZRIEL ROSADI:
+=================================
 
 BASIC INFO:
 - Nama: ${portfolioData.name}
 - Posisi: ${portfolioData.title}
-- Status: Fresh Graduate dengan 1+ years experience
-- Email: ${portfolioData.contact?.email}
-- Portfolio: ${portfolioData.contact?.portfolio}
+- Status: Fresh Graduate Fullstack Developer
 
-SKILLS: ${portfolioData.skills?.join(", ")}
+BIO & DESKRIPSI:
+${
+  portfolioData.bio?.join("\n") ||
+  "Fullstack Developer berpengalaman dengan track record yang baik"
+}
 
-RECENT PROJECTS:
-${portfolioData.projects
-  ?.slice(0, 4)
-  .map(
-    (p) => `- ${p.title} (${p.year}): ${p.technologies?.slice(0, 3).join(", ")}`
-  )
-  .join("\n")}
+SKILLS & TEKNOLOGI:
+${
+  portfolioData.skills?.join(", ") ||
+  "React, Node.js, Laravel, Python, JavaScript, TypeScript"
+}
 
-EXPERIENCE:
-${portfolioData.experience
-  ?.slice(0, 2)
-  .map((e) => `- ${e.position} at ${e.company} (${e.period})`)
-  .join("\n")}
+PROYEK UNGGULAN (${portfolioData.projects?.length || 10}+ Projects):
+${
+  portfolioData.projects
+    ?.map(
+      (p, i) =>
+        `${i + 1}. ${p.title} (${p.year})
+   - Deskripsi: ${p.description}
+   - Tech Stack: ${p.technologies?.join(", ")}
+   - Kategori: ${p.category}`
+    )
+    .join("\n\n") ||
+  "Platform top-up game, System Laundry, DOML AI Marketing, Games Unity"
+}
 
-ACHIEVEMENTS: 25+ projects, 90% client satisfaction, 100% success rate
+PENGALAMAN KERJA:
+${
+  portfolioData.experience
+    ?.map(
+      (e, i) =>
+        `${i + 1}. ${e.position} - ${e.company} (${e.period})
+   - ${e.description}
+   - Key Responsibilities: ${e.responsibilities?.slice(0, 2).join("; ")}`
+    )
+    .join("\n\n") ||
+  "Frontend Developer, Fullstack Laravel Developer, Fullstack JavaScript Developer"
+}
+
+TESTIMONIAL CLIENT:
+${
+  portfolioData.testimonials
+    ?.map((t, i) => `${i + 1}. ${t.name} (${t.mentions}): "${t.review}"`)
+    .join("\n") || "Testimoni positif dari berbagai client"
+}
+
+ACHIEVEMENT:
+- ${
+      portfolioData.counterItems?.find(
+        (item) => item.label === "Completed Projects"
+      )?.value || 25
+    }+ Completed Projects
+- ${
+      portfolioData.counterItems?.find(
+        (item) => item.label === "Client Retention Rate"
+      )?.value || 90
+    }% Client Retention Rate
+- ${
+      portfolioData.counterItems?.find((item) => item.label === "Client")
+        ?.value || 3
+    }+ Happy Clients
+- Fresh Graduate dengan pengalaman praktis
+
+KONTAK & PORTFOLIO:
+- Email: ${portfolioData.contact?.email || "azrlwebdev@gmail.com"}
+- GitHub: ${portfolioData.contact?.github || "https://github.com/AzrielRosadi"}
+- LinkedIn: ${
+      portfolioData.contact?.linkedin ||
+      "https://www.linkedin.com/in/azriel-rosadi-aa2859343/"
+    }
+- Instagram: ${
+      portfolioData.contact?.instagram || "https://www.instagram.com/azrlrsdi_/"
+    }
+- Portfolio Website: ${
+      portfolioData.contact?.portfolio || "https://azrl-webdev.vercel.app"
+    }
+
+KEUNGGULAN:
+${
+  portfolioData.abilities
+    ?.map((a, i) => `${i + 1}. ${a.title}: ${a.description}`)
+    .join("\n") || "Quality Focus, Reliable Communication, On-Time Delivery"
+}
 `;
 
-    let systemPrompt;
+    const systemPrompt = isPortfolioQuestion
+      ? `Anda adalah AI Assistant yang membantu memperkenalkan portfolio dan layanan Azriel Rosadi, seorang Fresh Graduate Fullstack Developer. Tugas utama Anda adalah memberikan informasi yang detail dan akurat tentang proyek, pengalaman, skills, dan kontak Azriel dengan cara yang natural dan informatif.
 
-    if (questionCategory.isPortfolio) {
-      // Full portfolio-focused response
-      systemPrompt = `Anda adalah AI Assistant khusus untuk portfolio Azriel Rosadi. Fokus pada informasi portfolio, proyek, pengalaman, dan layanan.
+PANDUAN KOMUNIKASI:
+=================
 
-TUGAS: Berikan informasi detail tentang portfolio Azriel dengan formatting terstruktur menggunakan emoji dan bold text.
+1. GAYA KOMUNIKASI NATURAL:
+- Gunakan bahasa yang conversational dan natural
+- Hindari format yang terlalu template atau kaku
+- Berikan informasi secara flowing dan engaging
+- Sesuaikan tone dengan pertanyaan user
 
-PORTFOLIO DATA: ${portfolioContext}
+2. STRUKTUR INFORMASI:
+- Mulai dengan greeting/acknowledgment yang natural
+- Organisir informasi dengan jelas tapi tidak terlalu rigid
+- Gunakan emoji secukupnya (1-3 per response) untuk personality
+- Berikan detail yang relevan dan specific
 
-FORMAT WAJIB:
-🎯 **[TOPIC UTAMA]**
-**[Sub-topic dengan emoji]:**
-• **Label Bold:** Penjelasan detail
-• **Label Bold:** Penjelasan detail
+3. FORMAT YANG DIHARAPKAN:
+- Tulis dalam paragraf yang readable
+- Gunakan bullet points hanya untuk list technical (skills, tech stack)
+- Bold text untuk emphasis pada poin penting
+- Jangan terlalu banyak formatting yang berlebihan
 
-ATURAN:
-- Bahasa Indonesia natural
-- Emoji untuk setiap major section  
-- Bold text untuk labels penting
-- Maksimal 1 URL per response
-- Informasi spesifik dan actionable`;
-    } else {
-      // General question with portfolio integration
-      systemPrompt = `Anda adalah AI Assistant yang menjawab pertanyaan umum, namun WAJIB mengakhiri dengan portfolio spotlight Azriel Rosadi.
+4. CONTOH RESPONSE NATURAL:
 
-TUGAS UTAMA:
-1. Jawab pertanyaan user dengan informatif dan helpful
-2. WAJIB akhiri dengan section portfolio yang relevan dengan topik
-3. Gunakan formatting terstruktur dengan emoji dan bold text
+Untuk pertanyaan tentang proyek:
+"Azriel sudah menyelesaikan lebih dari 25 proyek yang cukup beragam! Yang paling menonjol itu ada platform top-up game dan layanan sosial media yang dibangun pakai React, TypeScript, sama Node.js. Sistemnya include payment gateway integration yang cukup kompleks.
 
-PORTFOLIO INFO: ${portfolioContext}
+Terus ada juga sistem laundry management yang complete banget - dari admin dashboard sampai customer interface, semua dibuat pake Laravel 11. Client-nya Mbuutt Company dan mereka cukup puas dengan hasil kerjanya.
 
-FORMAT RESPONSE:
-🤖 **[JAWABAN PERTANYAAN UMUM]**
+Yang menarik juga, dia sempat bikin DOML AI Marketing Platform dan lagi develop Imaginify AI SaaS Platform. Jadi dia cukup up-to-date sama trend AI development.
 
-**[Sub-topic dengan emoji]:**
-• **Point 1:** Penjelasan lengkap
-• **Point 2:** Penjelasan lengkap
+Kalau mau lihat portfolio lengkapnya atau diskusi project, bisa contact langsung ke azrlwebdev@gmail.com"
 
-**💼 PORTFOLIO CONNECTION:**
-[Portfolio snippet yang relevan dengan topik yang dibahas]
+5. INFORMASI YANG HARUS DISERTAKAN:
+- Detail spesifik tentang projects/experience/skills
+- Achievement numbers (25+ projects, 90% satisfaction)
+- Tech stack yang relevan
+- Contact email di akhir response
+- Portfolio URL jika diperlukan
 
-ATURAN:
-- Jawab pertanyaan dengan quality content
-- Kaitkan portfolio jika ada relevansi teknis/bisnis
-- WAJIB section portfolio di akhir
-- Format rapi dengan emoji dan bold
-- Bahasa Indonesia (kecuali user tanya bahasa lain)
-- Maksimal 1-2 URL
+PORTFOLIO DATA:
+${portfolioContext}
 
-KATEGORI PERTANYAAN: ${questionCategory.category}
-RELEVANSI PORTFOLIO: ${
-        questionCategory.isTechRelated
-          ? "TINGGI"
-          : questionCategory.isBusinessRelated
-          ? "SEDANG"
-          : "RENDAH"
-      }`;
-    }
+ATURAN PENTING:
+- Jangan gunakan format template yang kaku
+- Berikan informasi yang comprehensive tapi natural
+- Selalu sertakan contact email di akhir
+- Gunakan data factual dari portfolio
+- Tone friendly dan professional`
+      : `Anda adalah AI Assistant yang bisa menjawab pertanyaan umum dengan baik, namun Anda juga memiliki knowledge tentang portfolio Azriel Rosadi (Fresh Graduate Fullstack Developer).
+
+PANDUAN KOMUNIKASI:
+=================
+
+1. JAWAB PERTANYAAN UMUM:
+- Berikan jawaban yang informatif dan helpful
+- Gunakan knowledge general yang akurat
+- Gaya komunikasi natural dan conversational
+
+2. NATURAL PORTFOLIO MENTION:
+- Setelah menjawab pertanyaan umum, naturally connect ke portfolio Azriel
+- Jangan gunakan format template "PORTFOLIO SPOTLIGHT" yang kaku
+- Buat transisi yang smooth dan natural
+- Variety dalam cara mention portfolio
+
+3. CONTOH NATURAL TRANSITION:
+
+Untuk pertanyaan tentang web development:
+"[Jawaban tentang web development]
+
+Ngomongin soal web development, kebetulan saya tau developer fresh graduate yang cukup promising nih - Azriel Rosadi. Dia udah handle 25+ projects dengan satisfaction rate 90%. Specialnya di React, Laravel, sama Node.js. Kalau butuh developer untuk project, bisa coba contact dia di azrlwebdev@gmail.com"
+
+Untuk pertanyaan tentang programming:
+"[Jawaban tentang programming]
+
+Oh iya, kalau mau liat real example dari programming projects, ada portfolio Azriel Rosadi yang menarik. Dia fresh graduate tapi projectnya udah lumayan beragam - dari platform top-up game sampai AI SaaS platform. Tech stacknya modern banget, pake React, Laravel, Unity juga. Portfolio lengkapnya di https://azrl-webdev.vercel.app"
+
+4. VARIASI TRANSISI:
+- "Ngomongin soal [topic], kebetulan saya tau..."
+- "Oh iya, kalau tertarik sama [related topic]..."
+- "Btw, kalau mau liat real example..."
+- "Speaking of [topic], ada developer yang..."
+- "Kalau butuh reference untuk [topic]..."
+
+5. PORTFOLIO INFO SINGKAT:
+- Nama: Azriel Rosadi
+- Status: Fresh Graduate Fullstack Developer  
+- Achievement: 25+ projects, 90% client satisfaction
+- Skills: React, Laravel, Node.js, Unity, Python
+- Contact: azrlwebdev@gmail.com
+- Portfolio: https://azrl-webdev.vercel.app
+
+ATURAN PENTING:
+- Jangan gunakan format template yang baku
+- Buat transisi yang natural dan varied
+- Hindari "PORTFOLIO SPOTLIGHT" atau format kaku lainnya
+- Maximum 1-2 URL per response
+- Natural, conversational tone throughout`;
 
     const response = await axios.post(
       "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
@@ -349,20 +664,16 @@ RELEVANSI PORTFOLIO: ${
           {
             parts: [
               {
-                text: `${systemPrompt}\n\nPertanyaan User: ${userMessage}\n\nBerikan respons yang informatif dengan formatting TERSTRUKTUR dan RAPI${
-                  !questionCategory.isPortfolio
-                    ? " (WAJIB akhiri dengan portfolio section yang relevan)"
-                    : ""
-                }:`,
+                text: `${systemPrompt}\n\nPertanyaan User: ${userMessage}\n\nBerikan respons yang natural dan informatif:`,
               },
             ],
           },
         ],
         generationConfig: {
-          temperature: 0.7,
+          temperature: 0.8,
           topK: 40,
           topP: 0.95,
-          maxOutputTokens: 1400,
+          maxOutputTokens: 1200,
         },
         safetySettings: [
           {
@@ -391,48 +702,135 @@ RELEVANSI PORTFOLIO: ${
       throw new Error("Response tidak valid dari Gemini API");
     }
 
-    return aiResponse.trim();
+    // Bersihkan URL duplikat dari response
+    const cleanedResponse = cleanDuplicateUrls(aiResponse.trim());
+
+    return cleanedResponse;
   } catch (error) {
     console.error("❌ Error generating Gemini response:", error.message);
 
-    // Enhanced fallback with category-aware responses
-    const questionCategory = categorizeQuestion(userMessage);
-    const portfolioSnippet = generateRelevantPortfolioSnippet(
-      questionCategory.category,
-      portfolioData
-    );
+    // Natural fallback responses berdasarkan kata kunci
+    const message = userMessage.toLowerCase();
 
-    if (questionCategory.isPortfolio) {
-      // Portfolio fallback
-      return `🚀 **Portfolio Azriel Rosadi - Fresh Graduate Fullstack Developer**
+    // Check if it's a portfolio-related question for fallback
+    if (isPortfolioRelated(userMessage)) {
+      if (message.includes("proyek") || message.includes("project")) {
+        return `Azriel Rosadi udah menyelesaikan lebih dari 25 proyek yang cukup beragam! 🚀
 
-**👨‍💻 PROFIL SINGKAT:**
-• **Nama:** Azriel Rosadi
-• **Status:** Fresh Graduate dengan pengalaman praktis
-• **Specialization:** Web Development, Game Development, Full-stack Solutions
+Yang paling menonjol itu platform top-up game dan layanan sosial media yang dibangun pakai **React, TypeScript, TailwindCSS, Node.js,** sama **PostgreSQL**. Sistemnya include payment gateway integration yang cukup kompleks dan client Liboyy Store sangat puas dengan hasilnya.
 
-**💻 HIGHLIGHTS:**
-• **Projects:** 25+ completed with 90% client satisfaction
-• **Tech Stack:** React, Laravel, Node.js, Unity, TypeScript
-• **Current Role:** Frontend Developer Intern at Starspace Studio
+Terus ada sistem laundry management yang complete banget untuk Mbuutt Company - dari admin dashboard sampai customer interface, semua dibuat pake **Laravel 11, MySQL,** sama **TailwindCSS**. Client testimoninya bilang "sangat profesional dan detail-oriented".
 
-**📧 KONTAK:**
-Email: ${portfolioData.contact?.email || "azrlwebdev@gmail.com"}`;
+Yang menarik juga, dia sempat bikin **DOML AI Marketing Platform** dan lagi develop **Imaginify AI SaaS Platform** pake Next.js sama MongoDB. Jadi dia cukup up-to-date sama trend AI development.
+
+Di game development juga ada **Mechstrom: War Zone** pake Unity Engine, terus classic games kayak Pacman sama Tetris. Total udah 25+ projects dengan success rate 100% dan client satisfaction 90%.
+
+Kalau mau lihat portfolio lengkapnya atau diskusi project, bisa contact langsung ke **azrlwebdev@gmail.com**`;
+      }
+
+      if (
+        message.includes("kontak") ||
+        message.includes("contact") ||
+        message.includes("email") ||
+        message.includes("hubungi")
+      ) {
+        return `Kalau mau contact Azriel Rosadi, paling mudah lewat email di **azrlwebdev@gmail.com** 📧
+
+Dia cukup responsive kok, biasanya balas dalam 24 jam di hari kerja. Portfolio lengkapnya bisa dilihat di https://azrl-webdev.vercel.app juga.
+
+Available untuk freelance projects, technical consultation, sama collaboration. Dia juga aktif di LinkedIn untuk professional networking dan GitHub untuk code repositories.
+
+Response time-nya bagus dan komunikasinya reliable - salah satu keunggulan yang sering dipuji client. Working hours biasanya Senin-Jumat jam kerja normal, tapi untuk project discussion bisa anytime via email.`;
+      }
+
+      if (message.includes("pengalaman") || message.includes("experience")) {
+        return `Azriel punya experience yang cukup solid untuk fresh graduate! 💼
+
+Sekarang lagi internship di **Starspace Studio** sebagai Frontend Developer, fokus ke React development sama conversion dari Figma ke code. Program internshipnya intensive banget dengan mentoring dan team collaboration.
+
+Sebelumnya dia handle beberapa client projects:
+- **Liboyy Store** (March-May 2025): Fullstack JavaScript Developer, bikin platform top-up pake React sama Node.js
+- **Mbuutt Laundry** (Jan-Feb 2025): Full Stack Laravel Developer, develop complete laundry management system
+- **PT. Spektrum Kreasi Pratama** (Nov 2023-Feb 2024): Frontend Developer untuk laboratory inventory system
+
+Yang impressive itu dia bisa handle independent full-stack development dan client testimoninya consistently positive. Success rate projectnya 100% dengan client satisfaction 90%.
+
+Untuk career discussion atau project consultation, bisa reach out ke **azrlwebdev@gmail.com**`;
+      }
+
+      if (message.includes("skill") || message.includes("teknologi")) {
+        return `Tech stack Azriel cukup comprehensive untuk fresh graduate! 💻
+
+**Frontend-nya** solid banget: **React, TypeScript, JavaScript, HTML5, CSS3, TailwindCSS**. Dia comfortable dengan modern frameworks kayak Next.js juga, plus styling libraries dan tools kayak Framer Motion, PostCSS.
+
+**Backend** dia handle **Node.js, Express.js, Laravel, PHP, Python**. Database experience di **MySQL, PostgreSQL, MongoDB** dengan ORM kayak Drizzle sama Eloquent.
+
+Yang menarik dia juga dabble in **game development** pake **Unity** sama **C#**, udah bikin beberapa games termasuk 3D game Mechstrom: War Zone.
+
+**Development tools** standard tapi solid: **Git, Vercel, Vite**, plus experience dengan payment integration kayak **Stripe** dan cloud services.
+
+Level proficiency-nya:
+- **Expert:** React, JavaScript, Laravel, HTML/CSS
+- **Advanced:** Node.js, MySQL, Unity, Python  
+- **Intermediate:** TypeScript, MongoDB, PostgreSQL
+
+Total udah apply tech stack ini di 25+ projects dengan hasil yang consistently good. Kalau mau diskusi technical atau collaboration, contact aja ke **azrlwebdev@gmail.com**`;
+      }
+
+      // GENERAL PORTFOLIO QUESTIONS
+      return `Maaf, sepertinya ada gangguan teknis sementara 😅
+
+Tapi kalau mau tahu tentang portfolio Azriel Rosadi, dia fresh graduate fullstack developer dengan track record cukup impressive:
+- 25+ completed projects dengan 90% client satisfaction
+- Experience di React, Laravel, Node.js, Unity game development  
+- Client testimoni consistently positive
+
+Available untuk freelance projects, technical consultation, atau collaboration. Bisa contact langsung ke **azrlwebdev@gmail.com** untuk discussion lebih lanjut.`;
     }
 
-    // General question fallback with relevant portfolio
-    return `🤖 **Maaf, sistem sedang maintenance**
+    // FALLBACK FOR GENERAL QUESTIONS (NON-PORTFOLIO) - NATURAL VERSION
+    const generalTopics = {
+      programming:
+        "Ngomongin soal programming, kebetulan saya tau fresh graduate developer yang projectnya cukup menarik - Azriel Rosadi. Dia udah handle 25+ projects dengan tech stack modern kayak React, Laravel, sama Node.js. Portfolio lengkapnya bisa dilihat di https://azrl-webdev.vercel.app",
 
-**💬 JAWABAN SINGKAT:**
-• Server sedang dalam perbaikan sementara
-• Silakan coba lagi dalam beberapa menit
-• Atau hubungi langsung untuk diskusi lebih lanjut
+      web: "Oh iya, kalau butuh reference untuk web development, ada developer bernama Azriel Rosadi yang portfolionya lumayan solid. Dia specialnya di fullstack development dengan client satisfaction rate 90%. Bisa contact di azrlwebdev@gmail.com kalau tertarik.",
 
-${portfolioSnippet}`;
+      teknologi:
+        "Speaking of teknologi, ada fresh graduate yang cukup up-to-date sama tech trends - Azriel Rosadi. Projectnya dari platform top-up game sampai AI SaaS platform. Tech stacknya modern banget, bisa check portfolionya di azrlwebdev@gmail.com",
+
+      default:
+        "Btw, kalau butuh developer untuk project atau collaboration, ada fresh graduate yang recommended - Azriel Rosadi. Track recordnya bagus dengan 25+ completed projects dan client satisfaction 90%. Email dia di azrlwebdev@gmail.com",
+    };
+
+    // Determine which general response to use
+    let generalResponse = generalTopics.default;
+    if (
+      message.includes("programming") ||
+      message.includes("coding") ||
+      message.includes("code")
+    ) {
+      generalResponse = generalTopics.programming;
+    } else if (
+      message.includes("web") ||
+      message.includes("website") ||
+      message.includes("aplikasi")
+    ) {
+      generalResponse = generalTopics.web;
+    } else if (
+      message.includes("teknologi") ||
+      message.includes("tech") ||
+      message.includes("technology")
+    ) {
+      generalResponse = generalTopics.teknologi;
+    }
+
+    return `Maaf, sistem sedang mengalami sedikit gangguan teknis 🔧
+
+${generalResponse}`;
   }
 }
 
-// Main API handler (tetap sama seperti sebelumnya)
+// Main API handler
 export default async function handler(req, res) {
   // Set CORS headers
   res.setHeader("Access-Control-Allow-Credentials", true);
@@ -446,11 +844,13 @@ export default async function handler(req, res) {
     "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version"
   );
 
+  // Handle preflight request
   if (req.method === "OPTIONS") {
     res.status(200).end();
     return;
   }
 
+  // Only allow POST requests
   if (req.method !== "POST") {
     return res.status(405).json({
       error: "Method not allowed",
@@ -482,11 +882,8 @@ export default async function handler(req, res) {
 
     console.log("📨 Incoming message:", message.substring(0, 100) + "...");
 
-    // Get portfolio data
-    const portfolioData = portfolioCache || staticPortfolioData;
-
-    // Categorize question for response metadata
-    const questionCategory = categorizeQuestion(message);
+    // Get portfolio data (selalu ambil untuk consistency)
+    const portfolioData = await getPortfolioData();
 
     // Generate AI response
     const aiResponse = await generateGeminiResponse(message, portfolioData);
@@ -496,16 +893,11 @@ export default async function handler(req, res) {
     return res.status(200).json({
       response: aiResponse,
       timestamp: new Date().toISOString(),
-      source: "gemini-2.0-flash-enhanced",
-      questionCategory: questionCategory.category,
-      portfolioRelevance: questionCategory.isPortfolio
-        ? "direct"
-        : questionCategory.isTechRelated
-        ? "high"
-        : questionCategory.isBusinessRelated
-        ? "medium"
-        : "low",
-      smartIntegration: true,
+      source: "gemini-2.0-flash",
+      portfolioLastUpdated: portfolioData?.lastUpdated || null,
+      dataSource: portfolioData?.dataSource || "static",
+      isPortfolioRelated: isPortfolioRelated(message),
+      portfolioFocused: true, // Indicating this is portfolio-focused version
     });
   } catch (error) {
     console.error("❌ API Error:", error);
